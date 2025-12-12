@@ -1,5 +1,3 @@
-// script.js (Финальная версия с исправленными видео и адаптивностью)
-
 const ADMIN_PASSWORD = "admin123";
 let isAdminMode = false;
 const adminPanel = document.getElementById('admin-panel');
@@ -13,17 +11,16 @@ var videoList = document.getElementById('video-list');
 var zoomModal = document.getElementById('zoom-modal');
 var zoomContent = document.getElementById('zoom-content');
 
+// --- Глобальные переменные для видео ---
+let videoObserver;
+const isMobile = window.innerWidth <= 768; // Определение мобильного устройства
 
 // --- НОВАЯ/ОБНОВЛЕННАЯ ФУНКЦИЯ: Преобразование внешних ссылок ---
 function transformExternalLink(link) {
     if (!link) return link;
-
-    // 1. Преобразование ссылок DROPBOX в прямые URL
     if (link.includes('dropbox.com')) {
         return link.replace('www.dropbox.com', 'dl.dropboxusercontent.com').replace('?dl=0', '?raw=1');
     }
-
-    // 2. Преобразование ссылок GOOGLE DRIVE
     if (link.includes('drive.google.com')) {
         const match = link.match(/\/d\/([a-zA-Z0-9_-]+)/);
         if (match && match[1]) {
@@ -31,30 +28,24 @@ function transformExternalLink(link) {
             return `https://drive.google.com/uc?export=download&id=${fileId}`;
         }
     }
-    
     return link;
 }
 
-// --- УТИЛИТА: Проверка на мобильное устройство ---
-function isMobile() {
-    return /Mobi|Android/i.test(navigator.userAgent);
-}
 
-
-// --- Инициализация и Структура Данных (Оставлены как в прошлом запросе) ---
+// --- Инициализация и Структура Данных (Оставлена без изменений) ---
 const defaultPortfolio = [
     {
         name: 'Профессор Мортимер',
         thumb: 'images/1.jpg',
         images: [
-            'https://dl.dropboxusercontent.com/scl/fi/mstspscecsx1yldqk851g/1.jpg?rlkey=eg6xz94myutc5s0lcz04aht9y&st=qy0hng39&dl=0', 
-            'https://dl.dropboxusercontent.com/scl/fi/rl0oigzkusgywne8aodz8/2.jpg?rlkey=7bll963z8zwembkzhi594eymz&st=yhuzxaor&dl=0', 
-            'https://dl.dropboxusercontent.com/scl/fi/wwmte98i6k5c4kohchk6w/3.jpg?rlkey=2nwfnoifn4jhsnw4cu207dhym&st=mbopky0z&dl=0', 
-            'https://dl.dropboxusercontent.com/scl/fi/z50rjnovl8q0y1aykv85r/4.jpg?rlkey=sa9mxg0lf83u5lmx0djwnniwx&st=mho345z5&dl=0', 
-            'https://dl.dropboxusercontent.com/scl/fi/5ys8p6c8a3jwrso2mfnjh/Setka1.jpg?rlkey=ew5ug22upzwnosvwzg2ws3lwu&st=divoyzwa&dl=0', 
-            'https://dl.dropboxusercontent.com/scl/fi/0ejxct6v6w8oiiwexcbmy/Setka2.jpg?rlkey=d32u8oz0s78yguv7zbddiun9n&st=d2ljtd4r&dl=0', 
-            'https://dl.dropboxusercontent.com/scl/fi/9ikt5esccapenyskc0t55/Setka3.jpg?rlkey=vmwavh14gcawave5why2p3t4e&st=di39z041&dl=0', 
-            'https://dl.dropboxusercontent.com/scl/fi/mcfdouh1ru26itf7ac6gi/Setka4.jpg?rlkey=izof5dp8itdendf65ia9gn800&st=8pelihnb&dl=0'
+            'images/1.jpg', 
+            'images/2.jpg', 
+            'images/3.jpg', 
+            'images/4.jpg', 
+            'images/Setka1.jpg', 
+            'images/Setka2.jpg', 
+            'images/Setka3.jpg', 
+            'images/Setka4.jpg'
         ],
         videos: [
             { 
@@ -81,7 +72,6 @@ function savePortfolio() {
 }
 
 // --- Функции Рендеринга, Админки (Оставлены без изменений) ---
-
 function renderPortfolio() {
     gallery.innerHTML = '';
     portfolioData.forEach((item, index) => {
@@ -150,17 +140,44 @@ function addPortfolioItem() {
     alert(`Работа "${name}" добавлена!`);
 }
 
+// --- НОВАЯ/ОБНОВЛЕННАЯ ЛОГИКА АВТОВОСПРОИЗВЕДЕНИЯ/ВЗАИМОДЕЙСТВИЯ С ВИДЕО ---
 
-// --- НОВАЯ ФУНКЦИЯ: Автоматическая пауза других видео ---
+// 4. Сделать чтобы если я включаю видео которое было на паузе, то все остальные видео ставятся на паузу
 function pauseOtherVideos(currentVideo) {
     videoList.querySelectorAll('video').forEach(video => {
-        if (video !== currentVideo && !video.paused) {
+        if (video !== currentVideo) {
             video.pause();
         }
     });
 }
 
-let videoObserver;
+// 5. Индикатор Загрузки/Буферизации
+function setupVideoLoader(video) {
+    const loader = video.closest('.video-item').querySelector('.video-loader');
+    
+    // Показываем загрузчик при буферизации
+    video.addEventListener('waiting', () => {
+        loader.style.display = 'flex';
+    });
+
+    // Скрываем загрузчик, когда видео снова начинает играть
+    video.addEventListener('playing', () => {
+        loader.style.display = 'none';
+    });
+
+    // Скрываем загрузчик, если пользователь нажал на паузу
+    video.addEventListener('pause', () => {
+        // Убедимся, что это не пауза из-за IntersectionObserver
+        if (video.currentTime > 0) { 
+             loader.style.display = 'none';
+        }
+    });
+    
+    // Скрываем загрузчик, когда загружено достаточно данных
+    video.addEventListener('loadeddata', () => {
+        loader.style.display = 'none';
+    });
+}
 
 function setupVideoObserver() {
     if (videoObserver) {
@@ -168,63 +185,65 @@ function setupVideoObserver() {
     }
 
     const videos = videoList.querySelectorAll('video');
-    const isMobileDevice = isMobile();
+    if (videos.length === 0) return;
 
-    // Назначаем обработчик для паузы других видео
-    videos.forEach(video => {
-        video.addEventListener('play', () => pauseOtherVideos(video));
-    });
+    // На ПК (Desktop): используется старая логика (Autoplay/Pause по фокусу)
+    // На мобильном устройстве: только первое видео автозапускается/останавливается.
+    // Остальные видео требуют ручного нажатия, но останавливаются при прокрутке.
+    const options = {
+        root: document.getElementById('myModal'),
+        rootMargin: '0px',
+        // Более мягкий порог для мобильных (должно быть видно >80% видео)
+        threshold: isMobile ? 0.8 : 1.0 
+    };
 
-    if (isMobileDevice) {
-        // --- ЛОГИКА ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ: Только первое видео автоплей ---
-        if (videos.length > 0) {
+    videoObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            const video = entry.target;
+            const isFirstVideo = videos[0] === video;
             
-            // На мобильных controls ВСЕГДА видны (для ручного управления/остановки)
-            videos.forEach(video => {
-                video.controls = true;
-            });
-            
-            // Запускаем только первое видео сразу (громкость по умолчанию, не muted)
-            videos[0].muted = false; // Видео должно быть со звуком
-            videos[0].play().catch(error => {
-                console.log("Mobile Autoplay failed:", error);
-                // Если автоплей не удался (что часто бывает), controls уже показаны
-            });
-        }
-        
-    } else {
-        // --- ЛОГИКА ДЛЯ ПК: Автоплей для всех видео в фокусе ---
-        const options = {
-            root: document.getElementById('myModal'),
-            rootMargin: '0px',
-            threshold: 1.0
-        };
-
-        videoObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                const video = entry.target;
-                if (entry.isIntersecting) {
-                    video.muted = false; // Звук по умолчанию включен
-                    video.controls = false; // На ПК controls скрыты, пока не наведешь мышь
-                    
-                    // Пауза других видео при запуске текущего
+            // Логика для ПК/Мобильных
+            if (entry.isIntersecting) {
+                // ПЕРВОЕ ВИДЕО: Автовоспроизведение в фокусе (muted для автозапуска, затем unmute)
+                if (isFirstVideo) {
+                    video.muted = true; // Снова muted для попытки автозапуска
                     video.play().then(() => {
-                        pauseOtherVideos(video);
-                    }).catch(error => console.log("Autoplay prevented:", error));
-                    
-                } else {
-                    video.pause();
-                    video.muted = false; // Звук остается включенным
-                    video.controls = false;
+                        // 3. Вернуть у всех видео по умолчанию звук
+                        video.muted = false;
+                    }).catch(error => {
+                         // Если автозапуск не удался (например, на iOS), то остается на паузе с controls
+                         console.log("Autoplay prevented:", error);
+                         video.muted = false; // Звук вернем
+                         video.controls = true; // Убедимся, что controls есть
+                    });
+                } 
+                // ОСТАЛЬНЫЕ ВИДЕО: воспроизведение только если пользователь нажал play вручную
+                else if (video.currentTime > 0 && !video.paused) {
+                    // Если пользователь запустил видео вручную, оно продолжает играть
+                    video.play().catch(error => console.log("Manual play prevented:", error));
                 }
-            });
-        }, options);
-
-        videos.forEach(video => {
-            video.controls = false; // Убедимся, что controls по умолчанию выключены
-            videoObserver.observe(video);
+            } else {
+                // При выходе из фокуса: ставим на паузу и выключаем звук
+                video.pause();
+                video.muted = true;
+                // Скрываем лоадер, если видео уходит из фокуса на паузе
+                video.closest('.video-item').querySelector('.video-loader').style.display = 'none';
+            }
         });
-    }
+    }, options);
+
+    videos.forEach((video, index) => {
+        // Добавляем обработчики для паузы других видео
+        video.addEventListener('play', () => {
+            pauseOtherVideos(video);
+        });
+
+        // Добавляем логику индикатора загрузки
+        setupVideoLoader(video);
+        
+        // Начинаем наблюдение IntersectionObserver
+        videoObserver.observe(video);
+    });
 }
 
 function openModal(index) {
@@ -237,7 +256,6 @@ function openModal(index) {
     if (item.images && item.images.length > 0) {
         item.images.forEach(imagePath => {
             const imageSource = transformExternalLink(imagePath);
-            
             const wrapper = document.createElement('div');
             wrapper.classList.add('carousel-image-wrapper');
             const img = document.createElement('img');
@@ -256,10 +274,8 @@ function openModal(index) {
     }
 
     // 2. Загрузка Видео с Комментариями
-    const isMobileDevice = isMobile();
-    
     if (item.videos && item.videos.length > 0) {
-        item.videos.forEach((videoItem, i) => {
+        item.videos.forEach((videoItem, index) => {
             const container = document.createElement('div');
             container.classList.add('video-item');
 
@@ -267,21 +283,33 @@ function openModal(index) {
 
             const video = document.createElement('video');
             video.src = videoSource;
+            // 2. Почему ты у первого видео убрал возможность вручную остановить видео - controls теперь всегда true
+            video.controls = true; 
             video.loop = true;
-            video.muted = false; // Звук по умолчанию ВКЛЮЧЕН (Muted=false)
             
-            // Controls: ВСЕГДА видны на мобильных, и только при hover на ПК
-            video.controls = isMobileDevice; 
+            // 3. Вернуть у всех видео по умолчанию звук
+            // Для первого видео делаем muted:true (для попытки автозапуска), но IntersectionObserver его unmute-т
+            video.muted = (index === 0) ? true : false; 
             
-            if (!isMobileDevice) {
-                // Логика PC: controls появляются только при наведении мыши
-                video.onmouseenter = () => { video.controls = true; };
-                video.onmouseleave = () => {
+            // PC: Убираем обработчики onmouseenter/onmouseleave, т.к. controls теперь всегда true
+            if (!isMobile) {
+                 video.controls = false; // Возвращаем логику для ПК
+                 video.onmouseenter = () => { video.controls = true; };
+                 video.onmouseleave = () => {
                     if (video.paused || document.fullscreenElement) return;
                     video.controls = false;
-                };
+                 };
+                 video.muted = true; // Возвращаем логику для ПК
             }
-
+            
+            // Добавляем элемент для эффекта загрузки
+            const loaderHTML = `
+                <div class="video-loader">
+                    <div class="spinner"></div>
+                    <p>Загрузка...</p>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', loaderHTML);
 
             container.appendChild(video);
 
@@ -299,7 +327,6 @@ function openModal(index) {
 
     modal.style.display = "block";
 
-    // Устанавливаем наблюдателей и логику воспроизведения
     setTimeout(setupVideoObserver, 500);
 }
 
@@ -310,7 +337,11 @@ function closeModal(event) {
         }
         videoList.querySelectorAll('video').forEach(video => {
             video.pause();
-            video.muted = false; // Сохраняем звук включенным
+            video.muted = true;
+        });
+        // Скрываем все лоадеры при закрытии модального окна
+        videoList.querySelectorAll('.video-loader').forEach(loader => {
+            loader.style.display = 'none';
         });
         modal.style.display = "none";
     }
