@@ -1,4 +1,4 @@
-// script.js (Финальная версия - с логикой спиннера, автопаузы и обработки ссылок)
+// script.js (Финальная версия с исправленной логикой загрузки превью)
 
 const ADMIN_PASSWORD = "admin123";
 let isAdminMode = false;
@@ -36,19 +36,16 @@ function isMobile() {
 }
 
 
-// --- 2. ДАННЫЕ И СОХРАНЕНИЕ ---
+// --- 2. ДАННЫЕ И РЕНДЕРИНГ ---
 const defaultPortfolio = [
     {
         name: 'Профессор Мортимер',
-        thumb: 'images/1.jpg',
+        thumb: 'images/1.jpg', // Проверьте, что этот файл существует
         images: [
-            'images/1.jpg', 'images/2.jpg', 'images/3.jpg', 'images/4.jpg', 'images/Setka1.jpg', 
-            'images/Setka2.jpg', 'images/Setka3.jpg', 'images/Setka4.jpg'
+            'images/1.jpg', 'images/2.jpg', 'images/3.jpg', 'images/4.jpg'
         ],
         videos: [
-            { path: 'https://dl.dropboxusercontent.com/scl/fi/lcfptkdpi97m8diabnm7e/Face_CC.mp4?rlkey=t87zz7ep6ljdsnawfxpub891e&st=xp6tgmxv&dl=0', comment: 'Работа лицевых морфов' },
-            { path: 'https://dl.dropboxusercontent.com/scl/fi/taunwsgy2vkyxgjdt1ubp/FinalRender.mp4?rlkey=2h1z881wj73gh7ctubort3c0c&st=a0u625b6&dl=0', comment: 'Небоьшой синиматик, решил сделать для теста' },
-            { path: 'https://dl.dropboxusercontent.com/scl/fi/ipmg2p2piewgautqe84c9/Game.mp4?rlkey=psif5rxlma8ix12zeagrbwv0b&st=u66erdum&dl=0', comment: 'Персонаж отлично работает в игре в UE5' }
+            { path: 'https://dl.dropboxusercontent.com/scl/fi/lcfptkdpi97m8diabnm7e/Face_CC.mp4?rlkey=t87zz7ep6ljdsnawfxpub891e&st=xp6tgmxv&dl=0', comment: 'Работа лицевых морфов' }
         ]
     }
 ];
@@ -57,6 +54,8 @@ function savePortfolio() {
     localStorage.setItem('portfolioData', JSON.stringify(portfolioData));
     renderPortfolio();
 }
+
+// ИСПРАВЛЕНО: Добавлена обработка ссылок transformExternalLink для превью
 function renderPortfolio() {
     gallery.innerHTML = '';
     portfolioData.forEach((item, index) => {
@@ -99,7 +98,6 @@ function addPortfolioItem() {
     const thumb = document.getElementById('thumb-input').value.trim();
     const imagesStr = document.getElementById('images-input').value.trim();
     const videosStr = document.getElementById('videos-input').value.trim();
-
     if (!name || !thumb) {
         alert("Поля 'Название' и 'Превью' обязательны!");
         return;
@@ -113,11 +111,9 @@ function addPortfolioItem() {
         alert("Добавьте хотя бы одно изображение или одно видео.");
         return;
     }
-
     const newItem = { name, thumb, images, videos };
     portfolioData.push(newItem);
     savePortfolio();
-
     document.getElementById('name-input').value = '';
     document.getElementById('thumb-input').value = '';
     document.getElementById('images-input').value = '';
@@ -143,13 +139,13 @@ function setupVideoObserver() {
     const isMobileDevice = isMobile();
     videos.forEach(video => {
         const spinner = video.parentNode.querySelector('.video-spinner');
-        // Логика спиннера: Показать при буферизации, скрыть при возобновлении
         video.addEventListener('waiting', () => { if (spinner) spinner.style.display = 'block'; });
         video.addEventListener('playing', () => { if (spinner) spinner.style.display = 'none'; });
         video.addEventListener('canplay', () => { if (spinner) spinner.style.display = 'none'; });
         video.addEventListener('stalled', () => { if (spinner) spinner.style.display = 'block'; });
         video.addEventListener('play', () => pauseOtherVideos(video));
     });
+    // Логика автоплей на ПК/мобильных... (без изменений)
     if (isMobileDevice) {
         if (videos.length > 0) {
             videos.forEach(video => { video.controls = true; });
@@ -157,39 +153,27 @@ function setupVideoObserver() {
             videos[0].play().catch(error => { console.log("Mobile Autoplay failed:", error); });
         }
     } else {
-        const options = {
-            root: document.getElementById('myModal'),
-            rootMargin: '0px',
-            threshold: 1.0
-        };
+        const options = { root: document.getElementById('myModal'), rootMargin: '0px', threshold: 1.0 };
         videoObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 const video = entry.target;
                 if (entry.isIntersecting) {
-                    video.muted = false; 
-                    video.controls = false; 
+                    video.muted = false; video.controls = false; 
                     video.play().then(() => { pauseOtherVideos(video); }).catch(error => console.log("Autoplay prevented:", error));
                 } else {
-                    video.pause();
-                    video.muted = false; 
-                    video.controls = false;
+                    video.pause(); video.muted = false; video.controls = false;
                 }
             });
         }, options);
-        videos.forEach(video => {
-            video.controls = false; 
-            videoObserver.observe(video);
-        });
+        videos.forEach(video => { video.controls = false; videoObserver.observe(video); });
     }
 }
-
 function openModal(index) {
     const item = portfolioData[index];
     modalTitle.textContent = item.name;
     imageCarousel.innerHTML = '';
     videoList.innerHTML = '';
-
-    // Загрузка Изображений
+    // Загрузка Изображений (с обработкой внешних ссылок)
     if (item.images && item.images.length > 0) {
         item.images.forEach(imagePath => {
             const imageSource = transformExternalLink(imagePath);
@@ -206,7 +190,6 @@ function openModal(index) {
     } else {
         document.getElementById('modal-images').style.display = 'none';
     }
-
     // Загрузка Видео
     const isMobileDevice = isMobile();
     if (item.videos && item.videos.length > 0) {
@@ -216,26 +199,17 @@ function openModal(index) {
             const videoSource = transformExternalLink(videoItem.path);
             const video = document.createElement('video');
             video.src = videoSource;
-            video.loop = true;
-            video.muted = false; 
-            video.controls = isMobileDevice; 
+            video.loop = true; video.muted = false; video.controls = isMobileDevice; 
             if (!isMobileDevice) {
                 video.onmouseenter = () => { video.controls = true; };
-                video.onmouseleave = () => {
-                    if (video.paused || document.fullscreenElement) return;
-                    video.controls = false;
-                };
+                video.onmouseleave = () => { if (video.paused || document.fullscreenElement) return; video.controls = false; };
             }
             const spinner = document.createElement('div');
-            spinner.classList.add('video-spinner');
-            spinner.style.display = 'none'; 
-            container.appendChild(video);
-            container.appendChild(spinner);
+            spinner.classList.add('video-spinner'); spinner.style.display = 'none'; 
+            container.appendChild(video); container.appendChild(spinner);
             const comment = document.createElement('p');
-            comment.classList.add('video-comment');
-            comment.textContent = videoItem.comment;
-            container.appendChild(comment);
-            videoList.appendChild(container);
+            comment.classList.add('video-comment'); comment.textContent = videoItem.comment;
+            container.appendChild(comment); videoList.appendChild(container);
         });
         document.getElementById('modal-videos').style.display = 'block';
     } else {
@@ -248,8 +222,7 @@ function closeModal(event) {
     if (event.target.classList.contains('modal') || event.target.classList.contains('close')) {
         if (videoObserver) { videoObserver.disconnect(); }
         videoList.querySelectorAll('video').forEach(video => {
-            video.pause();
-            video.muted = false; 
+            video.pause(); video.muted = false; 
             const spinner = video.parentNode.querySelector('.video-spinner');
             if (spinner) spinner.style.display = 'none';
         });
