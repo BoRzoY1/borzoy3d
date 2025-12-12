@@ -1,4 +1,4 @@
-/* style.css (Финальная, исправленная версия с единым дизайном на ПК и Мобильных) */
+/* style.css (Финальная, исправленная версия) */
 
 :root {
     --bg-color: #0d0115; /* Глубокий темный фон */
@@ -7,10 +7,9 @@
     --text-color: #f0f0f0;
 }
 
-/* Общий стиль */
+/* 1. Общий стиль */
 body {
     font-family: 'Consolas', monospace; 
-    /* Фоновый градиент и изображение (сохраняет стиль на всех устройствах) */
     background: 
         linear-gradient(rgba(13, 1, 21, 0.95), rgba(13, 1, 21, 0.95)), 
         url('https://placehold.co/1920x1080/0d0115/ff33cc?text=BoRzoY') center fixed;
@@ -20,17 +19,27 @@ body {
     line-height: 1.6;
     scroll-behavior: smooth;
     overflow-x: hidden; /* Предотвращает горизонтальный скролл */
+    text-align: center; /* ГЛАВНОЕ ИСПРАВЛЕНИЕ: Центрирует встроенные элементы (текст, h1, p) */
 }
 
-/* Стилизация Заголовков (Неоновый эффект - одинаковый везде) */
+/* ИСПРАВЛЕНИЕ 3: ГАРАНТИРУЕМ, ЧТО ЗАГОЛОВКИ ВСЕГДА ПО ЦЕНТРУ */
 h1, h2 {
     color: var(--accent-color);
     text-shadow: 0 0 10px var(--accent-color), 0 0 20px rgba(0, 230, 118, 0.5);
     margin-bottom: 30px;
     text-transform: uppercase;
+    text-align: center; /* Явно указываем центрирование */
 }
 
-/* Навигация (ПК) */
+/* Секции: Сбрасываем центрирование, если оно уже применено в body, 
+   но гарантируем, что его унаследуют блочные элементы, если нет flex/grid */
+section {
+    padding: 80px 50px;
+    text-align: center; /* Сохраняем для надежности */
+}
+
+
+/* 2. Навигация */
 header {
     display: flex;
     justify-content: flex-start; 
@@ -50,14 +59,9 @@ nav a {
     transition: all 0.3s;
 }
 
-/* Секции */
-section {
-    padding: 80px 50px;
-    text-align: center;
-}
-
-/* Кнопки CTA (Одинаковый стиль везде) */
+/* 3. Кнопки (Одинаковый стиль везде) */
 .cta-button {
+    /* ИСПРАВЛЕНИЕ 2: УДАЛЕНО: width: 100%; (чтобы не растягивались на ПК) */
     display: inline-block;
     padding: 12px 30px;
     text-decoration: none;
@@ -86,65 +90,28 @@ section {
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 30px;
     max-width: 1400px;
-    margin: 0 auto;
+    margin: 0 auto; /* Центрирует сам контейнер галереи */
 }
-.item {
-    position: relative;
-    overflow: hidden;
-    border-radius: 8px;
-    border: 1px solid rgba(255, 51, 204, 0.3);
-    background-color: #1c0a29;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-    transition: all 0.3s;
-    cursor: pointer;
-}
-/* ИСПРАВЛЕНИЕ ФОТО: Гарантируем видимость и пропорции */
 .item img {
     width: 100%;
-    max-height: 300px; /* Фиксированная высота для единообразия */
-    object-fit: contain; /* Contain: чтобы фото было видно целиком */
+    max-height: 300px; 
+    object-fit: contain; 
     background-color: #0d0115; 
     display: block;
 }
-.item-caption {
-    background-color: #1a082b;
-    font-size: 1.5em; 
-    font-weight: bold;
-    border-radius: 0 0 8px 8px;
-    padding: 15px 10px;
-    margin-bottom: 0; /* Убрал лишний отступ */
-    text-align: center;
-}
 
-/* Модальное окно (Без изменений) */
-.modal { display: none; position: fixed; z-index: 20; padding-top: 50px; left: 0; top: 0; width: 100%; height: 100%; overflow-y: scroll; background-color: rgba(0, 0, 0, 0.95); }
-.modal-content { margin: 0 auto; width: 90%; max-width: 1200px; text-align: center; background-color: #1a082b; border-radius: 10px; padding: 30px; box-shadow: 0 0 40px var(--secondary-color); }
-.carousel-image { width: 100%; height: auto; max-height: 500px; object-fit: contain; display: block; }
-.video-container { position: relative; } 
-.video-spinner {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    width: 50px; height: 50px;
-    border: 5px solid rgba(255, 255, 255, 0.3); 
-    border-top: 5px solid var(--accent-color); 
-    border-radius: 50%;
-    animation: spin 1s linear infinite; 
-    z-index: 5; 
-    display: none; 
-}
-@keyframes spin {
-    0% { transform: translate(-50%, -50%) rotate(0deg); }
-    100% { transform: translate(-50%, -50%) rotate(360deg); }
-}
-
-/* Секция Заказа */
+/* Секция Заказа: ГЛАВНОЕ ИСПРАВЛЕНИЕ ДЛЯ КНОПОК */
 .order-links {
     display: flex; 
-    justify-content: center; 
+    justify-content: center; /* Центрирует контейнер ссылок */
     gap: 40px; 
     margin-top: 30px;
 }
+/* Стили для кнопок заказа (Telegram, VK, Gmail) */
 .order-links a {
-    display: block;
+    /* На ПК они остаются "inline-block" и не растягиваются */
+    display: block; /* Используем block, чтобы на мобильных можно было легко задать 100% ширину */
+    max-width: 200px; /* Ограничение ширины на ПК */
     padding: 15px 30px; 
     border-radius: 5px; 
     text-decoration: none; 
@@ -153,75 +120,71 @@ section {
     font-size: 1.1em;
 }
 
+
 /* ------------------------------------------- */
-/* --- АДАПТИВНОСТЬ (МОБИЛЬНЫЕ УСТРОЙСТВА) --- */
+/* 4. АДАПТИВНОСТЬ (МОБИЛЬНЫЕ УСТРОЙСТВА) - ИСПРАВЛЕНИЕ 1 и 2 */
 /* ------------------------------------------- */
 @media (max-width: 768px) {
     
-    /* Навигация (Сохраняет неоновый фон) */
+    /* Секции: Меньшие отступы, центрирование сохраняется */
+    section {
+        padding: 40px 15px;
+    }
+    h1 {
+        font-size: 1.6em; /* Уменьшаем размер заголовков для лучшей читаемости */
+    }
+    h2 {
+        font-size: 1.4em;
+    }
+
+    /* Навигация */
     header {
         flex-direction: column; 
         padding: 10px 15px;
     }
     nav ul {
         justify-content: center; 
-        gap: 15px; 
-        width: 100%;
+        gap: 10px; 
     }
     nav a {
-        font-size: 0.9em;
-        margin: 0 5px;
+        font-size: 0.8em;
+        margin: 0 2px;
     }
     
-    /* Секции */
-    section {
-        padding: 50px 15px;
-    }
-    h1 {
-        font-size: 1.8em;
-    }
-    
-    /* Портфолио */
+    /* Портфолио: Один столбец */
     .gallery {
-        grid-template-columns: 1fr; /* Один столбец */
+        grid-template-columns: 1fr;
     }
     .item img {
-        max-height: 250px; /* Чуть меньше на телефоне */
+        max-height: 250px;
     }
 
-    /* Кнопки CTA и Заказа: ИСПРАВЛЕНИЕ РАСТЯГИВАНИЯ */
+    /* ИСПРАВЛЕНИЕ 2: АВТО РАЗМЕР КНОПОК (Теперь они занимают 100% контейнера на мобильных) */
     .cta-button {
         display: block; 
         width: 100%; 
-        max-width: 350px; /* Ограничение ширины для мобильных */
+        max-width: 350px; /* Ограничиваем максимальную ширину для центрирования */
         margin: 10px auto;
+        font-size: 1.1em; /* Размер шрифта, подходящий для мобильных */
     }
     .order-links {
         flex-direction: column;
         gap: 15px;
-        align-items: center; 
+        align-items: center; /* Для центрирования вертикального списка */
     }
-    /* Для кнопок заказа используем стили cta-button */
     .order-links a {
-        width: 100%; 
+        width: 100%; /* Занимает всю доступную ширину контейнера (max-width: 350px) */
         max-width: 350px;
-        margin: 0 auto;
     }
-    
+
     /* Модальное окно */
     .modal-content {
         width: 95%;
         padding: 15px;
     }
-    #modal-title {
-        font-size: 1.5em;
-    }
-    #image-carousel-container {
-        max-width: 100%;
-    }
-
-    /* Скрываем стрелки карусели, так как можно скроллить пальцем */
-    .arrow {
-        display: none;
+    .close {
+        top: 5px;
+        right: 15px;
+        font-size: 30px;
     }
 }
