@@ -1,4 +1,4 @@
-/* style.css (Финальная, исправленная версия с адаптивностью и спиннером) */
+/* style.css (Финальная, исправленная версия с центрированием на мобильных) */
 
 :root {
     --bg-color: #0d0115; /* Глубокий темный фон */
@@ -264,7 +264,7 @@ nav ul li:first-child a {
 /* СТИЛИ СПИННЕРА */
 .video-spinner {
     position: absolute;
-    top: calc(50% - 50px); /* Поправка на отступ .video-item */
+    top: calc(50% - 50px); 
     left: 50%;
     transform: translate(-50%, -50%);
     width: 50px;
@@ -318,44 +318,44 @@ footer {
 /* ------------------------------------------- */
 @media (max-width: 768px) {
     
-    /* Навигация: Исправлено для размещения в строку */
+    /* Навигация: ИСПРАВЛЕНИЕ - Центрируем все элементы */
     header {
-        flex-direction: row; 
-        justify-content: space-between; 
-        padding: 10px 15px;
+        flex-direction: column; 
+        justify-content: center; 
         align-items: center; 
+        padding: 10px 15px;
     }
     nav {
-        flex-grow: 1; 
-        text-align: right; 
+        flex-grow: 0; 
+        width: 100%; 
+        text-align: center; 
     }
     nav ul {
         flex-direction: row; 
-        justify-content: flex-end; 
-        gap: 10px; 
+        justify-content: center; /* ГЛАВНОЕ: Центрируем ссылки */
+        gap: 15px; 
+        width: 100%;
     }
     nav a {
         font-size: 0.9em;
-        margin-left: 10px; 
+        margin: 0; 
     }
     
-    /* Геро-секция и основные секции */
+    /* Геро-секция и основные секции: ИСПРАВЛЕНИЕ - Гарантируем центрирование всего контента */
     #hero, section {
         padding: 50px 15px;
+        text-align: center; /* ГЛАВНОЕ: Центрируем текст и блочные элементы */
     }
-    h1 {
+    h1, h2 {
         font-size: 1.8em;
     }
-    h2 {
-        font-size: 1.5em;
-    }
-    
+
     /* Портфолио */
     .gallery {
         grid-template-columns: 1fr; 
     }
     
-    /* Кнопки */
+    /* Кнопки: Гарантируем центрирование */
     .cta-button {
         display: block; 
         width: 100%; 
@@ -365,11 +365,7 @@ footer {
     .order-links {
         flex-direction: column;
         gap: 15px;
-    }
-    .order-links a {
-        width: 100%;
-        max-width: 350px;
-        margin: 0 auto;
+        align-items: center; 
     }
 
     /* Модальное окно */
@@ -378,16 +374,14 @@ footer {
         padding: 15px;
         margin-top: 10px;
     }
-    #modal-title {
-        font-size: 1.5em;
-        margin-bottom: 20px;
-    }
-    .arrow {
-        padding: 5px 10px;
-        font-size: 18px;
+    
+    /* Спиннер видео: ИСПРАВЛЕНИЕ - Упрощенное позиционирование */
+    .video-spinner {
+        top: 50%; /* Более надежно на разных мобильных устройствах */
+        transform: translate(-50%, -50%); 
     }
     
-    /* Убираем скроллбар в карусели изображений для чистоты мобильного дизайна */
+    /* Скрытие скроллбаров */
     #image-carousel::-webkit-scrollbar { 
         display: none; 
     }
@@ -396,10 +390,6 @@ footer {
         scrollbar-width: none;  
     }
     
-    /* Стрелки карусели */
-    #prev-arrow { left: 5px; }
-    #next-arrow { right: 5px; }
-
     /* Закрытие модального окна */
     .close {
         top: 5px;
