@@ -44,15 +44,33 @@ const defaultPortfolio = [
     {
         name: 'Профессор Мортимер',
         thumb: 'images/1.jpg',
-        images: ['images/1.jpg, images/2.jpg, images/3.jpg, images/4.jpg, images/Setka1.jpg, images/Setka2.jpg, images/Setka3.jpg, images/Setka4.jpg'],
+        // ИСПРАВЛЕНО: Теперь это массив отдельных строк
+        images: [
+            'images/1.jpg', 
+            'images/2.jpg', 
+            'images/3.jpg', 
+            'images/4.jpg', 
+            'images/Setka1.jpg', 
+            'images/Setka2.jpg', 
+            'images/Setka3.jpg', 
+            'images/Setka4.jpg'
+        ],
         videos: [
-            // *** ОБРАЗЕЦ: Используйте URL Dropbox (например: https://www.dropbox.com/s/abcdef123456/video.mp4?dl=0) ***
-            { path: 'https://dl.dropboxusercontent.com/scl/fi/lcfptkdpi97m8diabnm7e/Face_CC.mp4?rlkey=t87zz7ep6ljdsnawfxpub891e&st=xp6tgmxv&dl=0', comment: 'Работа лицевых морфов' },
-            { path: 'https://dl.dropboxusercontent.com/scl/fi/taunwsgy2vkyxgjdt1ubp/FinalRender.mp4?rlkey=2h1z881wj73gh7ctubort3c0c&st=a0u625b6&dl=0', comment: 'Небоьшой синиматик, решил сделать для теста' }
-            { path: 'https://dl.dropboxusercontent.com/scl/fi/ipmg2p2piewgautqe84c9/Game.mp4?rlkey=psif5rxlma8ix12zeagrbwv0b&st=u66erdum&dl=0', comment: 'Персонаж отлично работает в игре в UE5' }
+            { 
+                path: 'https://dl.dropboxusercontent.com/scl/fi/lcfptkdpi97m8diabnm7e/Face_CC.mp4?rlkey=t87zz7ep6ljdsnawfxpub891e&st=xp6tgmxv&dl=0', 
+                comment: 'Работа лицевых морфов' 
+            },
+            { 
+                path: 'https://dl.dropboxusercontent.com/scl/fi/taunwsgy2vkyxgjdt1ubp/FinalRender.mp4?rlkey=2h1z881wj73gh7ctubort3c0c&st=a0u625b6&dl=0', 
+                comment: 'Небоьшой синиматик, решил сделать для теста' 
+            }, // ИСПРАВЛЕНО: Добавлена запятая
+            { 
+                path: 'https://dl.dropboxusercontent.com/scl/fi/ipmg2p2piewgautqe84c9/Game.mp4?rlkey=psif5rxlma8ix12zeagrbwv0b&st=u66erdum&dl=0', 
+                comment: 'Персонаж отлично работает в игре в UE5' 
+            }
         ]
-    };
-
+    }
+]; // Запятая в конце не нужна, так как это единственный элемент в массиве
 let portfolioData = JSON.parse(localStorage.getItem('portfolioData')) || defaultPortfolio;
 
 function savePortfolio() {
