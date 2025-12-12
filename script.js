@@ -1,4 +1,4 @@
-// script.js (Финальная версия с индикатором загрузки и исправленной логикой видео)
+// script.js (Финальная версия с исправленными видео и адаптивностью)
 
 const ADMIN_PASSWORD = "admin123";
 let isAdminMode = false;
@@ -41,20 +41,20 @@ function isMobile() {
 }
 
 
-// --- Инициализация и Структура Данных (Пример) ---
+// --- Инициализация и Структура Данных (Оставлены как в прошлом запросе) ---
 const defaultPortfolio = [
     {
         name: 'Профессор Мортимер',
         thumb: 'images/1.jpg',
         images: [
-            'https://dl.dropboxusercontent.com/scl/fi/mstspscecsx1yldqk851g/1.jpg?rlkey=eg6xz94myutc5s0lcz04aht9y&st=qy0hng39&dl=0', 
-            'https://dl.dropboxusercontent.com/scl/fi/rl0oigzkusgywne8aodz8/2.jpg?rlkey=7bll963z8zwembkzhi594eymz&st=yhuzxaor&dl=0', 
-            'https://dl.dropboxusercontent.com/scl/fi/wwmte98i6k5c4kohchk6w/3.jpg?rlkey=2nwfnoifn4jhsnw4cu207dhym&st=mbopky0z&dl=0', 
-            'https://dl.dropboxusercontent.com/scl/fi/z50rjnovl8q0y1aykv85r/4.jpg?rlkey=sa9mxg0lf83u5lmx0djwnniwx&st=mho345z5&dl=0', 
-            'https://dl.dropboxusercontent.com/scl/fi/5ys8p6c8a3jwrso2mfnjh/Setka1.jpg?rlkey=ew5ug22upzwnosvwzg2ws3lwu&st=divoyzwa&dl=0', 
-            'https://dl.dropboxusercontent.com/scl/fi/0ejxct6v6w8oiiwexcbmy/Setka2.jpg?rlkey=d32u8oz0s78yguv7zbddiun9n&st=d2ljtd4r&dl=0', 
-            'https://dl.dropboxusercontent.com/scl/fi/9ikt5esccapenyskc0t55/Setka3.jpg?rlkey=vmwavh14gcawave5why2p3t4e&st=di39z041&dl=0', 
-            'https://dl.dropboxusercontent.com/scl/fi/mcfdouh1ru26itf7ac6gi/Setka4.jpg?rlkey=izof5dp8itdendf65ia9gn800&st=8pelihnb&dl=0'
+            'images/1.jpg', 
+            'images/2.jpg', 
+            'images/3.jpg', 
+            'images/4.jpg', 
+            'images/Setka1.jpg', 
+            'images/Setka2.jpg', 
+            'images/Setka3.jpg', 
+            'images/Setka4.jpg'
         ],
         videos: [
             { 
@@ -80,7 +80,7 @@ function savePortfolio() {
     renderPortfolio();
 }
 
-// --- Функции Рендеринга, Админки (Без изменений) ---
+// --- Функции Рендеринга, Админки (Оставлены без изменений) ---
 
 function renderPortfolio() {
     gallery.innerHTML = '';
@@ -151,7 +151,7 @@ function addPortfolioItem() {
 }
 
 
-// --- ФУНКЦИЯ: Автоматическая пауза других видео ---
+// --- НОВАЯ ФУНКЦИЯ: Автоматическая пауза других видео ---
 function pauseOtherVideos(currentVideo) {
     videoList.querySelectorAll('video').forEach(video => {
         if (video !== currentVideo && !video.paused) {
@@ -170,47 +170,30 @@ function setupVideoObserver() {
     const videos = videoList.querySelectorAll('video');
     const isMobileDevice = isMobile();
 
-    // 1. Назначаем обработчик для паузы других видео и индикатора загрузки
+    // Назначаем обработчик для паузы других видео
     videos.forEach(video => {
-        const spinner = video.parentNode.querySelector('.video-spinner');
-        
-        // 1.1. Индикатор загрузки
-        video.addEventListener('waiting', () => {
-            if (spinner) spinner.style.display = 'block';
-        });
-        video.addEventListener('playing', () => {
-            if (spinner) spinner.style.display = 'none';
-        });
-        video.addEventListener('canplay', () => {
-             if (spinner) spinner.style.display = 'none';
-        });
-        video.addEventListener('stalled', () => {
-             if (spinner) spinner.style.display = 'block';
-        });
-
-        // 1.2. Пауза других видео при ручном или автоматическом запуске
         video.addEventListener('play', () => pauseOtherVideos(video));
     });
 
     if (isMobileDevice) {
-        // --- ЛОГИКА ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ: Controls всегда видны, первое видео пытается автоплей ---
+        // --- ЛОГИКА ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ: Только первое видео автоплей ---
         if (videos.length > 0) {
             
-            // На мобильных controls ВСЕГДА видны 
+            // На мобильных controls ВСЕГДА видны (для ручного управления/остановки)
             videos.forEach(video => {
                 video.controls = true;
             });
             
-            // Запускаем только первое видео 
-            videos[0].muted = false; 
+            // Запускаем только первое видео сразу (громкость по умолчанию, не muted)
+            videos[0].muted = false; // Видео должно быть со звуком
             videos[0].play().catch(error => {
-                console.log("Mobile Autoplay failed, user must initiate:", error);
-                // Controls уже показаны
+                console.log("Mobile Autoplay failed:", error);
+                // Если автоплей не удался (что часто бывает), controls уже показаны
             });
         }
         
     } else {
-        // --- ЛОГИКА ДЛЯ ПК: Автоплей для всех видео в фокусе, controls при hover ---
+        // --- ЛОГИКА ДЛЯ ПК: Автоплей для всех видео в фокусе ---
         const options = {
             root: document.getElementById('myModal'),
             rootMargin: '0px',
@@ -221,24 +204,24 @@ function setupVideoObserver() {
             entries.forEach(entry => {
                 const video = entry.target;
                 if (entry.isIntersecting) {
-                    video.muted = false; 
-                    video.controls = false; 
+                    video.muted = false; // Звук по умолчанию включен
+                    video.controls = false; // На ПК controls скрыты, пока не наведешь мышь
                     
-                    // Запускаем и ставим на паузу другие
+                    // Пауза других видео при запуске текущего
                     video.play().then(() => {
                         pauseOtherVideos(video);
                     }).catch(error => console.log("Autoplay prevented:", error));
                     
                 } else {
                     video.pause();
-                    video.muted = false; 
+                    video.muted = false; // Звук остается включенным
                     video.controls = false;
                 }
             });
         }, options);
 
         videos.forEach(video => {
-            video.controls = false; 
+            video.controls = false; // Убедимся, что controls по умолчанию выключены
             videoObserver.observe(video);
         });
     }
@@ -250,8 +233,7 @@ function openModal(index) {
     imageCarousel.innerHTML = '';
     videoList.innerHTML = '';
 
-    // 1. Загрузка Изображений (без изменений)
-
+    // 1. Загрузка Изображений
     if (item.images && item.images.length > 0) {
         item.images.forEach(imagePath => {
             const imageSource = transformExternalLink(imagePath);
@@ -273,21 +255,22 @@ function openModal(index) {
         document.getElementById('modal-images').style.display = 'none';
     }
 
-    // 2. Загрузка Видео с Комментариями и спиннером
+    // 2. Загрузка Видео с Комментариями
     const isMobileDevice = isMobile();
     
     if (item.videos && item.videos.length > 0) {
-        item.videos.forEach((videoItem) => {
+        item.videos.forEach((videoItem, i) => {
             const container = document.createElement('div');
             container.classList.add('video-item');
-            container.classList.add('video-container'); // Класс для позиционирования спиннера
 
             const videoSource = transformExternalLink(videoItem.path);
 
             const video = document.createElement('video');
             video.src = videoSource;
             video.loop = true;
-            video.muted = false; // Звук по умолчанию ВКЛЮЧЕН
+            video.muted = false; // Звук по умолчанию ВКЛЮЧЕН (Muted=false)
+            
+            // Controls: ВСЕГДА видны на мобильных, и только при hover на ПК
             video.controls = isMobileDevice; 
             
             if (!isMobileDevice) {
@@ -298,15 +281,10 @@ function openModal(index) {
                     video.controls = false;
                 };
             }
-            
-            // ДОБАВЛЯЕМ СПИННЕР
-            const spinner = document.createElement('div');
-            spinner.classList.add('video-spinner');
-            spinner.style.display = 'none'; 
-            
+
+
             container.appendChild(video);
-            container.appendChild(spinner); // Спиннер внутри контейнера
-            
+
             const comment = document.createElement('p');
             comment.classList.add('video-comment');
             comment.textContent = videoItem.comment;
@@ -320,6 +298,8 @@ function openModal(index) {
     }
 
     modal.style.display = "block";
+
+    // Устанавливаем наблюдателей и логику воспроизведения
     setTimeout(setupVideoObserver, 500);
 }
 
@@ -330,10 +310,7 @@ function closeModal(event) {
         }
         videoList.querySelectorAll('video').forEach(video => {
             video.pause();
-            video.muted = false; 
-            // Скрываем спиннер
-            const spinner = video.parentNode.querySelector('.video-spinner');
-            if (spinner) spinner.style.display = 'none';
+            video.muted = false; // Сохраняем звук включенным
         });
         modal.style.display = "none";
     }
