@@ -42,24 +42,16 @@ function transformExternalLink(link) {
 // --- Инициализация и Структура Данных ---
 const defaultPortfolio = [
     {
-        name: 'Кибер-Ниндзя V1',
-        thumb: 'images/char_thumb_1.jpg',
-        images: ['images/cyber_full.jpg', 'images/cyber_wireframe.jpg', 'images/cyber_mesh.jpg'],
+        name: 'Профессор Мортимер',
+        thumb: 'images/1.jpg',
+        images: ['images/1.jpg, images/2.jpg, images/3.jpg, images/4.jpg, images/Setka1.jpg, images/Setka2.jpg, images/Setka3.jpg, images/Setka4.jpg'],
         videos: [
             // *** ОБРАЗЕЦ: Используйте URL Dropbox (например: https://www.dropbox.com/s/abcdef123456/video.mp4?dl=0) ***
-            { path: 'videos/cyber_turnaround.mp4', comment: 'Полный оборот персонажа (Замените на URL Dropbox)' },
-            { path: 'videos/cyber_anim.mp4', comment: 'Демонстрация базовой анимации (Замените на URL Dropbox)' }
+            { path: 'https://dl.dropboxusercontent.com/scl/fi/lcfptkdpi97m8diabnm7e/Face_CC.mp4?rlkey=t87zz7ep6ljdsnawfxpub891e&st=xp6tgmxv&dl=0', comment: 'Работа лицевых морфов' },
+            { path: 'https://dl.dropboxusercontent.com/scl/fi/taunwsgy2vkyxgjdt1ubp/FinalRender.mp4?rlkey=2h1z881wj73gh7ctubort3c0c&st=a0u625b6&dl=0', comment: 'Небоьшой синиматик, решил сделать для теста' }
+            { path: 'https://dl.dropboxusercontent.com/scl/fi/ipmg2p2piewgautqe84c9/Game.mp4?rlkey=psif5rxlma8ix12zeagrbwv0b&st=u66erdum&dl=0', comment: 'Персонаж отлично работает в игре в UE5' }
         ]
-    },
-    {
-        name: 'Лесной Маг (Стилизация)',
-        thumb: 'images/char_thumb_2.jpg',
-        images: ['images/mage_pose_1.jpg', 'images/mage_details.jpg'],
-        videos: [
-            { path: 'videos/mage_render.mp4', comment: 'Финальный рендер в Marmoset Toolbag (Замените на URL Dropbox)' }
-        ]
-    }
-];
+    };
 
 let portfolioData = JSON.parse(localStorage.getItem('portfolioData')) || defaultPortfolio;
 
