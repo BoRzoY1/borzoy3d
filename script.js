@@ -1,4 +1,4 @@
-// script.js (Финальная версия с поддержкой Dropbox для ВСЕХ медиа)
+// script.js (Финальная версия с поддержкой Dropbox и адаптивной логикой видео)
 
 const ADMIN_PASSWORD = "admin123";
 let isAdminMode = false;
@@ -49,6 +49,7 @@ const defaultPortfolio = [
     {
         name: 'Профессор Мортимер',
         thumb: 'images/1.jpg',
+        // ИСПРАВЛЕНО: Преобразовано в массив отдельных строк
         images: [
             'https://dl.dropboxusercontent.com/scl/fi/mstspscecsx1yldqk851g/1.jpg?rlkey=eg6xz94myutc5s0lcz04aht9y&st=qy0hng39&dl=0', 
             'https://dl.dropboxusercontent.com/scl/fi/rl0oigzkusgywne8aodz8/2.jpg?rlkey=7bll963z8zwembkzhi594eymz&st=yhuzxaor&dl=0', 
@@ -64,6 +65,7 @@ const defaultPortfolio = [
                 path: 'https://dl.dropboxusercontent.com/scl/fi/lcfptkdpi97m8diabnm7e/Face_CC.mp4?rlkey=t87zz7ep6ljdsnawfxpub891e&st=xp6tgmxv&dl=0', 
                 comment: 'Работа лицевых морфов' 
             },
+            // ИСПРАВЛЕНО: Добавлена запятая
             { 
                 path: 'https://dl.dropboxusercontent.com/scl/fi/taunwsgy2vkyxgjdt1ubp/FinalRender.mp4?rlkey=2h1z881wj73gh7ctubort3c0c&st=a0u625b6&dl=0', 
                 comment: 'Небоьшой синиматик, решил сделать для теста' 
@@ -167,28 +169,19 @@ function setupVideoObserver() {
     if (isMobileDevice) {
         // --- ЛОГИКА ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ: Только первое видео автоплей ---
         if (videos.length > 0) {
-            // Включаем controls для всех видео (чтобы остальные можно было запустить вручную)
+            
             videos.forEach(video => {
                 video.controls = true;
                 video.muted = true;
-                // Скрываем controls только для первого видео, если оно должно быть "скрытым"
-                // Для первого видео мы делаем controls=false, но переопределяем ниже.
             });
-            
-            // На мобильных, первое видео в фокусе (даже если не в окне) запускается,
-            // но мы делаем логику, что controls должны быть видны, чтобы не нарушать UX.
             
             // Запускаем только первое видео сразу (в надежде, что браузер разрешит)
             videos[0].muted = false;
-            videos[0].controls = false; // Скрываем controls, так как оно в автоплей-режиме
+            videos[0].controls = false; // Скрываем controls для автоплей-видео
             videos[0].play().catch(error => {
                 console.log("Mobile Autoplay failed, showing controls:", error);
                 videos[0].controls = true; // Если автоплей не удался, показываем controls
             });
-            
-            // На мобильных не используем IntersectionObserver для каждого видео,
-            // иначе это слишком ресурсоемко, и автоплей может быть нестабильным.
-            // Мы просто разрешаем ручной запуск для остальных, показав controls.
         }
         
     } else {
@@ -266,12 +259,13 @@ function openModal(index) {
             video.loop = true;
             video.muted = true;
             
-            // На мобильных, controls видны по умолчанию для ручного запуска, 
-            // кроме первого видео, которое мы пытаемся запустить автоматически
-            video.controls = isMobileDevice; 
-
+            // На мобильных, controls видны по умолчанию, кроме первого видео (i=0)
+            video.controls = isMobileDevice && (i > 0); 
+            // Если это первое видео, то controls скрываем, так как его пытается запустить Observer/play()
+            
             if (!isMobileDevice) {
                 // Логика PC: controls появляются только при наведении мыши
+                video.controls = false; 
                 video.onmouseenter = () => { video.controls = true; };
                 video.onmouseleave = () => {
                     if (video.paused || document.fullscreenElement) return;
