@@ -1,190 +1,439 @@
-/* style.css (Финальная, исправленная версия) */
+/* style.css (Финальная, исправленная версия с центрированием на мобильных) */
 
 :root {
-    --bg-color: #0d0115; /* Глубокий темный фон */
-    --accent-color: #00e676; /* Неоновый зеленый (основной) */
-    --secondary-color: #ff33cc; /* Неоновый пурпурный (второй акцент) */
-    --text-color: #f0f0f0;
+    --bg-color: #0d0115; /* Глубокий темный фон */
+    --accent-color: #00e676; /* Неоновый зеленый (основной) */
+    --secondary-color: #ff33cc; /* Неоновый пурпурный (второй акцент) */
+    --text-color: #f0f0f0;
 }
 
-/* 1. Общий стиль */
+/* Общий стиль */
 body {
-    font-family: 'Consolas', monospace; 
-    background: 
-        linear-gradient(rgba(13, 1, 21, 0.95), rgba(13, 1, 21, 0.95)), 
-        url('https://placehold.co/1920x1080/0d0115/ff33cc?text=BoRzoY') center fixed;
-    background-size: cover;
-    color: var(--text-color);
-    margin: 0;
-    line-height: 1.6;
-    scroll-behavior: smooth;
-    overflow-x: hidden; /* Предотвращает горизонтальный скролл */
-    text-align: center; /* ГЛАВНОЕ ИСПРАВЛЕНИЕ: Центрирует встроенные элементы (текст, h1, p) */
+    font-family: 'Consolas', monospace; 
+    background: 
+        linear-gradient(rgba(13, 1, 21, 0.95), rgba(13, 1, 21, 0.95)), 
+        url('https://placehold.co/1920x1080/0d0115/ff33cc?text=BoRzoY') center fixed;
+    background-size: cover;
+    color: var(--text-color);
+    margin: 0;
+    line-height: 1.6;
+    scroll-behavior: smooth;
 }
 
-/* ИСПРАВЛЕНИЕ 3: ГАРАНТИРУЕМ, ЧТО ЗАГОЛОВКИ ВСЕГДА ПО ЦЕНТРУ */
+/* Стилизация Заголовков (Неоновый эффект) */
 h1, h2 {
-    color: var(--accent-color);
-    text-shadow: 0 0 10px var(--accent-color), 0 0 20px rgba(0, 230, 118, 0.5);
-    margin-bottom: 30px;
-    text-transform: uppercase;
-    text-align: center; /* Явно указываем центрирование */
+    color: var(--accent-color);
+    text-shadow: 0 0 10px var(--accent-color), 0 0 20px rgba(0, 230, 118, 0.5);
+    margin-bottom: 30px;
+    text-transform: uppercase;
 }
 
-/* Секции: Сбрасываем центрирование, если оно уже применено в body, 
-   но гарантируем, что его унаследуют блочные элементы, если нет flex/grid */
-section {
-    padding: 80px 50px;
-    text-align: center; /* Сохраняем для надежности */
-}
-
-
-/* 2. Навигация */
+/* Навигация */
 header {
-    display: flex;
-    justify-content: flex-start; 
-    align-items: center;
-    padding: 20px 50px;
-    background: linear-gradient(90deg, rgba(0, 230, 118, 0.1) 0%, rgba(255, 51, 204, 0.1) 100%);
-    border-bottom: 2px solid var(--secondary-color);
-    position: sticky;
-    top: 0;
-    z-index: 10;
+    display: flex;
+    justify-content: flex-start; 
+    align-items: center;
+    padding: 20px 50px;
+    background: linear-gradient(90deg, rgba(0, 230, 118, 0.1) 0%, rgba(255, 51, 204, 0.1) 100%);
+    border-bottom: 2px solid var(--secondary-color);
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
-.logo { display: none; }
-nav ul { list-style: none; padding: 0; margin: 0; display: flex; }
+.logo { 
+    font-size: 2em;
+    color: var(--secondary-color);
+    margin-right: 50px;
+}
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
 nav a {
-    color: var(--text-color); text-decoration: none; margin-left: 25px; padding: 5px;
-    border-bottom: 1px dashed transparent;
-    transition: all 0.3s;
+    color: var(--text-color);
+    text-decoration: none;
+    margin-left: 25px;
+    padding: 5px;
+    border-bottom: 1px dashed transparent;
+    transition: all 0.3s;
+}
+nav a:hover {
+    color: var(--accent-color);
+    border-bottom: 1px dashed var(--accent-color);
+}
+nav ul li:first-child a {
+    margin-left: 0;
 }
 
-/* 3. Кнопки (Одинаковый стиль везде) */
+
+/* Геро-секция */
+#hero {
+    padding: 150px 50px;
+    text-align: center;
+    border-bottom: 5px solid var(--secondary-color);
+    background-size: cover;
+}
+
+/* Кнопки */
 .cta-button {
-    /* ИСПРАВЛЕНИЕ 2: УДАЛЕНО: width: 100%; (чтобы не растягивались на ПК) */
-    display: inline-block;
-    padding: 12px 30px;
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: bold;
-    margin: 10px;
-    transition: all 0.3s;
-    text-transform: uppercase;
+    display: inline-block;
+    padding: 12px 30px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    margin: 10px;
+    transition: all 0.3s;
+    text-transform: uppercase;
 }
 .cta-button:not(.secondary-cta) {
-    background: linear-gradient(45deg, var(--accent-color), #00c853);
-    box-shadow: 0 0 15px var(--accent-color);
-    color: var(--bg-color);
-    font-size: 1.2em;
+    background: linear-gradient(45deg, var(--accent-color), #00c853);
+    box-shadow: 0 0 15px var(--accent-color);
+    color: var(--bg-color);
+    font-size: 1.2em;
 }
 .secondary-cta {
-    background: transparent;
-    border: 2px solid var(--secondary-color);
-    color: var(--secondary-color);
-    box-shadow: 0 0 10px var(--secondary-color);
+    background: transparent;
+    border: 2px solid var(--secondary-color);
+    color: var(--secondary-color);
+    box-shadow: 0 0 10px var(--secondary-color);
+}
+.cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 20px var(--accent-color);
+}
+.secondary-cta:hover {
+    box-shadow: 0 5px 20px var(--secondary-color);
 }
 
-/* Галерея Портфолио */
+
+/* Панель Администратора */
+#admin-panel {
+    background-color: #2e0050;
+    border: 2px dashed var(--secondary-color);
+    padding: 20px;
+    margin: 50px auto;
+    max-width: 800px;
+    display: none;
+    text-align: left;
+}
+#admin-panel input, #admin-panel button {
+    margin: 10px 0;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #0a0a0a;
+    color: var(--accent-color);
+    border: 1px solid var(--secondary-color);
+    font-family: 'Consolas', monospace;
+}
+
+
+/* Галерея Портфолио (Превью) */
 .gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 30px;
-    max-width: 1400px;
-    margin: 0 auto; /* Центрирует сам контейнер галереи */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+    max-width: 1400px;
+    margin: 0 auto;
 }
+.item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px 8px 0 0;
+    border: 1px solid rgba(255, 51, 204, 0.3);
+    background-color: #1c0a29;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s;
+    cursor: pointer;
+}
+.item:hover {
+    box-shadow: 0 0 30px rgba(0, 230, 118, 0.7);
+    border-color: var(--accent-color);
+    transform: scale(1.03);
+}
+
 .item img {
-    width: 100%;
-    max-height: 300px; 
-    object-fit: contain; 
-    background-color: #0d0115; 
-    display: block;
+    width: 100%;
+    max-height: 300px; 
+    object-fit: contain; 
+    background-color: #0d0115; 
+    display: block;
 }
 
-/* Секция Заказа: ГЛАВНОЕ ИСПРАВЛЕНИЕ ДЛЯ КНОПОК */
+.item-caption {
+    background-color: #1a082b;
+    color: var(--text-color); 
+    font-size: 1.5em; 
+    font-weight: bold;
+    border-radius: 0 0 8px 8px;
+    padding: 15px 10px;
+    margin-bottom: 30px;
+    text-align: center;
+    line-height: 1.2;
+}
+
+/* --- МОДАЛЬНОЕ ОКНО (ДЕТАЛИ) --- */
+.modal {
+    display: none; position: fixed; z-index: 20; padding-top: 50px; left: 0; top: 0; width: 100%; height: 100%; overflow-y: scroll; background-color: rgba(0, 0, 0, 0.95);
+}
+.modal-content {
+    margin: 0 auto; width: 90%; max-width: 1200px; text-align: center; background-color: #1a082b; border-radius: 10px; padding: 30px; box-shadow: 0 0 40px var(--secondary-color);
+}
+.close {
+    position: absolute; top: 15px; right: 35px; color: #f1f1f1; font-size: 40px; font-weight: bold; cursor: pointer; transition: color 0.3s;
+}
+.close:hover { color: var(--accent-color); }
+
+#modal-title {
+    font-size: 2.5em; 
+    color: var(--text-color); 
+    text-shadow: 0 0 10px var(--text-color), 0 0 20px rgba(240, 240, 240, 0.3); 
+    margin-bottom: 40px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+
+/* Заголовки в модальном окне */
+#modal-images h4, #modal-videos h4 {
+    color: var(--accent-color); 
+    text-shadow: 0 0 10px rgba(0, 230, 118, 0.5); 
+    font-size: 1.8em; 
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+/* Галерея Изображений (Карусель) */
+#image-carousel-container {
+    position: relative;
+    margin: 0 auto 30px;
+    max-width: 800px; 
+    overflow: hidden;
+}
+#image-carousel {
+    display: flex;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory; 
+    gap: 0;
+    scroll-behavior: smooth;
+    border-radius: 5px;
+    background-color: #000;
+}
+#image-carousel::-webkit-scrollbar { height: 8px; }
+#image-carousel::-webkit-scrollbar-thumb { background: var(--accent-color); border-radius: 4px; }
+
+.carousel-image-wrapper {
+    flex-shrink: 0;
+    width: 100%; 
+    scroll-snap-align: center;
+    position: relative;
+    cursor: zoom-in; 
+}
+.carousel-image {
+    width: 100%;
+    height: auto;
+    max-height: 500px;
+    object-fit: contain;
+    display: block;
+}
+
+/* Стили для стрелок */
+.arrow {
+    position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0, 0, 0, 0.7); color: white; border: none; padding: 10px 15px; cursor: pointer; font-size: 24px; line-height: 1; z-index: 5; transition: background-color 0.3s;
+}
+.arrow:hover { background: var(--secondary-color); color: var(--bg-color); }
+#prev-arrow { left: 0; border-radius: 0 5px 5px 0; }
+#next-arrow { right: 0; border-radius: 5px 0 0 5px; }
+
+
+/* Список Видео */
+#video-list {
+    display: flex; flex-direction: column; gap: 30px; text-align: left;
+}
+.video-item {
+    padding: 15px; background-color: #0d0115; border-radius: 8px; border: 1px solid rgba(0, 230, 118, 0.3); box-shadow: 0 0 10px rgba(0, 230, 118, 0.1);
+}
+
+/* КОНТЕЙНЕР ДЛЯ СПИННЕРА */
+.video-container {
+    position: relative; 
+}
+
+.video-item video {
+    width: 100%; max-height: 600px; border-radius: 5px; margin-bottom: 10px;
+    display: block;
+    transition: opacity 0.3s;
+}
+
+.video-comment {
+    font-size: 1em; color: var(--text-color); border-left: 3px solid var(--secondary-color); padding-left: 10px; margin-top: 10px; font-style: italic;
+}
+
+/* СТИЛИ СПИННЕРА */
+.video-spinner {
+    position: absolute;
+    top: calc(50% - 50px); 
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(255, 255, 255, 0.3); 
+    border-top: 5px solid var(--accent-color); 
+    border-radius: 50%;
+    animation: spin 1s linear infinite; 
+    z-index: 5; 
+    display: none; 
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+
+/* --- МОДАЛЬНОЕ ОКНО ZOOM --- */
+#zoom-modal {
+    display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.98); text-align: center;
+}
+#zoom-content {
+    margin: auto; display: block; width: 90%; max-width: 1400px; max-height: 90vh; object-fit: contain; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+}
+#zoom-close {
+    position: absolute; top: 20px; right: 35px; color: #f1f1f1; font-size: 40px; font-weight: bold; transition: color 0.3s; cursor: pointer;
+}
+#zoom-close:hover { color: var(--accent-color); }
+
+/* Секция Заказа и Подвал */
+#order-section {
+    background-color: #0d0115;
+    border-top: 2px solid var(--accent-color);
+}
 .order-links {
-    display: flex; 
-    justify-content: center; /* Центрирует контейнер ссылок */
-    gap: 40px; 
-    margin-top: 30px;
+    display: flex; justify-content: center; gap: 40px; margin-top: 30px;
 }
-/* Стили для кнопок заказа (Telegram, VK, Gmail) */
 .order-links a {
-    /* На ПК они остаются "inline-block" и не растягиваются */
-    display: block; /* Используем block, чтобы на мобильных можно было легко задать 100% ширину */
-    max-width: 200px; /* Ограничение ширины на ПК */
-    padding: 15px 30px; 
-    border-radius: 5px; 
-    text-decoration: none; 
-    font-weight: bold; 
-    color: white; 
-    font-size: 1.1em;
+    display: block; padding: 15px 30px; border-radius: 5px; text-decoration: none; font-weight: bold; color: white; transition: transform 0.2s, box-shadow 0.2s; font-size: 1.1em;
 }
-
+.telegram { background-color: #0088cc; }
+.vk { background-color: #4a76a8; }
+.email { background-color: var(--secondary-color); }
+footer {
+    padding: 20px; border-top: 1px dashed var(--secondary-color); font-size: 0.8em;
+}
 
 /* ------------------------------------------- */
-/* 4. АДАПТИВНОСТЬ (МОБИЛЬНЫЕ УСТРОЙСТВА) - ИСПРАВЛЕНИЕ 1 и 2 */
+/* --- АДАПТИВНОСТЬ (МОБИЛЬНЫЕ УСТРОЙСТВА) --- */
 /* ------------------------------------------- */
 @media (max-width: 768px) {
-    
-    /* Секции: Меньшие отступы, центрирование сохраняется */
-    section {
-        padding: 40px 15px;
-    }
-    h1 {
-        font-size: 1.6em; /* Уменьшаем размер заголовков для лучшей читаемости */
-    }
-    h2 {
-        font-size: 1.4em;
-    }
+    
+    /* Навигация: Сохраняем горизонтальный вид, но центрируем */
+    header {
+        flex-direction: row; /* Возвращаем горизонтальное расположение */
+        justify-content: center; /* Центрируем содержимое */
+        align-items: center;
+        padding: 15px 15px; /* Уменьшаем вертикальный отступ */
+    }
+    .logo {
+        display: block; /* Отображаем логотип */
+        font-size: 1.5em; /* Устанавливаем размер */
+        margin-right: auto; /* Сдвигаем логотип влево */
+    }
+    nav {
+        flex-grow: 1; 
+        width: auto;
+    }
+    nav ul {
+        justify-content: flex-end; /* Ссылки вправо */
+        gap: 10px; 
+    }
+    nav a {
+        font-size: 0.8em;
+        margin: 0; /* Убираем лишние margin */
+        margin-left: 10px; /* Добавляем небольшой отступ между ссылками */
+        padding: 5px 0;
+    }
+    nav ul li:first-child a {
+        margin-left: 10px;
+    }
+    
+    /* Геро-секция и основные секции: Сохраняем отступы, центрируем */
+    #hero, section {
+        padding: 80px 15px; /* Увеличиваем вертикальный отступ для пространства */
+        text-align: center;
+    }
+    h1, h2 {
+        font-size: 1.6em; /* Немного уменьшаем заголовки, чтобы помещались */
+    }
 
-    /* Навигация */
-    header {
-        flex-direction: column; 
-        padding: 10px 15px;
-    }
-    nav ul {
-        justify-content: center; 
-        gap: 10px; 
-    }
-    nav a {
-        font-size: 0.8em;
-        margin: 0 2px;
-    }
-    
-    /* Портфолио: Один столбец */
-    .gallery {
-        grid-template-columns: 1fr;
-    }
-    .item img {
-        max-height: 250px;
-    }
-
-    /* ИСПРАВЛЕНИЕ 2: АВТО РАЗМЕР КНОПОК (Теперь они занимают 100% контейнера на мобильных) */
-    .cta-button {
-        display: block; 
-        width: 100%; 
-        max-width: 350px; /* Ограничиваем максимальную ширину для центрирования */
-        margin: 10px auto;
-        font-size: 1.1em; /* Размер шрифта, подходящий для мобильных */
-    }
-    .order-links {
-        flex-direction: column;
-        gap: 15px;
-        align-items: center; /* Для центрирования вертикального списка */
-    }
-    .order-links a {
-        width: 100%; /* Занимает всю доступную ширину контейнера (max-width: 350px) */
-        max-width: 350px;
-    }
-
-    /* Модальное окно */
-    .modal-content {
-        width: 95%;
-        padding: 15px;
-    }
-    .close {
-        top: 5px;
-        right: 15px;
-        font-size: 30px;
-    }
+    /* Кнопки CTA: Делаем их более узкими, чтобы не выглядели как блоки */
+    .cta-button {
+        display: inline-block; /* Возвращаем inline-block */
+        width: auto; /* Убираем 100% ширину */
+        max-width: 90%; 
+        padding: 10px 20px;
+        margin: 10px 5px; /* Сохраняем небольшой зазор между кнопками */
+    }
+    .secondary-cta {
+        margin-left: 10px; /* Отдельный отступ для вторичной кнопки */
+    }
+    
+    /* Секция Заказа: Переключаем на вертикальный макет, но ограничиваем ширину */
+    .order-links {
+        flex-direction: column; /* Вертикальный стек */
+        gap: 15px;
+        align-items: center;
+    }
+    .order-links a {
+        width: 100%; /* Занимают всю доступную ширину контейнера */
+        max-width: 300px; /* Ограничиваем максимальную ширину */
+        margin: 0; /* Убираем лишние margin */
+    }
+    
+    /* Портфолио */
+    .gallery {
+        grid-template-columns: 1fr; 
+        gap: 20px;
+    }
+    
+    /* Модальное окно */
+    .modal-content {
+        width: 95%;
+        padding: 15px;
+        margin-top: 10px;
+    }
+    #modal-title {
+        font-size: 2em;
+        margin-bottom: 20px;
+    }
+    #image-carousel-container {
+        max-width: 100%;
+    }
+    .arrow {
+        padding: 5px 10px;
+        font-size: 18px;
+    }
+    
+    /* Спиннер видео */
+    .video-spinner {
+        top: 50%;
+        transform: translate(-50%, -50%); 
+    }
+    
+    /* Скрытие скроллбаров (как было) */
+    #image-carousel::-webkit-scrollbar { 
+        display: none; 
+    }
+    #image-carousel {
+        -ms-overflow-style: none;  
+        scrollbar-width: none;  
+    }
+    
+    /* Закрытие модального окна (как было) */
+    .close {
+        top: 5px;
+        right: 15px;
+        font-size: 30px;
+    }
 }
