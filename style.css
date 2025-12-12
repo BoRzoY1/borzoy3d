@@ -1,9 +1,9 @@
-/* style.css (Финальная версия с исправленными мобильными кнопками и превью) */
+/* style.css (Финальная, стабильная версия) */
 
 :root {
     --bg-color: #0d0115;
-    --accent-color: #00e676;
-    --secondary-color: #ff33cc;
+    --accent-color: #00e676; 
+    --secondary-color: #ff33cc; 
     --text-color: #f0f0f0;
 }
 
@@ -18,6 +18,7 @@ body {
     margin: 0;
     line-height: 1.6;
     scroll-behavior: smooth;
+    overflow-x: hidden; /* Предотвращает горизонтальный скролл на мобильных */
 }
 
 h1, h2 {
@@ -27,7 +28,7 @@ h1, h2 {
     text-transform: uppercase;
 }
 
-/* Навигация (ПК) */
+/* Навигация */
 header {
     display: flex;
     justify-content: flex-start; 
@@ -51,11 +52,47 @@ section {
     padding: 80px 50px;
     text-align: center;
 }
+#hero { border-bottom: 5px solid var(--secondary-color); }
+
+/* Кнопки */
+.cta-button {
+    display: inline-block;
+    padding: 12px 30px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    margin: 10px;
+    transition: all 0.3s;
+    text-transform: uppercase;
+}
+.cta-button:not(.secondary-cta) {
+    background: linear-gradient(45deg, var(--accent-color), #00c853);
+    box-shadow: 0 0 15px var(--accent-color);
+    color: var(--bg-color);
+    font-size: 1.2em;
+}
+.secondary-cta {
+    background: transparent;
+    border: 2px solid var(--secondary-color);
+    color: var(--secondary-color);
+    box-shadow: 0 0 10px var(--secondary-color);
+}
+
+/* Панель Администратора */
+#admin-panel {
+    background-color: #2e0050;
+    border: 2px dashed var(--secondary-color);
+    padding: 20px;
+    margin: 50px auto;
+    max-width: 800px;
+    display: none;
+    text-align: left;
+}
 
 /* Галерея Портфолио (Превью) */
 .gallery {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Уменьшили минимальную ширину для лучшей адаптивности */
     gap: 30px;
     max-width: 1400px;
     margin: 0 auto;
@@ -70,13 +107,17 @@ section {
     transition: all 0.3s;
     cursor: pointer;
 }
+.item:hover {
+    box-shadow: 0 0 30px rgba(0, 230, 118, 0.7);
+    border-color: var(--accent-color);
+    transform: scale(1.03);
+}
 
-/* ИСПРАВЛЕНИЕ 1: Надежное отображение превью */
+/* КОРРЕКТИРОВКА: Изображение превью */
 .item img {
     width: 100%;
-    height: 100%; /* Устанавливаем высоту */
-    object-fit: cover; /* cover для заполнения, чтобы не было пустот */
-    aspect-ratio: 16/9; /* Фиксированное соотношение */
+    height: 250px; /* Фиксированная высота для превью, чтобы они не скакали */
+    object-fit: contain; /* Contain - чтобы изображение не обрезалось */
     background-color: #0d0115; 
     display: block;
 }
@@ -93,24 +134,23 @@ section {
 /* --- МОДАЛЬНОЕ ОКНО (ДЕТАЛИ) --- */
 .modal { display: none; position: fixed; z-index: 20; padding-top: 50px; left: 0; top: 0; width: 100%; height: 100%; overflow-y: scroll; background-color: rgba(0, 0, 0, 0.95); }
 .modal-content { margin: 0 auto; width: 90%; max-width: 1200px; text-align: center; background-color: #1a082b; border-radius: 10px; padding: 30px; box-shadow: 0 0 40px var(--secondary-color); }
+.close { position: absolute; top: 15px; right: 35px; color: #f1f1f1; font-size: 40px; font-weight: bold; cursor: pointer; transition: color 0.3s; }
+.close:hover { color: var(--accent-color); }
 
-/* ИСПРАВЛЕНИЕ 2: Фотографии в модальном окне */
+/* Изображения в модальном окне */
 .carousel-image {
     width: 100%;
     height: auto;
     max-height: 500px;
-    object-fit: contain; /* Contain: чтобы фото не обрезалось и полностью помещалось */
+    object-fit: contain; /* Изображение полностью помещается */
     display: block;
 }
 
-/* Список Видео (включая спиннер) */
+/* Стили Спиннера и Видео */
 .video-container { position: relative; } 
 .video-item video { width: 100%; max-height: 600px; border-radius: 5px; margin-bottom: 10px; display: block; }
 .video-spinner {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
     width: 50px; height: 50px;
     border: 5px solid rgba(255, 255, 255, 0.3); 
     border-top: 5px solid var(--accent-color); 
@@ -124,7 +164,7 @@ section {
     100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
-/* Секция Заказа */
+/* Секция Заказа и Кнопки */
 #order-section {
     background-color: #0d0115;
     border-top: 2px solid var(--accent-color);
@@ -136,64 +176,44 @@ section {
     margin-top: 30px;
 }
 .order-links a {
-    padding: 15px 30px; border-radius: 5px; text-decoration: none; font-weight: bold; color: white; transition: transform 0.2s, box-shadow 0.2s; font-size: 1.1em;
+    /* На ПК кнопки будут вести себя как inline-block по умолчанию (ширина по контенту) */
+    display: inline-block; 
 }
-
 
 /* ------------------------------------------- */
 /* --- АДАПТИВНОСТЬ (МОБИЛЬНЫЕ УСТРОЙСТВА) --- */
 /* ------------------------------------------- */
 @media (max-width: 768px) {
     
-    /* 1. ИСПРАВЛЕНИЕ "ЗУМА" И НАВИГАЦИИ */
+    /* Общее центрирование контента и навигация */
     header {
         flex-direction: column; 
-        justify-content: center; 
-        align-items: center; 
         padding: 10px 15px;
     }
-    nav { width: 100%; text-align: center; }
     nav ul {
-        flex-direction: row; 
         justify-content: center; 
         gap: 15px; 
         width: 100%;
     }
-    
-    /* Общие секции */
-    #hero, section {
+    section {
         padding: 50px 15px;
         text-align: center;
     }
     
-    /* Портфолио */
-    .gallery {
-        grid-template-columns: 1fr; 
-    }
-    .item img {
-         /* Возвращаем более безопасный object-fit для превью на телефоне */
-         object-fit: contain;
-    }
-
-    /* 2. ИСПРАВЛЕНИЕ РАСТЯНУТЫХ КНОПОК */
+    /* КОРРЕКТИРОВКА: ИСПРАВЛЯЕМ РАСТЯГИВАНИЕ КНОПОК ЗАКАЗА */
     .order-links {
         flex-direction: column;
         gap: 15px;
         align-items: center; 
     }
     .order-links a {
-        display: block; 
-        width: 100%; /* Должен быть блочным для центрирования */
-        max-width: 300px; /* ГЛАВНОЕ: Ограничиваем максимальную ширину */
+        display: block; /* Делаем блочным для центрирования и управления шириной */
+        width: 100%; 
+        max-width: 300px; /* ОГРАНИЧИВАЕМ ШИРИНУ, ЧТОБЫ НЕ РАСТЯГИВАЛОСЬ */
         margin: 0 auto; 
     }
-    
-    /* Модальное окно */
-    .modal-content {
-        width: 95%;
-    }
-    .close {
-        top: 5px;
-        right: 15px;
-    }
+
+    /* Убираем скроллбар в карусели изображений для чистоты мобильного дизайна */
+    #image-carousel::-webkit-scrollbar { display: none; }
+    #image-carousel { -ms-overflow-style: none; scrollbar-width: none; }
 }
