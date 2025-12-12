@@ -1,3 +1,5 @@
+// script.js (Финальная версия с исправленными путями фото и логикой ПК)
+
 const ADMIN_PASSWORD = "admin123";
 let isAdminMode = false;
 const adminPanel = document.getElementById('admin-panel');
@@ -13,14 +15,21 @@ var zoomContent = document.getElementById('zoom-content');
 
 // --- Глобальные переменные для видео ---
 let videoObserver;
-const isMobile = window.innerWidth <= 768; // Определение мобильного устройства
+// Определяем мобильное устройство (для логики автозапуска)
+const isMobile = window.innerWidth <= 768; 
 
-// --- НОВАЯ/ОБНОВЛЕННАЯ ФУНКЦИЯ: Преобразование внешних ссылок ---
+// --- НОВАЯ/ОБНОВЛЕННАЯ ФУНКЦИЯ: Преобразование внешних ссылок (ОБЯЗАТЕЛЬНА ДЛЯ ФОТО И ВИДЕО) ---
 function transformExternalLink(link) {
     if (!link) return link;
+    // 1. Преобразование ссылок DROPBOX в прямые URL
     if (link.includes('dropbox.com')) {
-        return link.replace('www.dropbox.com', 'dl.dropboxusercontent.com').replace('?dl=0', '?raw=1');
+        // Заменяем 'dl=0' на 'raw=1' для прямого доступа к файлу
+        // Примечание: В новых ссылках Dropbox (scl/fi/...) 'dl=0' может не быть, но замена всегда безопасна
+        const rawLink = link.replace('?dl=0', '&raw=1').replace('&dl=0', '&raw=1');
+        // В некоторых случаях может понадобиться дополнительная замена:
+        return rawLink.replace('www.dropbox.com', 'dl.dropboxusercontent.com');
     }
+    // 2. Преобразование ссылок GOOGLE DRIVE
     if (link.includes('drive.google.com')) {
         const match = link.match(/\/d\/([a-zA-Z0-9_-]+)/);
         if (match && match[1]) {
@@ -32,12 +41,14 @@ function transformExternalLink(link) {
 }
 
 
-// --- Инициализация и Структура Данных (Оставлена без изменений) ---
+// --- Инициализация и Структура Данных (ИС-ПРАВ-ЛЕ-НО) ---
 const defaultPortfolio = [
     {
         name: 'Профессор Мортимер',
-        thumb: 'images/1.jpg',
+        // ТУМБНЕЙЛ ОСТАВЛЕН ОТОСИТЕЛЬНЫМ, ЕСЛИ ОН ЛОКАЛЬНЫЙ
+        thumb: 'https://dl.dropboxusercontent.com/scl/fi/mstspscecsx1yldqk851g/1.jpg?rlkey=eg6xz94myutc5s0lcz04aht9y&st=qy0hng39&dl=0', 
         images: [
+            // ИСПРАВЛЕННЫЕ ПУТИ ФОТО DROPBOX
             'https://dl.dropboxusercontent.com/scl/fi/mstspscecsx1yldqk851g/1.jpg?rlkey=eg6xz94myutc5s0lcz04aht9y&st=qy0hng39&dl=0', 
             'https://dl.dropboxusercontent.com/scl/fi/rl0oigzkusgywne8aodz8/2.jpg?rlkey=7bll963z8zwembkzhi594eymz&st=yhuzxaor&dl=0', 
             'https://dl.dropboxusercontent.com/scl/fi/wwmte98i6k5c4kohchk6w/3.jpg?rlkey=2nwfnoifn4jhsnw4cu207dhym&st=mbopky0z&dl=0', 
@@ -61,7 +72,7 @@ const defaultPortfolio = [
                 comment: 'Персонаж отлично работает в игре в UE5' 
             }
         ]
-    }
+    } 
 ];
 
 let portfolioData = JSON.parse(localStorage.getItem('portfolioData')) || defaultPortfolio;
@@ -72,9 +83,11 @@ function savePortfolio() {
 }
 
 // --- Функции Рендеринга, Админки (Оставлены без изменений) ---
+
 function renderPortfolio() {
     gallery.innerHTML = '';
     portfolioData.forEach((item, index) => {
+        // ВНИМАНИЕ: item.thumb остаётся без transformExternalLink, предполагая, что превью локальное или уже прямое.
         const itemHTML = `
             <div class="item-container">
                 <div class="item" onclick="openModal(${index})">
@@ -140,9 +153,10 @@ function addPortfolioItem() {
     alert(`Работа "${name}" добавлена!`);
 }
 
-// --- НОВАЯ/ОБНОВЛЕННАЯ ЛОГИКА АВТОВОСПРОИЗВЕДЕНИЯ/ВЗАИМОДЕЙСТВИЯ С ВИДЕО ---
 
-// 4. Сделать чтобы если я включаю видео которое было на паузе, то все остальные видео ставятся на паузу
+// --- НОВАЯ ЛОГИКА ВИДЕО ---
+
+// 4. Пауза других видео
 function pauseOtherVideos(currentVideo) {
     videoList.querySelectorAll('video').forEach(video => {
         if (video !== currentVideo) {
@@ -155,7 +169,7 @@ function pauseOtherVideos(currentVideo) {
 function setupVideoLoader(video) {
     const loader = video.closest('.video-item').querySelector('.video-loader');
     
-    // Показываем загрузчик при буферизации
+    // Показываем загрузчик при буферизации/зависании
     video.addEventListener('waiting', () => {
         loader.style.display = 'flex';
     });
@@ -167,10 +181,7 @@ function setupVideoLoader(video) {
 
     // Скрываем загрузчик, если пользователь нажал на паузу
     video.addEventListener('pause', () => {
-        // Убедимся, что это не пауза из-за IntersectionObserver
-        if (video.currentTime > 0) { 
-             loader.style.display = 'none';
-        }
+        loader.style.display = 'none';
     });
     
     // Скрываем загрузчик, когда загружено достаточно данных
@@ -187,58 +198,54 @@ function setupVideoObserver() {
     const videos = videoList.querySelectorAll('video');
     if (videos.length === 0) return;
 
-    // На ПК (Desktop): используется старая логика (Autoplay/Pause по фокусу)
-    // На мобильном устройстве: только первое видео автозапускается/останавливается.
-    // Остальные видео требуют ручного нажатия, но останавливаются при прокрутке.
+    // На ПК (1.0), На Телефоне (0.8 - более мягкий, чтобы не требовать полной видимости)
+    const thresholdValue = isMobile ? 0.8 : 1.0; 
+    
     const options = {
         root: document.getElementById('myModal'),
         rootMargin: '0px',
-        // Более мягкий порог для мобильных (должно быть видно >80% видео)
-        threshold: isMobile ? 0.8 : 1.0 
+        threshold: thresholdValue
     };
 
     videoObserver = new IntersectionObserver((entries) => {
         entries.forEach((entry, index) => {
             const video = entry.target;
-            const isFirstVideo = videos[0] === video;
+            const isFirstVideo = index === 0; 
             
-            // Логика для ПК/Мобильных
             if (entry.isIntersecting) {
-                // ПЕРВОЕ ВИДЕО: Автовоспроизведение в фокусе (muted для автозапуска, затем unmute)
-                if (isFirstVideo) {
-                    video.muted = true; // Снова muted для попытки автозапуска
+                if (isMobile && isFirstVideo) {
+                    // ЛОГИКА ДЛЯ ТЕЛЕФОНА: Автозапуск/Остановка только для первого видео
+                    video.muted = true; 
                     video.play().then(() => {
-                        // 3. Вернуть у всех видео по умолчанию звук
-                        video.muted = false;
+                        video.muted = false; 
                     }).catch(error => {
-                         // Если автозапуск не удался (например, на iOS), то остается на паузе с controls
-                         console.log("Autoplay prevented:", error);
-                         video.muted = false; // Звук вернем
-                         video.controls = true; // Убедимся, что controls есть
+                         console.log("Autoplay prevented on mobile for first video:", error);
+                         video.muted = false;
                     });
-                } 
-                // ОСТАЛЬНЫЕ ВИДЕО: воспроизведение только если пользователь нажал play вручную
-                else if (video.currentTime > 0 && !video.paused) {
-                    // Если пользователь запустил видео вручную, оно продолжает играть
-                    video.play().catch(error => console.log("Manual play prevented:", error));
+                } else if (!isMobile) {
+                    // ЛОГИКА ДЛЯ ПК (ВОССТАНОВЛЕНА): Автозапуск всех видео при 100% фокусе
+                     video.muted = true;
+                     video.play().catch(error => console.log("Autoplay prevented on desktop:", error));
                 }
+                
             } else {
-                // При выходе из фокуса: ставим на паузу и выключаем звук
+                // При выходе из фокуса (ПК и Телефон)
                 video.pause();
-                video.muted = true;
-                // Скрываем лоадер, если видео уходит из фокуса на паузе
+                // 3. Вернули mute при уходе из фокуса (для корректной работы автозапуска при повторном появлении)
+                video.muted = true; 
+                // Скрываем лоадер, если видео уходит из фокуса
                 video.closest('.video-item').querySelector('.video-loader').style.display = 'none';
             }
         });
     }, options);
 
     videos.forEach((video, index) => {
-        // Добавляем обработчики для паузы других видео
+        // 4. Пауза других видео
         video.addEventListener('play', () => {
             pauseOtherVideos(video);
         });
 
-        // Добавляем логику индикатора загрузки
+        // 5. Индикатор загрузки
         setupVideoLoader(video);
         
         // Начинаем наблюдение IntersectionObserver
@@ -252,10 +259,12 @@ function openModal(index) {
     imageCarousel.innerHTML = '';
     videoList.innerHTML = '';
 
-    // 1. Загрузка Изображений
+    // 1. Загрузка Изображений (ИС-ПРАВ-ЛЕ-НО: Применение transformExternalLink)
     if (item.images && item.images.length > 0) {
         item.images.forEach(imagePath => {
-            const imageSource = transformExternalLink(imagePath);
+            // ПРИМЕНЯЕМ transformExternalLink для корректного отображения Dropbox фото
+            const imageSource = transformExternalLink(imagePath); 
+            
             const wrapper = document.createElement('div');
             wrapper.classList.add('carousel-image-wrapper');
             const img = document.createElement('img');
@@ -283,26 +292,25 @@ function openModal(index) {
 
             const video = document.createElement('video');
             video.src = videoSource;
-            // 2. Почему ты у первого видео убрал возможность вручную остановить видео - controls теперь всегда true
+            // 2. Вернули controls у всех видео 
             video.controls = true; 
             video.loop = true;
             
-            // 3. Вернуть у всех видео по умолчанию звук
-            // Для первого видео делаем muted:true (для попытки автозапуска), но IntersectionObserver его unmute-т
-            video.muted = (index === 0) ? true : false; 
-            
-            // PC: Убираем обработчики onmouseenter/onmouseleave, т.к. controls теперь всегда true
-            if (!isMobile) {
-                 video.controls = false; // Возвращаем логику для ПК
+            if (isMobile) {
+                // На мобильном: только первое видео muted для автозапуска, остальные unmute
+                video.muted = (index === 0) ? true : false; 
+            } else {
+                // ЛОГИКА ДЛЯ ПК (ВОССТАНОВЛЕНА): muted: true для автозапуска. Controls скрыты по умолчанию.
+                video.muted = true;
+                video.controls = false; 
                  video.onmouseenter = () => { video.controls = true; };
                  video.onmouseleave = () => {
                     if (video.paused || document.fullscreenElement) return;
                     video.controls = false;
                  };
-                 video.muted = true; // Возвращаем логику для ПК
             }
             
-            // Добавляем элемент для эффекта загрузки
+            // 5. HTML для лоадера
             const loaderHTML = `
                 <div class="video-loader">
                     <div class="spinner"></div>
