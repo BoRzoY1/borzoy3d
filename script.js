@@ -1,4 +1,4 @@
-// script.js (Финальная версия с индикатором загрузки и исправленной логикой видео)
+// script.js (Финальная версия с исправленной загрузкой превью)
 
 const ADMIN_PASSWORD = "admin123";
 let isAdminMode = false;
@@ -14,16 +14,14 @@ var zoomModal = document.getElementById('zoom-modal');
 var zoomContent = document.getElementById('zoom-content');
 
 
-// --- НОВАЯ/ОБНОВЛЕННАЯ ФУНКЦИЯ: Преобразование внешних ссылок ---
+// --- 1. УТИЛИТЫ: Преобразование внешних ссылок ---
 function transformExternalLink(link) {
     if (!link) return link;
-
-    // 1. Преобразование ссылок DROPBOX в прямые URL
+    // DROPBOX
     if (link.includes('dropbox.com')) {
         return link.replace('www.dropbox.com', 'dl.dropboxusercontent.com').replace('?dl=0', '?raw=1');
     }
-
-    // 2. Преобразование ссылок GOOGLE DRIVE
+    // GOOGLE DRIVE
     if (link.includes('drive.google.com')) {
         const match = link.match(/\/d\/([a-zA-Z0-9_-]+)/);
         if (match && match[1]) {
@@ -31,21 +29,20 @@ function transformExternalLink(link) {
             return `https://drive.google.com/uc?export=download&id=${fileId}`;
         }
     }
-    
     return link;
 }
-
-// --- УТИЛИТА: Проверка на мобильное устройство ---
 function isMobile() {
     return /Mobi|Android/i.test(navigator.userAgent);
 }
 
 
-// --- Инициализация и Структура Данных (Пример) ---
+// --- 2. ДАННЫЕ И РЕНДЕРИНГ ---
 const defaultPortfolio = [
     {
         name: 'Профессор Мортимер',
-        thumb: 'images/1.jpg',
+        // ВНИМАНИЕ: Если thumb это локальный файл (например, 'images/1.jpg'), transformExternalLink его не изменит.
+        // Если это внешний ресурс, он будет исправлен.
+        thumb: 'https://dl.dropboxusercontent.com/scl/fi/mstspscecsx1yldqk851g/1.jpg?rlkey=eg6xz94myutc5s0lcz04aht9y&st=qy0hng39&dl=0',
         images: [
             'https://dl.dropboxusercontent.com/scl/fi/mstspscecsx1yldqk851g/1.jpg?rlkey=eg6xz94myutc5s0lcz04aht9y&st=qy0hng39&dl=0', 
             'https://dl.dropboxusercontent.com/scl/fi/rl0oigzkusgywne8aodz8/2.jpg?rlkey=7bll963z8zwembkzhi594eymz&st=yhuzxaor&dl=0', 
@@ -57,38 +54,26 @@ const defaultPortfolio = [
             'https://dl.dropboxusercontent.com/scl/fi/mcfdouh1ru26itf7ac6gi/Setka4.jpg?rlkey=izof5dp8itdendf65ia9gn800&st=8pelihnb&dl=0'
         ],
         videos: [
-            { 
-                path: 'https://dl.dropboxusercontent.com/scl/fi/lcfptkdpi97m8diabnm7e/Face_CC.mp4?rlkey=t87zz7ep6ljdsnawfxpub891e&st=xp6tgmxv&dl=0', 
-                comment: 'Работа лицевых морфов' 
-            },
-            { 
-                path: 'https://dl.dropboxusercontent.com/scl/fi/taunwsgy2vkyxgjdt1ubp/FinalRender.mp4?rlkey=2h1z881wj73gh7ctubort3c0c&st=a0u625b6&dl=0', 
-                comment: 'Небоьшой синиматик, решил сделать для теста' 
-            },
-            { 
-                path: 'https://dl.dropboxusercontent.com/scl/fi/ipmg2p2piewgautqe84c9/Game.mp4?rlkey=psif5rxlma8ix12zeagrbwv0b&st=u66erdum&dl=0', 
-                comment: 'Персонаж отлично работает в игре в UE5' 
-            }
+            { path: 'https://dl.dropboxusercontent.com/scl/fi/lcfptkdpi97m8diabnm7e/Face_CC.mp4?rlkey=t87zz7ep6ljdsnawfxpub891e&st=xp6tgmxv&dl=0', comment: 'Работа лицевых морфов' },
+            { path: 'https://dl.dropboxusercontent.com/scl/fi/taunwsgy2vkyxgjdt1ubp/FinalRender.mp4?rlkey=2h1z881wj73gh7ctubort3c0c&st=a0u625b6&dl=0', comment: 'Небоьшой синиматик, решил сделать для теста' },
+            { path: 'https://dl.dropboxusercontent.com/scl/fi/ipmg2p2piewgautqe84c9/Game.mp4?rlkey=psif5rxlma8ix12zeagrbwv0b&st=u66erdum&dl=0', comment: 'Персонаж отлично работает в игре в UE5' }
         ]
     }
 ];
-
 let portfolioData = JSON.parse(localStorage.getItem('portfolioData')) || defaultPortfolio;
-
 function savePortfolio() {
     localStorage.setItem('portfolioData', JSON.stringify(portfolioData));
     renderPortfolio();
 }
 
-// --- Функции Рендеринга, Админки (Без изменений) ---
-
+// ИСПРАВЛЕНИЕ: Применяем transformExternalLink к item.thumb
 function renderPortfolio() {
     gallery.innerHTML = '';
     portfolioData.forEach((item, index) => {
         const itemHTML = `
             <div class="item-container">
                 <div class="item" onclick="openModal(${index})">
-                    <img src="${item.thumb}" alt="${item.name}">
+                    <img src="${transformExternalLink(item.thumb)}" alt="${item.name}">
                 </div>
                 <div class="item-caption">
                     ${item.name}
@@ -124,7 +109,6 @@ function addPortfolioItem() {
     const thumb = document.getElementById('thumb-input').value.trim();
     const imagesStr = document.getElementById('images-input').value.trim();
     const videosStr = document.getElementById('videos-input').value.trim();
-
     if (!name || !thumb) {
         alert("Поля 'Название' и 'Превью' обязательны!");
         return;
@@ -138,11 +122,9 @@ function addPortfolioItem() {
         alert("Добавьте хотя бы одно изображение или одно видео.");
         return;
     }
-
     const newItem = { name, thumb, images, videos };
     portfolioData.push(newItem);
     savePortfolio();
-
     document.getElementById('name-input').value = '';
     document.getElementById('thumb-input').value = '';
     document.getElementById('images-input').value = '';
@@ -151,7 +133,7 @@ function addPortfolioItem() {
 }
 
 
-// --- ФУНКЦИЯ: Автоматическая пауза других видео ---
+// --- 3. ЛОГИКА ВИДЕОПЛЕЕРА И МОДАЛЬНОГО ОКНА (Без изменений) ---
 function pauseOtherVideos(currentVideo) {
     videoList.querySelectorAll('video').forEach(video => {
         if (video !== currentVideo && !video.paused) {
@@ -159,112 +141,57 @@ function pauseOtherVideos(currentVideo) {
         }
     });
 }
-
 let videoObserver;
-
 function setupVideoObserver() {
     if (videoObserver) {
         videoObserver.disconnect();
     }
-
     const videos = videoList.querySelectorAll('video');
     const isMobileDevice = isMobile();
-
-    // 1. Назначаем обработчик для паузы других видео и индикатора загрузки
     videos.forEach(video => {
         const spinner = video.parentNode.querySelector('.video-spinner');
-        
-        // 1.1. Индикатор загрузки
-        video.addEventListener('waiting', () => {
-            if (spinner) spinner.style.display = 'block';
-        });
-        video.addEventListener('playing', () => {
-            if (spinner) spinner.style.display = 'none';
-        });
-        video.addEventListener('canplay', () => {
-             if (spinner) spinner.style.display = 'none';
-        });
-        video.addEventListener('stalled', () => {
-             if (spinner) spinner.style.display = 'block';
-        });
-
-        // 1.2. Пауза других видео при ручном или автоматическом запуске
+        video.addEventListener('waiting', () => { if (spinner) spinner.style.display = 'block'; });
+        video.addEventListener('playing', () => { if (spinner) spinner.style.display = 'none'; });
+        video.addEventListener('canplay', () => { if (spinner) spinner.style.display = 'none'; });
+        video.addEventListener('stalled', () => { if (spinner) spinner.style.display = 'block'; });
         video.addEventListener('play', () => pauseOtherVideos(video));
     });
-
     if (isMobileDevice) {
-        // --- ЛОГИКА ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ: Controls всегда видны, первое видео пытается автоплей ---
         if (videos.length > 0) {
-            
-            // На мобильных controls ВСЕГДА видны 
-            videos.forEach(video => {
-                video.controls = true;
-            });
-            
-            // Запускаем только первое видео 
+            videos.forEach(video => { video.controls = true; });
             videos[0].muted = false; 
-            videos[0].play().catch(error => {
-                console.log("Mobile Autoplay failed, user must initiate:", error);
-                // Controls уже показаны
-            });
+            videos[0].play().catch(error => { console.log("Mobile Autoplay failed, user must initiate:", error); });
         }
-        
     } else {
-        // --- ЛОГИКА ДЛЯ ПК: Автоплей для всех видео в фокусе, controls при hover ---
-        const options = {
-            root: document.getElementById('myModal'),
-            rootMargin: '0px',
-            threshold: 1.0
-        };
-
+        const options = { root: document.getElementById('myModal'), rootMargin: '0px', threshold: 1.0 };
         videoObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 const video = entry.target;
                 if (entry.isIntersecting) {
-                    video.muted = false; 
-                    video.controls = false; 
-                    
-                    // Запускаем и ставим на паузу другие
-                    video.play().then(() => {
-                        pauseOtherVideos(video);
-                    }).catch(error => console.log("Autoplay prevented:", error));
-                    
+                    video.muted = false; video.controls = false; 
+                    video.play().then(() => { pauseOtherVideos(video); }).catch(error => console.log("Autoplay prevented:", error));
                 } else {
-                    video.pause();
-                    video.muted = false; 
-                    video.controls = false;
+                    video.pause(); video.muted = false; video.controls = false;
                 }
             });
         }, options);
-
-        videos.forEach(video => {
-            video.controls = false; 
-            videoObserver.observe(video);
-        });
+        videos.forEach(video => { video.controls = false; videoObserver.observe(video); });
     }
 }
-
 function openModal(index) {
     const item = portfolioData[index];
     modalTitle.textContent = item.name;
     imageCarousel.innerHTML = '';
     videoList.innerHTML = '';
-
-    // 1. Загрузка Изображений (без изменений)
-
     if (item.images && item.images.length > 0) {
         item.images.forEach(imagePath => {
             const imageSource = transformExternalLink(imagePath);
-            
             const wrapper = document.createElement('div');
             wrapper.classList.add('carousel-image-wrapper');
             const img = document.createElement('img');
             img.src = imageSource;
             img.classList.add('carousel-image');
-            img.onclick = (e) => {
-                e.stopPropagation();
-                openZoomModal(imageSource);
-            };
+            img.onclick = (e) => { e.stopPropagation(); openZoomModal(imageSource); };
             wrapper.appendChild(img);
             imageCarousel.appendChild(wrapper);
         });
@@ -272,90 +199,55 @@ function openModal(index) {
     } else {
         document.getElementById('modal-images').style.display = 'none';
     }
-
-    // 2. Загрузка Видео с Комментариями и спиннером
     const isMobileDevice = isMobile();
-    
     if (item.videos && item.videos.length > 0) {
         item.videos.forEach((videoItem) => {
             const container = document.createElement('div');
-            container.classList.add('video-item');
-            container.classList.add('video-container'); // Класс для позиционирования спиннера
-
+            container.classList.add('video-item', 'video-container');
             const videoSource = transformExternalLink(videoItem.path);
-
             const video = document.createElement('video');
             video.src = videoSource;
-            video.loop = true;
-            video.muted = false; // Звук по умолчанию ВКЛЮЧЕН
-            video.controls = isMobileDevice; 
-            
+            video.loop = true; video.muted = false; video.controls = isMobileDevice; 
             if (!isMobileDevice) {
-                // Логика PC: controls появляются только при наведении мыши
                 video.onmouseenter = () => { video.controls = true; };
-                video.onmouseleave = () => {
-                    if (video.paused || document.fullscreenElement) return;
-                    video.controls = false;
-                };
+                video.onmouseleave = () => { if (video.paused || document.fullscreenElement) return; video.controls = false; };
             }
-            
-            // ДОБАВЛЯЕМ СПИННЕР
             const spinner = document.createElement('div');
-            spinner.classList.add('video-spinner');
-            spinner.style.display = 'none'; 
-            
-            container.appendChild(video);
-            container.appendChild(spinner); // Спиннер внутри контейнера
-            
+            spinner.classList.add('video-spinner'); spinner.style.display = 'none'; 
+            container.appendChild(video); container.appendChild(spinner);
             const comment = document.createElement('p');
-            comment.classList.add('video-comment');
-            comment.textContent = videoItem.comment;
-            container.appendChild(comment);
-
-            videoList.appendChild(container);
+            comment.classList.add('video-comment'); comment.textContent = videoItem.comment;
+            container.appendChild(comment); videoList.appendChild(container);
         });
         document.getElementById('modal-videos').style.display = 'block';
     } else {
         document.getElementById('modal-videos').style.display = 'none';
     }
-
     modal.style.display = "block";
     setTimeout(setupVideoObserver, 500);
 }
-
 function closeModal(event) {
     if (event.target.classList.contains('modal') || event.target.classList.contains('close')) {
-        if (videoObserver) {
-            videoObserver.disconnect();
-        }
+        if (videoObserver) { videoObserver.disconnect(); }
         videoList.querySelectorAll('video').forEach(video => {
-            video.pause();
-            video.muted = false; 
-            // Скрываем спиннер
+            video.pause(); video.muted = false; 
             const spinner = video.parentNode.querySelector('.video-spinner');
             if (spinner) spinner.style.display = 'none';
         });
         modal.style.display = "none";
     }
 }
-
 function scrollCarousel(direction) {
     const scrollAmount = imageCarousel.offsetWidth * direction;
-    imageCarousel.scrollBy({
-        left: scrollAmount,
-        behavior: 'smooth'
-    });
+    imageCarousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
 }
-
 function openZoomModal(imagePath) {
     zoomContent.src = imagePath;
     zoomModal.style.display = "block";
 }
-
 function closeZoomModal(event) {
     if (event.target.id === 'zoom-modal' || event.target.id === 'zoom-close') {
         zoomModal.style.display = "none";
     }
 }
-
 document.addEventListener('DOMContentLoaded', renderPortfolio);
