@@ -1,4 +1,4 @@
-/* style.css (Финальная, исправленная версия с адаптивностью) */
+/* style.css (Финальная, исправленная версия с адаптивностью и спиннером) */
 
 :root {
     --bg-color: #0d0115; /* Глубокий темный фон */
@@ -10,12 +10,10 @@
 /* Общий стиль */
 body {
     font-family: 'Consolas', monospace; 
-    /* ---- ФОН: Сетка 3D-моделирования ---- */
     background: 
         linear-gradient(rgba(13, 1, 21, 0.95), rgba(13, 1, 21, 0.95)), 
         url('https://placehold.co/1920x1080/0d0115/ff33cc?text=BoRzoY') center fixed;
     background-size: cover;
-    /* -------------------- */
     color: var(--text-color);
     margin: 0;
     line-height: 1.6;
@@ -43,7 +41,7 @@ header {
     z-index: 10;
 }
 .logo { 
-    display: none; /* Скрываем логотип */
+    display: none; 
 }
 nav ul {
     list-style: none;
@@ -93,25 +91,11 @@ nav ul li:first-child a {
     color: var(--bg-color);
     font-size: 1.2em;
 }
-.cta-button:not(.secondary-cta):hover {
-    background: linear-gradient(45deg, #00c853, var(--accent-color));
-    box-shadow: 0 0 25px var(--accent-color);
-}
 .secondary-cta {
     background: transparent;
     border: 2px solid var(--secondary-color);
     color: var(--secondary-color);
     box-shadow: 0 0 10px var(--secondary-color);
-}
-.secondary-cta:hover {
-    background-color: rgba(255, 51, 204, 0.2);
-    box-shadow: 0 0 20px var(--secondary-color);
-}
-
-/* Секции */
-section {
-    padding: 80px 50px;
-    text-align: center;
 }
 
 /* Панель Администратора */
@@ -160,17 +144,14 @@ section {
     transform: scale(1.03);
 }
 
-/* Превью-изображение (чтобы не обрезалось/растягивалось) */
 .item img {
     width: 100%;
     max-height: 300px; 
     object-fit: contain; 
     background-color: #0d0115; 
     display: block;
-    transition: opacity 0.3s;
 }
 
-/* Стиль для подписи (Название белое и еще больше) */
 .item-caption {
     background-color: #1a082b;
     color: var(--text-color); 
@@ -182,16 +163,6 @@ section {
     text-align: center;
     line-height: 1.2;
 }
-
-/* Дополнительный стиль для текста внутри .item-caption (если вы его добавите в HTML/JS) */
-.item-description { 
-    font-size: 0.9em;
-    font-weight: normal;
-    color: var(--accent-color); 
-    opacity: 0.8; 
-    margin-top: 5px;
-}
-
 
 /* --- МОДАЛЬНОЕ ОКНО (ДЕТАЛИ) --- */
 .modal {
@@ -205,53 +176,50 @@ section {
 }
 .close:hover { color: var(--accent-color); }
 
-/* Заголовок внутри модального окна (Професор мортимер) */
 #modal-title {
-    font-size: 2.5em; /* Значительно увеличенный размер */
-    color: var(--text-color); /* Белый или светлый цвет */
-    text-shadow: 0 0 10px var(--text-color), 0 0 20px rgba(240, 240, 240, 0.3); /* Неоновое свечение */
+    font-size: 2.5em; 
+    color: var(--text-color); 
+    text-shadow: 0 0 10px var(--text-color), 0 0 20px rgba(240, 240, 240, 0.3); 
     margin-bottom: 40px;
     text-transform: uppercase;
     font-weight: bold;
 }
 
 
-/* Заголовки в модальном окне (Галерея Изображений, Видеоматериалы) */
+/* Заголовки в модальном окне */
 #modal-images h4, #modal-videos h4 {
-    color: var(--accent-color); /* Зеленый цвет */
+    color: var(--accent-color); 
     text-shadow: 0 0 10px rgba(0, 230, 118, 0.5); 
-    font-size: 1.8em; /* Возвращаю к более крупному размеру (1.8em) */
+    font-size: 1.8em; 
     margin-top: 40px;
     margin-bottom: 20px;
 }
 
-/* Галерея Изображений (Карусель 1 фото в кадре) */
+/* Галерея Изображений (Карусель) */
 #image-carousel-container {
     position: relative;
     margin: 0 auto 30px;
-    max-width: 800px; /* Фиксированная ширина для карусели */
+    max-width: 800px; 
     overflow: hidden;
 }
 #image-carousel {
     display: flex;
     overflow-x: scroll;
-    scroll-snap-type: x mandatory; /* Обязательная привязка к границам фото */
+    scroll-snap-type: x mandatory; 
     gap: 0;
     scroll-behavior: smooth;
     border-radius: 5px;
     background-color: #000;
 }
-/* Скроллбар оставляем */
 #image-carousel::-webkit-scrollbar { height: 8px; }
 #image-carousel::-webkit-scrollbar-thumb { background: var(--accent-color); border-radius: 4px; }
 
-/* Обертка для одного фото */
 .carousel-image-wrapper {
     flex-shrink: 0;
-    width: 100%; /* Одно фото на весь кадр */
+    width: 100%; 
     scroll-snap-align: center;
     position: relative;
-    cursor: zoom-in; /* Курсор для обозначения, что можно кликнуть */
+    cursor: zoom-in; 
 }
 .carousel-image {
     width: 100%;
@@ -270,23 +238,52 @@ section {
 #next-arrow { right: 0; border-radius: 5px 0 0 5px; }
 
 
-/* Список Видео (для автозапуска) */
+/* Список Видео */
 #video-list {
     display: flex; flex-direction: column; gap: 30px; text-align: left;
 }
 .video-item {
     padding: 15px; background-color: #0d0115; border-radius: 8px; border: 1px solid rgba(0, 230, 118, 0.3); box-shadow: 0 0 10px rgba(0, 230, 118, 0.1);
 }
+
+/* КОНТЕЙНЕР ДЛЯ СПИННЕРА */
+.video-container {
+    position: relative; 
+}
+
 .video-item video {
     width: 100%; max-height: 600px; border-radius: 5px; margin-bottom: 10px;
-    /* Управление видимостью панели управления */
-    transition: all 0.3s ease-in-out;
+    display: block;
+    transition: opacity 0.3s;
 }
+
 .video-comment {
     font-size: 1em; color: var(--text-color); border-left: 3px solid var(--secondary-color); padding-left: 10px; margin-top: 10px; font-style: italic;
 }
 
-/* --- МОДАЛЬНОЕ ОКНО ZOOM (ПОЛНОЭКРАННЫЙ ПРОСМОТР) --- */
+/* СТИЛИ СПИННЕРА */
+.video-spinner {
+    position: absolute;
+    top: calc(50% - 50px); /* Поправка на отступ .video-item */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(255, 255, 255, 0.3); 
+    border-top: 5px solid var(--accent-color); 
+    border-radius: 50%;
+    animation: spin 1s linear infinite; 
+    z-index: 5; 
+    display: none; 
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+
+/* --- МОДАЛЬНОЕ ОКНО ZOOM --- */
 #zoom-modal {
     display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.98); text-align: center;
 }
@@ -298,7 +295,7 @@ section {
 }
 #zoom-close:hover { color: var(--accent-color); }
 
-/* Секция Заказа и Подвал (Стили из отката) */
+/* Секция Заказа и Подвал */
 #order-section {
     background-color: #0d0115;
     border-top: 2px solid var(--accent-color);
@@ -308,10 +305,6 @@ section {
 }
 .order-links a {
     display: block; padding: 15px 30px; border-radius: 5px; text-decoration: none; font-weight: bold; color: white; transition: transform 0.2s, box-shadow 0.2s; font-size: 1.1em;
-}
-.order-links a:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
 }
 .telegram { background-color: #0088cc; }
 .vk { background-color: #4a76a8; }
@@ -324,41 +317,49 @@ footer {
 /* --- АДАПТИВНОСТЬ (МОБИЛЬНЫЕ УСТРОЙСТВА) --- */
 /* ------------------------------------------- */
 @media (max-width: 768px) {
-    /* Навигация */
+    
+    /* Навигация: Исправлено для размещения в строку */
     header {
-        padding: 10px 20px;
-        flex-direction: column; /* Складываем элементы в столбец */
+        flex-direction: row; 
+        justify-content: space-between; 
+        padding: 10px 15px;
+        align-items: center; 
+    }
+    nav {
+        flex-grow: 1; 
+        text-align: right; 
     }
     nav ul {
-        flex-direction: column; /* Ссылки в столбец */
-        text-align: center;
-        width: 100%;
-        margin-top: 10px;
+        flex-direction: row; 
+        justify-content: flex-end; 
+        gap: 10px; 
     }
     nav a {
-        margin: 5px 0; /* Убираем горизонтальный отступ, добавляем вертикальный */
-    }
-    nav ul li:first-child a {
-        margin-left: 0;
+        font-size: 0.9em;
+        margin-left: 10px; 
     }
     
     /* Геро-секция и основные секции */
     #hero, section {
-        padding: 50px 20px;
+        padding: 50px 15px;
     }
     h1 {
         font-size: 1.8em;
     }
+    h2 {
+        font-size: 1.5em;
+    }
     
     /* Портфолио */
     .gallery {
-        grid-template-columns: 1fr; /* Один столбец на мобильных */
+        grid-template-columns: 1fr; 
     }
     
     /* Кнопки */
     .cta-button {
-        display: block; /* Кнопки в столбец */
-        width: 90%;
+        display: block; 
+        width: 100%; 
+        max-width: 350px;
         margin: 10px auto;
     }
     .order-links {
@@ -366,7 +367,8 @@ footer {
         gap: 15px;
     }
     .order-links a {
-        width: 90%;
+        width: 100%;
+        max-width: 350px;
         margin: 0 auto;
     }
 
@@ -374,6 +376,7 @@ footer {
     .modal-content {
         width: 95%;
         padding: 15px;
+        margin-top: 10px;
     }
     #modal-title {
         font-size: 1.5em;
@@ -389,8 +392,8 @@ footer {
         display: none; 
     }
     #image-carousel {
-        -ms-overflow-style: none;  /* IE and Edge */
-        scrollbar-width: none;  /* Firefox */
+        -ms-overflow-style: none;  
+        scrollbar-width: none;  
     }
     
     /* Стрелки карусели */
