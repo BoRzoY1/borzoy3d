@@ -1,4 +1,4 @@
-// script.js (Финальная версия с поддержкой Dropbox)
+// script.js (Финальная версия с поддержкой Dropbox для ВСЕХ медиа)
 
 const ADMIN_PASSWORD = "admin123";
 let isAdminMode = false;
@@ -38,22 +38,26 @@ function transformExternalLink(link) {
     return link;
 }
 
+// --- УТИЛИТА: Проверка на мобильное устройство (для изменения логики видео) ---
+function isMobile() {
+    return /Mobi|Android/i.test(navigator.userAgent);
+}
+
 
 // --- Инициализация и Структура Данных ---
 const defaultPortfolio = [
     {
         name: 'Профессор Мортимер',
         thumb: 'images/1.jpg',
-        // ИСПРАВЛЕНО: Теперь это массив отдельных строк
         images: [
-            'images/1.jpg', 
-            'images/2.jpg', 
-            'images/3.jpg', 
-            'images/4.jpg', 
-            'images/Setka1.jpg', 
-            'images/Setka2.jpg', 
-            'images/Setka3.jpg', 
-            'images/Setka4.jpg'
+            'https://dl.dropboxusercontent.com/scl/fi/mstspscecsx1yldqk851g/1.jpg?rlkey=eg6xz94myutc5s0lcz04aht9y&st=qy0hng39&dl=0', 
+            'https://dl.dropboxusercontent.com/scl/fi/rl0oigzkusgywne8aodz8/2.jpg?rlkey=7bll963z8zwembkzhi594eymz&st=yhuzxaor&dl=0', 
+            'https://dl.dropboxusercontent.com/scl/fi/wwmte98i6k5c4kohchk6w/3.jpg?rlkey=2nwfnoifn4jhsnw4cu207dhym&st=mbopky0z&dl=0', 
+            'https://dl.dropboxusercontent.com/scl/fi/z50rjnovl8q0y1aykv85r/4.jpg?rlkey=sa9mxg0lf83u5lmx0djwnniwx&st=mho345z5&dl=0', 
+            'https://dl.dropboxusercontent.com/scl/fi/5ys8p6c8a3jwrso2mfnjh/Setka1.jpg?rlkey=ew5ug22upzwnosvwzg2ws3lwu&st=divoyzwa&dl=0', 
+            'https://dl.dropboxusercontent.com/scl/fi/0ejxct6v6w8oiiwexcbmy/Setka2.jpg?rlkey=d32u8oz0s78yguv7zbddiun9n&st=d2ljtd4r&dl=0', 
+            'https://dl.dropboxusercontent.com/scl/fi/9ikt5esccapenyskc0t55/Setka3.jpg?rlkey=vmwavh14gcawave5why2p3t4e&st=di39z041&dl=0', 
+            'https://dl.dropboxusercontent.com/scl/fi/mcfdouh1ru26itf7ac6gi/Setka4.jpg?rlkey=izof5dp8itdendf65ia9gn800&st=8pelihnb&dl=0'
         ],
         videos: [
             { 
@@ -63,14 +67,15 @@ const defaultPortfolio = [
             { 
                 path: 'https://dl.dropboxusercontent.com/scl/fi/taunwsgy2vkyxgjdt1ubp/FinalRender.mp4?rlkey=2h1z881wj73gh7ctubort3c0c&st=a0u625b6&dl=0', 
                 comment: 'Небоьшой синиматик, решил сделать для теста' 
-            }, // ИСПРАВЛЕНО: Добавлена запятая
+            },
             { 
                 path: 'https://dl.dropboxusercontent.com/scl/fi/ipmg2p2piewgautqe84c9/Game.mp4?rlkey=psif5rxlma8ix12zeagrbwv0b&st=u66erdum&dl=0', 
                 comment: 'Персонаж отлично работает в игре в UE5' 
             }
         ]
     }
-]; // Запятая в конце не нужна, так как это единственный элемент в массиве
+];
+
 let portfolioData = JSON.parse(localStorage.getItem('portfolioData')) || defaultPortfolio;
 
 function savePortfolio() {
@@ -78,8 +83,7 @@ function savePortfolio() {
     renderPortfolio();
 }
 
-// --- Функции Рендеринга, Админки и Модальных Окон (Неизменны) ---
-// (Весь остальной код остался таким же, как в предыдущем сообщении, только с использованием transformExternalLink)
+// --- Функции Рендеринга, Админки ---
 
 function renderPortfolio() {
     gallery.innerHTML = '';
@@ -157,28 +161,64 @@ function setupVideoObserver() {
         videoObserver.disconnect();
     }
 
-    const options = {
-        root: document.getElementById('myModal'),
-        rootMargin: '0px',
-        threshold: 1.0
-    };
+    const videos = videoList.querySelectorAll('video');
+    const isMobileDevice = isMobile(); // Проверяем, мобильное ли устройство
 
-    videoObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            const video = entry.target;
-            if (entry.isIntersecting) {
-                video.muted = false;
-                video.play().catch(error => console.log("Autoplay prevented:", error));
-            } else {
-                video.pause();
+    if (isMobileDevice) {
+        // --- ЛОГИКА ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ: Только первое видео автоплей ---
+        if (videos.length > 0) {
+            // Включаем controls для всех видео (чтобы остальные можно было запустить вручную)
+            videos.forEach(video => {
+                video.controls = true;
                 video.muted = true;
-            }
-        });
-    }, options);
+                // Скрываем controls только для первого видео, если оно должно быть "скрытым"
+                // Для первого видео мы делаем controls=false, но переопределяем ниже.
+            });
+            
+            // На мобильных, первое видео в фокусе (даже если не в окне) запускается,
+            // но мы делаем логику, что controls должны быть видны, чтобы не нарушать UX.
+            
+            // Запускаем только первое видео сразу (в надежде, что браузер разрешит)
+            videos[0].muted = false;
+            videos[0].controls = false; // Скрываем controls, так как оно в автоплей-режиме
+            videos[0].play().catch(error => {
+                console.log("Mobile Autoplay failed, showing controls:", error);
+                videos[0].controls = true; // Если автоплей не удался, показываем controls
+            });
+            
+            // На мобильных не используем IntersectionObserver для каждого видео,
+            // иначе это слишком ресурсоемко, и автоплей может быть нестабильным.
+            // Мы просто разрешаем ручной запуск для остальных, показав controls.
+        }
+        
+    } else {
+        // --- ЛОГИКА ДЛЯ ПК: Автоплей для всех видео в фокусе ---
+        const options = {
+            root: document.getElementById('myModal'),
+            rootMargin: '0px',
+            threshold: 1.0
+        };
 
-    videoList.querySelectorAll('video').forEach(video => {
-        videoObserver.observe(video);
-    });
+        videoObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const video = entry.target;
+                if (entry.isIntersecting) {
+                    video.muted = false;
+                    video.controls = false; // На ПК controls скрыты, пока не наведешь мышь
+                    video.play().catch(error => console.log("Autoplay prevented:", error));
+                } else {
+                    video.pause();
+                    video.muted = true;
+                    video.controls = false;
+                }
+            });
+        }, options);
+
+        videos.forEach(video => {
+            video.controls = false; // Убедимся, что controls по умолчанию выключены
+            videoObserver.observe(video);
+        });
+    }
 }
 
 function openModal(index) {
@@ -187,17 +227,20 @@ function openModal(index) {
     imageCarousel.innerHTML = '';
     videoList.innerHTML = '';
 
-    // 1. Загрузка Изображений
+    // 1. Загрузка Изображений (Теперь с поддержкой transformExternalLink для Dropbox/Drive)
     if (item.images && item.images.length > 0) {
         item.images.forEach(imagePath => {
+            // ИСПОЛЬЗУЕМ transformExternalLink для обработки ссылок Dropbox/Drive
+            const imageSource = transformExternalLink(imagePath);
+            
             const wrapper = document.createElement('div');
             wrapper.classList.add('carousel-image-wrapper');
             const img = document.createElement('img');
-            img.src = imagePath;
+            img.src = imageSource; // Используем преобразованный источник
             img.classList.add('carousel-image');
             img.onclick = (e) => {
                 e.stopPropagation();
-                openZoomModal(imagePath);
+                openZoomModal(imageSource); // Зум также использует преобразованную ссылку
             };
             wrapper.appendChild(img);
             imageCarousel.appendChild(wrapper);
@@ -208,25 +251,34 @@ function openModal(index) {
     }
 
     // 2. Загрузка Видео с Комментариями
+    const isMobileDevice = isMobile();
+    
     if (item.videos && item.videos.length > 0) {
-        item.videos.forEach(videoItem => {
+        item.videos.forEach((videoItem, i) => {
             const container = document.createElement('div');
             container.classList.add('video-item');
 
-            // *** КЛЮЧЕВОЕ ИЗМЕНЕНИЕ: Используем новую функцию для внешних ссылок ***
+            // Используем transformExternalLink для обработки ссылок Dropbox/Drive
             const videoSource = transformExternalLink(videoItem.path);
 
             const video = document.createElement('video');
             video.src = videoSource;
-            video.controls = false;
             video.loop = true;
             video.muted = true;
+            
+            // На мобильных, controls видны по умолчанию для ручного запуска, 
+            // кроме первого видео, которое мы пытаемся запустить автоматически
+            video.controls = isMobileDevice; 
 
-            video.onmouseenter = () => { video.controls = true; };
-            video.onmouseleave = () => {
-                if (video.paused || document.fullscreenElement) return;
-                video.controls = false;
-            };
+            if (!isMobileDevice) {
+                // Логика PC: controls появляются только при наведении мыши
+                video.onmouseenter = () => { video.controls = true; };
+                video.onmouseleave = () => {
+                    if (video.paused || document.fullscreenElement) return;
+                    video.controls = false;
+                };
+            }
+
 
             container.appendChild(video);
 
