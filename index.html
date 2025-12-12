@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Портфолио 3D-Персонажей АAA-Качества | Vash_Name</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">BoRzoY</div>
+        <nav>
+            <ul>
+                <li><a href="#hero">Главная</a></li>
+                <li><a href="#portfolio">Портфолио</a></li>
+                <li><a href="#order-section">Заказать</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="hero">
+        <h1>Создание стилизованных 3D-Персонажей</h1>
+        <p>АAA-Качество для Игр или Медиа. Ознакомьтесь с моими работами.</p>
+        <a href="#portfolio" class="cta-button">Смотреть Работы</a>
+        <a href="#order-section" class="cta-button secondary-cta">Заказать 3D Модель</a>
+    </section>
+
+    <section id="admin-panel">
+        <h3>Панель Администратора: Добавление Работы</h3>
+        <p>Для входа нажмите **"/"** (слэш) на клавиатуре. **Пароль:** admin123 (Измените его в script.js)</p>
+        <input type="text" id="name-input" placeholder="Название Персонажа (Отображается на превью)">
+        <input type="text" id="thumb-input" placeholder="Путь к файлу-превью (images/thumb.jpg)">
+        
+        <hr style="border-color: var(--accent-color);">
+        
+        <h4>Изображения (Через запятую):</h4>
+        <input type="text" id="images-input" placeholder="images/img1.jpg, images/img2.jpg, ...">
+        
+        <h4>Видео (URL Google Drive|Комментарий, через запятую):</h4>
+        <input type="text" id="videos-input" placeholder="https://drive.google.com/file/d/.../view|Видео с анимацией, ...">
+        
+        <button onclick="addPortfolioItem()">Добавить Работу в Портфолио</button>
+        <p>Не забывайте, что сами файлы нужно загрузить на хостинг по указанным путям!</p>
+    </section>
+
+    <section id="portfolio">
+        <h2>Портфолио</h2>
+        <div class="gallery" id="portfolio-gallery">
+            </div>
+    </section>
+
+    <div id="myModal" class="modal" onclick="closeModal(event)">
+        <span class="close">&times;</span>
+        <div class="modal-content">
+            <h3 id="modal-title"></h3>
+            
+            <div id="modal-images">
+                <h4>Галерея Изображений</h4>
+                <div id="image-carousel-container">
+                    <button id="prev-arrow" class="arrow" onclick="scrollCarousel(-1)">&#10094;</button>
+                    <div id="image-carousel" class="image-carousel">
+                        </div>
+                    <button id="next-arrow" class="arrow" onclick="scrollCarousel(1)">&#10095;</button>
+                </div>
+            </div>
+
+            <div id="modal-videos">
+                <h4>Видеоматериалы</h4>
+                <div id="video-list">
+                    </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <div id="zoom-modal" onclick="closeZoomModal(event)">
+        <span id="zoom-close">&times;</span>
+        <img id="zoom-content">
+    </div>
+
+    <section id="order-section">
+        <h2>Заказать 3D Модель</h2>
+        <p>Свяжитесь со мной для обсуждения вашего проекта. Гарантирую AAA-качество и соблюдение сроков.</p>
+        <div class="order-links">
+            <a href="https://t.me/YaBoRzoY" target="_blank" class="telegram">Telegram</a>
+            <a href="https://vk.ru/skirovofficial" target="_blank" class="vk">VK</a>
+            <a href="Mailto:didasik4@gmail.com" class="email">Gmail</a>
+        </div>
+    </section>
+    
+    <footer id="contact">
+        <p>© 2025 BoRzoY. Все права защищены.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
