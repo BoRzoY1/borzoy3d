@@ -4,32 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AAA-Quality 3D Character Artist | BoRzoY</title>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600;800&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <header>
         <div class="logo">
-            <span>BoRzoY</span><span class="logo-subtitle">| 3D Artist</span>
+            <span>BoRzoY</span><span class="logo-subtitle">// CHARACTER DESIGN</span>
         </div>
         <nav>
             <ul>
-                <li><a href="#hero">Главная</a></li>
-                <li><a href="#portfolio">Портфолио</a></li>
-                <li><a href="#order-section">Заказать</a></li>
+                <li><a href="#hero" class="nav-link">Главная</a></li>
+                <li><a href="#portfolio" class="nav-link">Портфолио</a></li>
+                <li><a href="#pipeline" class="nav-link">Пайплайн</a></li>
+                <li><a href="#order-section" class="nav-link cta-nav-link">Заказать</a></li>
             </ul>
         </nav>
     </header>
 
-    <section id="hero">
+        <section id="hero">
+        <div class="hero-bg-overlay"></div>
         <div class="hero-content">
-            <p class="hero-pretitle">NEXT-GEN CHARACTER CREATION</p>
-            <h1>Создание <span>Стилизованных 3D-Персонажей</span></h1>
-            <p class="hero-description">AAA-Качество для Игр, Анимации и Медиа. Ознакомьтесь с моим пайплайном и финальными работами.</p>
+            <p class="hero-tag">// $AAA-QUALITY-CHARACTERS</p>
+            <h1>3D <span>Персонажи</span></h1>
+            <h1>Для Нового Поколения Игр</h1>
+            <p class="hero-description">От концепта до интеграции в Unreal Engine / Unity. Детализация, оптимизация, реалистичные текстуры.</p>
             <div class="hero-cta-group">
                 <a href="#portfolio" class="cta-button primary-cta">Смотреть Портфолио</a>
-                <a href="#order-section" class="cta-button secondary-cta">Заказать Модель</a>
+                <a href="#order-section" class="cta-button secondary-cta">Начать Проект</a>
             </div>
         </div>
     </section>
@@ -53,29 +56,30 @@
     </section>
 
     <section id="portfolio">
-        <h2><span class="section-badge">01 //</span> Портфолио</h2>
+        <h2><span class="section-tag">01 //</span> КЛЮЧЕВЫЕ РАБОТЫ</h2>
         <div class="gallery" id="portfolio-gallery">
                     </div>
     </section>
     
         <section id="pipeline">
-        <h2><span class="section-badge">02 //</span> Профессиональный Пайплайн</h2>
-        <p class="pipeline-intro">Гарантия качества на каждом этапе создания AAA-персонажа.</p>
+        <h2><span class="section-tag">02 //</span> ИНДУСТРИАЛЬНЫЙ ПАЙПЛАЙН</h2>
+        <p class="pipeline-intro">Гарантия качества через стандарты ведущих студий (ZBrush, Maya, Substance, UE).</p>
         <div class="pipeline-steps">
-            <div class="step">
-                <h3><span class="step-number">1.</span> Скульпт и Моделинг (ZBrush, Blender)</h3>
-                <p>Создание высокополигональной модели, детализация, анатомия.</p>
-                
+            <div class="step step-concept">
+                <h3><span class="step-number">01</span> Концепт & Скульпт</h3>
+                <p>ZBrush High-Poly детализация, идеальная анатомия и форма.</p>
             </div>
-            <div class="step">
-                <h3><span class="step-number">2.</span> Ретопология и UV (Maya/Blender)</h3>
-                <p>Оптимизированная игровая сетка (Low-Poly) для движка (Unreal Engine/Unity).</p>
-                
+            <div class="step step-retopo">
+                <h3><span class="step-number">02</span> Ретопология & UV</h3>
+                <p>Clean Low-Poly сетка, оптимизация для игровых движков, UDIM.</p>
             </div>
-            <div class="step">
-                <h3><span class="step-number">3.</span> Текстурирование (Substance Painter)</h3>
-                <p>PBR-текстуры, карты нормалей/металла/шероховатости, соответствие стилю.</p>
-                
+            <div class="step step-texture">
+                <h3><span class="step-number">03</span> Текстуры & Шейдинг</h3>
+                <p>PBR в Substance Painter, реалистичное рассеивание (SSS), карты LOD.</p>
+            </div>
+            <div class="step step-engine">
+                <h3><span class="step-number">04</span> Интеграция & Релиз</h3>
+                <p>Настройка материалов и риггинга в Unreal Engine / Unity.</p>
             </div>
         </div>
     </section>
@@ -92,7 +96,7 @@
                     <div id="image-carousel" class="image-carousel">
                         </div>
                     <button id="next-arrow" class="arrow" onclick="scrollCarousel(1)">&#10095;</button>
-                </div>
+            </div>
             </div>
 
             <div id="modal-videos">
@@ -109,8 +113,8 @@
     </div>
 
     <section id="order-section">
-        <h2><span class="section-badge">03 //</span> Заказать 3D Модель</h2>
-        <p class="order-subtitle">Свяжитесь со мной для обсуждения вашего проекта. Гарантирую AAA-качество и соблюдение сроков.</p>
+        <h2><span class="section-tag">03 //</span> СВЯЗАТЬСЯ & ЗАКАЗАТЬ</h2>
+        <p class="order-subtitle">Готов к работе над вашим следующим AAA-проектом. Обсудим ТЗ и сроки.</p>
         <div class="order-links">
             <a href="https://t.me/YaBoRzoY" target="_blank" class="social-link telegram-link">Telegram</a>
             <a href="https://vk.ru/skirovofficial" target="_blank" class="social-link vk-link">VK</a>
@@ -119,7 +123,7 @@
     </section>
     
     <footer id="contact">
-        <p>© 2025 BoRzoY. All rights reserved. Professional 3D Character Artist.</p>
+        <p>© 2025 BoRzoY. ALL ASSETS RENDERED. Professional 3D Character Artist.</p>
     </footer>
 
     <script src="script.js"></script>
