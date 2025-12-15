@@ -32,8 +32,9 @@ function transformExternalLink(link) {
             directLink = directLink.substring(0, directLink.indexOf('?'));
         }
         
-        // Добавление гарантированного параметра ?raw=1
-        return directLink + '?raw=1';
+        // Добавление гарантированного параметра ?dl=0 (для загрузки) или ?raw=1 (для встраивания)
+        // Для изображений и видео лучше использовать ?dl=0 или ?raw=1
+        return directLink.endsWith('?dl=0') || directLink.endsWith('?raw=1') ? directLink : directLink + '?dl=0';
     }
     
     // 2. Преобразование ссылок GOOGLE DRIVE
@@ -41,6 +42,7 @@ function transformExternalLink(link) {
         const match = link.match(/\/d\/([a-zA-Z0-9_-]+)/);
         if (match && match[1]) {
             const fileId = match[1];
+            // Используем uc?export=download для прямого доступа к файлу
             return `https://drive.google.com/uc?export=download&id=${fileId}`;
         }
     }
@@ -53,9 +55,9 @@ function transformExternalLink(link) {
 const defaultPortfolio = [
     {
         name: 'Профессор Мортимер',
+        // Используем прямые ссылки в данных, transformExternalLink их обработает при рендере
         thumb: 'https://dl.dropboxusercontent.com/scl/fi/mstspscecsx1yldqk851g/1.jpg?rlkey=eg6xz94myutc5s0lcz04aht9y&st=qy0hng39&dl=0', 
         images: [
-            // Теперь эти ссылки гарантированно будут преобразованы в прямые с помощью transformExternalLink
             'https://dl.dropboxusercontent.com/scl/fi/mstspscecsx1yldqk851g/1.jpg?rlkey=eg6xz94myutc5s0lcz04aht9y&st=qy0hng39&dl=0', 
             'https://dl.dropboxusercontent.com/scl/fi/rl0oigzkusgywne8aodz8/2.jpg?rlkey=7bll963z8zwembkzhi594eymz&st=yhuzxaor&dl=0', 
             'https://dl.dropboxusercontent.com/scl/fi/wwmte98i6k5c4kohchk6w/3.jpg?rlkey=2nwfnoifn4jhsnw4cu207dhym&st=mbopky0z&dl=0', 
@@ -170,11 +172,26 @@ function pauseOtherVideos(currentVideo) {
 
 function setupVideoLoader(video) {
     const loader = video.closest('.video-item').querySelector('.video-loader');
+    if (!loader) return;
+    
+    // Скрываем лоадер сразу, если данные уже загружены
+    if (video.readyState >= 3) {
+        loader.style.display = 'none';
+    } else {
+        loader.style.display = 'flex';
+    }
     
     video.addEventListener('waiting', () => { loader.style.display = 'flex'; });
     video.addEventListener('playing', () => { loader.style.display = 'none'; });
-    video.addEventListener('pause', () => { loader.style.display = 'none'; });
+    video.addEventListener('pause', () => { 
+        // Если пауза не вызвана IntersectionObserver, скрываем лоадер
+        loader.style.display = 'none'; 
+    });
     video.addEventListener('loadeddata', () => { loader.style.display = 'none'; });
+    video.addEventListener('error', () => {
+        loader.style.display = 'flex';
+        loader.querySelector('p').textContent = 'Ошибка загрузки видео';
+    });
 }
 
 function setupVideoObserver() {
@@ -201,26 +218,28 @@ function setupVideoObserver() {
             
             if (entry.isIntersecting) {
                 if (isMobile) {
-                    // ЛОГИКА ДЛЯ ТЕЛЕФОНА: Автозапуск/Остановка только для первого видео
+                    // ЛОГИКА ДЛЯ ТЕЛЕФОНА: Автозапуск только для первого видео, если видно
                     if (isFirstVideo) {
                         video.muted = true; 
                         video.play().then(() => {
                             video.muted = false; 
                         }).catch(error => {
-                             console.log("Autoplay prevented on mobile for first video:", error);
-                             video.muted = false;
+                            console.log("Autoplay prevented on mobile for first video:", error);
+                            // Если не удалось автозапустить, ждем клика
+                            video.muted = false;
                         });
                     }
                 } else {
                     // ЛОГИКА ДЛЯ ПК: Автозапуск при 100% фокусе ( muted: true - ОБЯЗАТЕЛЬНО!)
-                     video.muted = true; 
-                     video.play().catch(error => console.log("Autoplay blocked on desktop:", error));
+                    video.muted = true; 
+                    video.play().catch(error => console.log("Autoplay blocked on desktop:", error));
                 }
                 
             } else {
                 // При выходе из фокуса (ПК и Телефон)
                 video.pause();
                 video.muted = true; // Снова мьютим для следующего автозапуска
+                // Убедимся, что лоадер скрыт при остановке
                 video.closest('.video-item').querySelector('.video-loader').style.display = 'none';
             }
         });
@@ -263,6 +282,8 @@ function openModal(index) {
             imageCarousel.appendChild(wrapper);
         });
         document.getElementById('modal-images').style.display = 'block';
+        // Сброс карусели в начало
+        imageCarousel.scrollLeft = 0; 
     } else {
         document.getElementById('modal-images').style.display = 'none';
     }
@@ -283,18 +304,21 @@ function openModal(index) {
             if (isMobile) {
                 // Мобильный: Mute только для первого
                 video.muted = (index === 0) ? true : false; 
+                // Прелоад для мобильных для более быстрого старта (хотя браузеры могут игнорировать)
+                video.preload = 'metadata'; 
             } else {
                 // ПК: Mute всегда. Controls скрыты по умолчанию.
                 video.muted = true;
                 video.controls = false; 
+                video.preload = 'auto'; // Прелоад для ПК
                 
-                 // ВОССТАНОВЛЕНА ЛОГИКА ПОКАЗА CONTROLS ТОЛЬКО ПРИ НАВЕДЕНИИ
-                 video.onmouseenter = () => { video.controls = true; };
-                 video.onmouseleave = () => {
+                // ВОССТАНОВЛЕНА ЛОГИКА ПОКАЗА CONTROLS ТОЛЬКО ПРИ НАВЕДЕНИИ
+                video.onmouseenter = () => { video.controls = true; };
+                video.onmouseleave = () => {
                     // Скрываем controls, только если видео не на паузе и не в полноэкранном режиме
                     if (video.paused || document.fullscreenElement) return;
                     video.controls = false;
-                 };
+                };
             }
             
             // HTML для лоадера
@@ -323,10 +347,12 @@ function openModal(index) {
     modal.style.display = "block";
 
     // Устанавливаем Observer после рендеринга
-    setTimeout(setupVideoObserver, 500);
+    // Задержка дает DOM время для отрисовки элементов.
+    setTimeout(setupVideoObserver, 500); 
 }
 
 function closeModal(event) {
+    // Проверяем, был ли клик по фону модального окна или по крестику
     if (event.target.classList.contains('modal') || event.target.classList.contains('close')) {
         if (videoObserver) {
             videoObserver.disconnect();
@@ -336,6 +362,7 @@ function closeModal(event) {
             video.pause();
             video.muted = true;
         });
+        // Скрываем все лоадеры
         videoList.querySelectorAll('.video-loader').forEach(loader => {
             loader.style.display = 'none';
         });
@@ -362,4 +389,5 @@ function closeZoomModal(event) {
     }
 }
 
+// Рендеринг портфолио при загрузке страницы
 document.addEventListener('DOMContentLoaded', renderPortfolio);
