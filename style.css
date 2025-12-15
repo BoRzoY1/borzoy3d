@@ -1,17 +1,18 @@
-/* style.css (НОВАЯ ПРОФЕССИОНАЛЬНАЯ ВЕРСИЯ) */
+/* style.css (V3.0: STUDIO GRADE - МАКСИМАЛЬНО ПРОФЕССИОНАЛЬНО) */
 
 :root {
-    --bg-color: #121216; /* Глубокий, почти черный фон */
-    --secondary-bg-color: #1e1e24; /* Немного светлее для контраста */
-    --accent-color: #ff9900; /* Золотисто-оранжевый (Профессиональный акцент) */
-    --text-color-primary: #f0f0f0; /* Яркий белый текст */
-    --text-color-secondary: #aaaaaa; /* Светло-серый для подзаголовков */
-    --border-color: #33333a; /* Тонкие линии для разделения */
+    --bg-color: #0F0F13; /* Темный графит, основа */
+    --secondary-bg-color: #1A1A22; /* Немного светлее для карточек */
+    --accent-blue: #00BFFF; /* Небесно-голубой (чистый, холодный свет) */
+    --accent-gold: #FFD700; /* Золотой/Желтый (основной акцент, энергия) */
+    --text-color-primary: #ECECEC; /* Почти белый */
+    --text-color-secondary: #AAAAAA; /* Серый для подписей */
+    --border-color: #2D2D35; /* Жесткие темные линии */
 }
 
 /* Общий стиль */
 body {
-    font-family: 'Inter', sans-serif; /* Современный шрифт */
+    font-family: 'Roboto Mono', monospace; /* Технологичный, читаемый моноширинный */
     background-color: var(--bg-color);
     color: var(--text-color-primary);
     margin: 0;
@@ -21,27 +22,32 @@ body {
 
 /* Стилизация Заголовков */
 h1, h2, h3, h4 {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Orbitron', sans-serif; /* Агрессивный, технологичный шрифт */
     font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 h1 {
-    font-size: 3.5em;
-    letter-spacing: -1px;
-    margin-bottom: 20px;
+    font-size: 4em;
+    letter-spacing: 2px;
 }
 h1 span {
-    color: var(--accent-color);
+    color: var(--accent-gold);
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
 }
 h2 {
-    font-size: 2.5em;
+    font-size: 2.2em;
     margin-bottom: 40px;
+    color: var(--text-color-primary);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
 }
-.section-badge {
-    font-family: 'IBM Plex Mono', monospace;
-    color: var(--accent-color);
+.section-tag {
+    font-family: 'Roboto Mono', monospace;
+    color: var(--accent-blue);
     font-size: 0.7em;
     display: inline-block;
-    margin-right: 10px;
+    margin-right: 15px;
 }
 
 /* Навигация */
@@ -50,23 +56,24 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 15px 50px;
-    background-color: rgba(18, 18, 22, 0.9); /* Полупрозрачный фон */
-    border-bottom: 1px solid var(--border-color);
+    background-color: rgba(15, 15, 19, 0.95);
+    border-bottom: 3px solid var(--accent-blue);
+    box-shadow: 0 0 10px rgba(0, 191, 255, 0.3);
     position: sticky;
     top: 0;
-    z-index: 10;
-    backdrop-filter: blur(5px); /* Эффект размытия */
+    z-index: 100; /* Максимальный Z-index */
+    backdrop-filter: blur(8px);
 }
 .logo {
-    font-family: 'Inter', sans-serif;
-    font-size: 1.8em;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2em;
     font-weight: 800;
     color: var(--text-color-primary);
 }
 .logo-subtitle {
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: 'Roboto Mono', monospace;
     font-size: 0.5em;
-    color: var(--accent-color);
+    color: var(--accent-gold);
     margin-left: 5px;
 }
 nav ul {
@@ -79,460 +86,302 @@ nav a {
     padding: 5px 0;
     border-bottom: 2px solid transparent;
     transition: all 0.3s;
-    font-weight: 600;
+    font-weight: 700;
+    letter-spacing: 1px;
 }
 nav a:hover {
-    color: var(--text-color-primary);
-    border-bottom: 2px solid var(--accent-color);
+    color: var(--accent-blue);
+    border-bottom: 2px solid var(--accent-blue);
+}
+.cta-nav-link {
+    color: var(--accent-gold) !important;
 }
 
-
-/* Геро-секция */
+/* СЕКЦИЯ HERO: Фон из 3D-пакетов */
 #hero {
-    padding: 180px 50px 100px;
+    padding: 200px 50px 150px;
     text-align: left;
     position: relative;
     overflow: hidden;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 5px solid var(--border-color);
 }
+/* Слой 1: Фон с сеткой */
 #hero::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    /* ФОН: Технологичная сетка 3D-вьюпорта */
-    background: url('https://placehold.co/1920x1080/121216/24242a?text=3D+Viewport+Grid') no-repeat center center;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: url('https://placehold.co/1920x1080/0F0F13/333340?text=3D+SOFTWARE+INTERFACE') no-repeat center center;
     background-size: cover;
-    opacity: 0.1;
+    opacity: 0.15;
     z-index: 0;
-    animation: subtle-pan 60s linear infinite alternate;
+    filter: saturate(0.5);
 }
-@keyframes subtle-pan {
-    from { background-position: 0 0; }
-    to { background-position: 100% 100%; }
-}
-.hero-content {
-    max-width: 900px;
-    margin: 0 auto;
-    position: relative;
+/* Слой 2: Узкие полосы для HUD-эффекта */
+.hero-bg-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: repeating-linear-gradient(
+        180deg,
+        rgba(0, 191, 255, 0.05),
+        rgba(0, 191, 255, 0.05) 1px,
+        transparent 1px,
+        transparent 20px
+    );
+    opacity: 0.3;
     z-index: 1;
 }
-.hero-pretitle {
-    color: var(--accent-color);
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.9em;
+
+.hero-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+.hero-tag {
+    color: var(--accent-blue);
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1em;
     margin-bottom: 10px;
 }
 .hero-description {
     font-size: 1.2em;
     color: var(--text-color-secondary);
     margin-bottom: 40px;
+    max-width: 600px;
 }
 
-/* Кнопки */
+/* Кнопки CTA */
 .cta-button {
     display: inline-block;
-    padding: 12px 30px;
+    padding: 15px 40px;
     text-decoration: none;
-    border-radius: 4px;
-    font-weight: 600;
-    margin-right: 20px;
+    border-radius: 2px;
+    font-weight: 700;
+    margin-right: 25px;
     transition: all 0.3s;
     text-transform: uppercase;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 1px;
 }
 .primary-cta {
-    background-color: var(--accent-color);
-    box-shadow: 0 4px 15px rgba(255, 153, 0, 0.4);
+    background-color: var(--accent-gold);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
     color: var(--bg-color);
     border: none;
 }
 .primary-cta:hover {
-    background-color: #ffb347;
-    box-shadow: 0 6px 20px rgba(255, 153, 0, 0.6);
-    transform: translateY(-2px);
+    background-color: #ffe066;
+    box-shadow: 0 0 25px var(--accent-gold);
+    transform: translateY(-3px);
 }
 .secondary-cta {
     background: transparent;
-    border: 2px solid var(--border-color);
-    color: var(--text-color-primary);
+    border: 2px solid var(--accent-blue);
+    color: var(--accent-blue);
+    box-shadow: 0 0 10px rgba(0, 191, 255, 0.4);
 }
 .secondary-cta:hover {
-    background-color: var(--secondary-bg-color);
-    border-color: var(--accent-color);
+    background-color: rgba(0, 191, 255, 0.1);
+    border-color: var(--text-color-primary);
 }
 
 /* Секции */
 section {
     padding: 100px 50px;
     text-align: center;
-    max-width: 1400px;
+    max-width: 1600px;
     margin: 0 auto;
 }
 
-/* Панель Администратора */
+/* Панель Администратора (Стилизована под консоль) */
 #admin-panel {
     background-color: var(--secondary-bg-color);
-    border: 1px solid var(--accent-color);
+    border: 1px solid var(--accent-gold);
     padding: 30px;
     margin: 50px auto;
     max-width: 800px;
     display: none;
     text-align: left;
 }
-.admin-note, .admin-warning {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.9em;
-    color: var(--text-color-secondary);
-}
-.admin-divider {
-    border-color: var(--border-color);
-    margin: 20px 0;
-}
 #admin-panel input, #admin-panel button {
-    margin: 10px 0;
-    padding: 12px;
-    width: 100%;
-    box-sizing: border-box;
-    background-color: var(--bg-color);
-    color: var(--text-color-primary);
-    border: 1px solid var(--border-color);
-    font-family: 'IBM Plex Mono', monospace;
-    border-radius: 4px;
+    background-color: #08080a;
+    color: var(--accent-blue);
+    border: 1px solid var(--accent-blue);
+    font-family: 'Roboto Mono', monospace;
+    padding: 10px;
 }
 .admin-button {
-    background-color: var(--accent-color);
+    background-color: var(--accent-gold) !important;
     color: var(--bg-color) !important;
-    font-weight: 600;
-    cursor: pointer;
+    border: none !important;
 }
-
 
 /* Галерея Портфолио (Превью) */
 .gallery {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 40px;
     margin: 0 auto;
 }
 .item-container {
     background-color: var(--secondary-bg-color);
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     transition: all 0.3s;
 }
-.item {
-    position: relative;
-    overflow: hidden;
-    border-radius: 8px 8px 0 0;
-    cursor: pointer;
+.item-container:hover {
+    transform: translateY(-8px);
+    border-color: var(--accent-blue);
+    box-shadow: 0 15px 40px rgba(0, 191, 255, 0.3);
 }
-.item:hover {
-    box-shadow: 0 0 20px rgba(255, 153, 0, 0.4);
-    transform: translateY(-5px);
+.item {
+    overflow: hidden;
+    cursor: pointer;
 }
 .item img {
     width: 100%;
-    max-height: 350px;
-    object-fit: cover; /* Обрезка для заполнения */
+    max-height: 400px;
+    object-fit: cover;
     display: block;
-    border-radius: 8px 8px 0 0;
     transition: transform 0.3s;
 }
 .item:hover img {
-    transform: scale(1.05);
+    transform: scale(1.08);
 }
 
 .item-caption {
-    background-color: var(--secondary-bg-color);
+    background-color: #1a1a22;
     color: var(--text-color-primary);
-    font-size: 1.2em;
-    font-weight: 600;
+    font-size: 1.1em;
+    font-weight: 700;
     padding: 15px 10px;
-    border-top: 1px solid var(--border-color);
+    border-top: 2px dashed var(--accent-blue);
     text-align: left;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.item-caption button {
-    background-color: #d32f2f;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 3px;
-    cursor: pointer;
-    font-size: 0.8em;
-    transition: background-color 0.2s;
-}
-.item-caption button:hover {
-    background-color: #c62828;
 }
 
-/* --- Секция Пайплайна --- */
+/* Секция Пайплайна */
 #pipeline {
-    background-color: var(--secondary-bg-color);
+    background: linear-gradient(180deg, var(--bg-color), #09090c);
 }
 .pipeline-intro {
-    color: var(--accent-color);
-    font-size: 1.1em;
+    color: var(--accent-gold);
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1em;
     margin-bottom: 60px;
 }
 .pipeline-steps {
-    display: flex;
-    justify-content: space-around;
-    gap: 40px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
 }
 .step {
-    flex: 1;
-    text-align: center;
-    padding: 20px;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    background-color: var(--bg-color);
-    transition: box-shadow 0.3s;
+    padding: 25px;
+    border: 1px solid var(--accent-blue);
+    border-radius: 4px;
+    background-color: var(--secondary-bg-color);
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+.step::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 191, 255, 0.05); /* Легкая синяя подсветка */
+    z-index: 0;
 }
 .step:hover {
-    box-shadow: 0 0 20px rgba(255, 153, 0, 0.3);
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(0, 191, 255, 0.5);
+    border-color: var(--accent-gold);
 }
 .step h3 {
-    color: var(--text-color-primary);
-    font-size: 1.4em;
-    margin-top: 0;
+    font-size: 1.2em;
+    color: var(--accent-gold);
+    position: relative; z-index: 1;
 }
 .step-number {
-    color: var(--accent-color);
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.9em;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.5em;
+    color: var(--accent-blue);
+    display: block;
+    margin-bottom: 10px;
 }
 .step p {
     color: var(--text-color-secondary);
     font-size: 0.9em;
+    font-family: 'Roboto Mono', monospace;
+    position: relative; z-index: 1;
 }
 
-
-/* --- МОДАЛЬНОЕ ОКНО (ДЕТАЛИ) --- */
-.modal {
-    display: none; position: fixed; z-index: 20; padding-top: 50px; left: 0; top: 0; width: 100%; height: 100%; overflow-y: scroll; background-color: rgba(0, 0, 0, 0.95);
-}
+/* МОДАЛЬНЫЕ ОКНА (стиль интерфейса) */
 .modal-content {
-    margin: 0 auto; width: 90%; max-width: 1400px; text-align: center; background-color: var(--secondary-bg-color); border-radius: 8px; padding: 30px; box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+    background-color: var(--secondary-bg-color);
+    border: 3px solid var(--accent-blue);
+    border-radius: 0;
+    box-shadow: 0 0 50px rgba(0, 191, 255, 0.5);
 }
-.close {
-    position: absolute; top: 15px; right: 35px; color: var(--text-color-primary); font-size: 40px; font-weight: bold; cursor: pointer; transition: color 0.3s;
-}
-.close:hover { color: var(--accent-color); }
-
 #modal-title {
-    font-size: 2.5em;
-    color: var(--accent-color);
-    margin-bottom: 40px;
-    text-transform: uppercase;
-}
-
-#modal-images h4, #modal-videos h4 {
-    color: var(--text-color-primary);
-    font-size: 1.8em;
-    margin-top: 40px;
-    margin-bottom: 20px;
-    border-bottom: 1px solid var(--border-color);
+    color: var(--accent-gold);
+    border-bottom: 2px dashed var(--accent-blue);
     padding-bottom: 10px;
 }
-
-/* Галерея Изображений (Карусель) */
-#image-carousel-container {
-    position: relative;
-    margin: 0 auto 30px;
-    max-width: 900px;
-}
-#image-carousel {
-    display: flex;
-    overflow-x: scroll;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    border-radius: 4px;
-    border: 1px solid var(--border-color);
-}
-#image-carousel::-webkit-scrollbar { height: 8px; }
-#image-carousel::-webkit-scrollbar-thumb { background: var(--accent-color); border-radius: 4px; }
-
-.carousel-image-wrapper {
-    flex-shrink: 0;
-    width: 100%;
-    scroll-snap-align: center;
-    cursor: zoom-in;
-}
-.carousel-image {
-    width: 100%;
-    height: auto;
-    max-height: 70vh;
-    object-fit: contain;
-    display: block;
+#modal-images h4, #modal-videos h4 {
+    color: var(--accent-blue);
+    text-shadow: 0 0 10px rgba(0, 191, 255, 0.4);
 }
 
-/* Стили для стрелок */
-.arrow {
-    position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0, 0, 0, 0.5); color: var(--text-color-primary); border: none; padding: 15px 15px; cursor: pointer; font-size: 24px; line-height: 1; z-index: 5; transition: background-color 0.3s, color 0.3s;
-}
-.arrow:hover { background: var(--accent-color); color: var(--bg-color); }
-#prev-arrow { left: 0; border-radius: 0 4px 4px 0; }
-#next-arrow { right: 0; border-radius: 4px 0 0 4px; }
-
-
-/* Список Видео */
-#video-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-    gap: 30px;
-    text-align: left;
-}
+/* Видео и Карусель */
+.arrow:hover { background: var(--accent-gold); color: var(--bg-color); }
 .video-item {
-    position: relative;
-    padding: 15px; background-color: var(--bg-color); border-radius: 8px; border: 1px solid var(--border-color);
-}
-.video-item video {
-    width: 100%; max-height: 400px; border-radius: 4px; margin-bottom: 10px;
+    background-color: var(--bg-color);
+    border: 1px solid var(--accent-blue);
 }
 .video-comment {
-    font-size: 0.9em; color: var(--text-color-secondary); border-left: 3px solid var(--accent-color); padding-left: 10px; margin-top: 10px; font-style: italic;
-    font-family: 'IBM Plex Mono', monospace;
+    border-left: 3px solid var(--accent-gold);
 }
-
-/* --- ИНДИКАТОР ЗАГРУЗКИ ВИДЕО (ЛОАДЕР) --- */
-.video-loader {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(18, 18, 22, 0.9); display: none; justify-content: center; align-items: center; flex-direction: column; z-index: 5; border-radius: 8px; backdrop-filter: blur(5px);
-}
-
 .spinner {
-    border: 8px solid rgba(255, 255, 255, 0.1);
-    border-top: 8px solid var(--accent-color);
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    animation: spin 1s linear infinite;
-    box-shadow: 0 0 10px rgba(255, 153, 0, 0.5);
+    border-top: 8px solid var(--accent-gold);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
 
-.video-loader p {
-    margin-top: 10px; color: var(--accent-color); font-size: 1.1em;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-
-/* --- МОДАЛЬНОЕ ОКНО ZOOM --- */
-#zoom-modal {
-    display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.98); text-align: center;
-}
-#zoom-content {
-    margin: auto; display: block; width: 95%; max-width: 1600px; max-height: 95vh; object-fit: contain; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-}
-#zoom-close {
-    position: absolute; top: 20px; right: 35px; color: var(--text-color-primary); font-size: 40px; font-weight: bold; transition: color 0.3s; cursor: pointer;
-}
-#zoom-close:hover { color: var(--accent-color); }
-
-
-/* Секция Заказа и Подвал */
+/* Секция Заказа */
 #order-section {
-    padding: 80px 50px;
-    background-color: var(--bg-color);
-    border-top: 1px solid var(--border-color);
+    background-color: var(--secondary-bg-color);
+    border-top: 5px solid var(--accent-gold);
 }
 .order-subtitle {
+    font-family: 'Roboto Mono', monospace;
     color: var(--text-color-secondary);
     font-size: 1.1em;
-    margin-bottom: 40px;
 }
-.order-links {
-    display: flex; justify-content: center; gap: 40px; margin-top: 30px;
-}
+
 .social-link {
-    display: block; padding: 15px 30px; border-radius: 4px; text-decoration: none; font-weight: 600; color: white; transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s; font-size: 1.1em;
+    font-family: 'Orbitron', sans-serif;
 }
-.social-link:hover {
-    transform: translateY(-5px);
-}
-.telegram-link { background-color: #0088cc; }
-.telegram-link:hover { box-shadow: 0 10px 20px rgba(0, 136, 204, 0.5); }
-.vk-link { background-color: #4a76a8; }
-.vk-link:hover { box-shadow: 0 10px 20px rgba(74, 118, 168, 0.5); }
-.email-link { background-color: var(--accent-color); color: var(--bg-color); }
-.email-link:hover { box-shadow: 0 10px 20px rgba(255, 153, 0, 0.5); background-color: #ffb347; }
+.email-link { background-color: var(--accent-gold); color: var(--bg-color); }
+.email-link:hover { box-shadow: 0 10px 20px rgba(255, 215, 0, 0.5); background-color: #ffc107; }
 
+/* Подвал */
 footer {
-    padding: 20px; border-top: 1px dashed var(--border-color); font-size: 0.8em; color: var(--text-color-secondary);
-    text-align: center;
+    border-top: 1px solid var(--accent-blue);
+    font-family: 'Roboto Mono', monospace;
+    color: var(--text-color-secondary);
 }
 
-/* --- МЕДИАЗАПРОСЫ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ (АДАПТИВНОСТЬ) --- */
-@media (max-width: 1024px) {
+/* МЕДИАЗАПРОСЫ */
+@media (max-width: 1200px) {
     .pipeline-steps {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-    .step {
-        flex-basis: 45%;
-    }
-    #video-list {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
     }
 }
-
 @media (max-width: 768px) {
-    header {
-        flex-direction: column;
-        padding: 15px 20px;
-    }
-    nav ul {
-        margin-top: 10px;
-    }
-    nav a {
-        margin: 0 10px;
-    }
-
     h1 { font-size: 2.5em; }
-    h2 { font-size: 1.8em; }
-
-    #hero {
-        padding: 100px 20px 60px;
-        text-align: center;
-    }
-    .hero-content {
-        margin: 0;
-    }
-    .hero-cta-group {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-    .cta-button {
-        margin: 5px 0;
-    }
-    
-    section {
-        padding: 60px 20px;
-    }
-    .gallery {
+    #hero { padding: 150px 20px 80px; }
+    .pipeline-steps {
         grid-template-columns: 1fr;
     }
-    .pipeline-steps {
-        flex-direction: column;
-    }
-    .step {
-        flex-basis: 100%;
-    }
-    .order-links {
-        flex-direction: column;
-        gap: 15px;
-    }
-    .close {
-        top: 10px;
-        right: 15px;
-    }
+    .hero-content { text-align: center; }
+    .hero-description { max-width: 100%; }
 }
