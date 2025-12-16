@@ -1,387 +1,362 @@
-/* style.css (V3.0: STUDIO GRADE - МАКСИМАЛЬНО ПРОФЕССИОНАЛЬНО) */
-
+/* --- ЦВЕТОВАЯ СХЕМА: Кинематографичный, Золотой Акцент --- */
 :root {
-    --bg-color: #0F0F13; /* Темный графит, основа */
-    --secondary-bg-color: #1A1A22; /* Немного светлее для карточек */
-    --accent-blue: #00BFFF; /* Небесно-голубой (чистый, холодный свет) */
-    --accent-gold: #FFD700; /* Золотой/Желтый (основной акцент, энергия) */
-    --text-color-primary: #ECECEC; /* Почти белый */
-    --text-color-secondary: #AAAAAA; /* Серый для подписей */
-    --border-color: #2D2D35; /* Жесткие темные линии */
+    --bg-color: #080216; /* Глубокий Темно-Синий/Фиолетовый */
+    --accent-color: #ffaa00; /* Золотой/Оранжевый Акцент */
+    --secondary-color: #5d35b9; /* Глубокий Пурпурный (для теней/рамок) */
+    --text-color: #f0f0f0;
+    --light-text: #bdbdbe;
 }
 
 /* Общий стиль */
 body {
-    font-family: 'Roboto Mono', monospace; /* Технологичный, читаемый моноширинный */
-    background-color: var(--bg-color);
-    color: var(--text-color-primary);
-    margin: 0;
-    line-height: 1.6;
-    scroll-behavior: smooth;
+    font-family: 'Montserrat', sans-serif; /* Профессиональный шрифт */
+    /* ---- ФОН: Замените на сгенерированный файл ---- */
+    background: 
+        linear-gradient(rgba(8, 2, 22, 0.95), rgba(8, 2, 22, 0.95)), /* Более плотный градиент */
+        url('https://www.dropbox.com/scl/fi/1655qh0z74ftvdwa28rom/Gemini_Generated_Image_k2tkmuk2tkmuk2tk.png?rlkey=l10dfet27490ow5vtvsoo6914&st=3vlou4gn&dl=0') center fixed;
+    background-size: cover;
+    /* -------------------- */
+    color: var(--text-color);
+    margin: 0;
+    line-height: 1.6;
+    scroll-behavior: smooth;
+    overflow-x: hidden;
 }
+.accent-text {
+    color: var(--accent-color);
+}
+.quality-tag {
+    display: inline-block;
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 0.8em;
+    font-weight: 900;
+    margin-left: 10px;
+}
+
 
 /* Стилизация Заголовков */
 h1, h2, h3, h4 {
-    font-family: 'Orbitron', sans-serif; /* Агрессивный, технологичный шрифт */
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    color: var(--text-color);
+    text-shadow: 0 0 15px rgba(255, 170, 0, 0.4); /* Мягкое золотое свечение */
+    margin-bottom: 20px;
+    text-transform: uppercase;
 }
-h1 {
-    font-size: 4em;
-    letter-spacing: 2px;
-}
-h1 span {
-    color: var(--accent-gold);
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
-}
-h2 {
-    font-size: 2.2em;
-    margin-bottom: 40px;
-    color: var(--text-color-primary);
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 10px;
-}
-.section-tag {
-    font-family: 'Roboto Mono', monospace;
-    color: var(--accent-blue);
-    font-size: 0.7em;
-    display: inline-block;
-    margin-right: 15px;
-}
+h1 span { color: var(--accent-color); }
+h2 { color: var(--accent-color); border-bottom: 2px solid var(--secondary-color); padding-bottom: 10px; display: inline-block; }
 
-/* Навигация */
+
+/* --- НАВИГАЦИЯ --- */
 header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 50px;
-    background-color: rgba(15, 15, 19, 0.95);
-    border-bottom: 3px solid var(--accent-blue);
-    box-shadow: 0 0 10px rgba(0, 191, 255, 0.3);
-    position: sticky;
-    top: 0;
-    z-index: 100; /* Максимальный Z-index */
-    backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 20px 50px;
+    background: rgba(8, 2, 22, 0.9);
+    border-bottom: 1px solid var(--secondary-color);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 .logo {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 2em;
-    font-weight: 800;
-    color: var(--text-color-primary);
+    font-size: 1.8em;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin-right: 50px;
 }
-.logo-subtitle {
-    font-family: 'Roboto Mono', monospace;
-    font-size: 0.5em;
-    color: var(--accent-gold);
-    margin-left: 5px;
-}
-nav ul {
-    list-style: none; padding: 0; margin: 0; display: flex;
-}
+nav ul { list-style: none; padding: 0; margin: 0; display: flex; }
 nav a {
-    color: var(--text-color-secondary);
-    text-decoration: none;
-    margin-left: 30px;
-    padding: 5px 0;
-    border-bottom: 2px solid transparent;
-    transition: all 0.3s;
-    font-weight: 700;
-    letter-spacing: 1px;
+    color: var(--light-text);
+    text-decoration: none;
+    margin-left: 30px;
+    padding: 8px 0;
+    position: relative;
+    transition: all 0.3s;
+    font-weight: 700;
+}
+nav a::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; width: 0; height: 3px;
+    background: var(--accent-color);
+    box-shadow: 0 0 5px var(--accent-color);
+    transition: width 0.3s;
 }
 nav a:hover {
-    color: var(--accent-blue);
-    border-bottom: 2px solid var(--accent-blue);
+    color: var(--accent-color);
 }
-.cta-nav-link {
-    color: var(--accent-gold) !important;
+nav a:hover::after {
+    width: 100%;
 }
 
-/* СЕКЦИЯ HERO: Фон из 3D-пакетов */
+
+/* --- HERO-СЕКЦИЯ --- */
 #hero {
-    padding: 200px 50px 150px;
-    text-align: left;
-    position: relative;
-    overflow: hidden;
-    border-bottom: 5px solid var(--border-color);
+    padding: 180px 50px 100px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    /* ---- ФОН: Замените на сгенерированный файл ---- */
+    background: 
+        linear-gradient(to top, rgba(8, 2, 22, 1) 0%, rgba(8, 2, 22, 0.3) 50%, rgba(8, 2, 22, 1) 100%),
+        url('https://www.dropbox.com/scl/fi/9o6cnvgp7j33b157wr3x2/Gemini_Generated_Image_8jgjgu8jgjgu8jgj.png?rlkey=59oinlip2ga08d91wt55vcois&st=mkgi3llw&dl=0') center no-repeat;
+    background-size: cover;
+    /* -------------------- */
 }
-/* Слой 1: Фон с сеткой */
-#hero::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: url('https://placehold.co/1920x1080/0F0F13/333340?text=3D+SOFTWARE+INTERFACE') no-repeat center center;
-    background-size: cover;
-    opacity: 0.15;
-    z-index: 0;
-    filter: saturate(0.5);
-}
-/* Слой 2: Узкие полосы для HUD-эффекта */
-.hero-bg-overlay {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: repeating-linear-gradient(
-        180deg,
-        rgba(0, 191, 255, 0.05),
-        rgba(0, 191, 255, 0.05) 1px,
-        transparent 1px,
-        transparent 20px
-    );
-    opacity: 0.3;
-    z-index: 1;
-}
-
 .hero-content {
-    max-width: 1000px;
-    margin: 0 auto;
-    position: relative;
-    z-index: 2;
+    max-width: 900px;
+    margin: 0 auto;
 }
-.hero-tag {
-    color: var(--accent-blue);
-    font-family: 'Roboto Mono', monospace;
-    font-size: 1em;
-    margin-bottom: 10px;
+#hero h1 {
+    font-size: 3.5em;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 20px;
 }
-.hero-description {
-    font-size: 1.2em;
-    color: var(--text-color-secondary);
-    margin-bottom: 40px;
-    max-width: 600px;
+.subtitle {
+    font-size: 1.2em;
+    color: var(--light-text);
+    margin-bottom: 40px;
 }
 
-/* Кнопки CTA */
+/* Кнопки */
+.cta-group { margin-top: 40px; }
 .cta-button {
-    display: inline-block;
-    padding: 15px 40px;
-    text-decoration: none;
-    border-radius: 2px;
-    font-weight: 700;
-    margin-right: 25px;
-    transition: all 0.3s;
-    text-transform: uppercase;
-    font-family: 'Orbitron', sans-serif;
-    letter-spacing: 1px;
+    display: inline-block;
+    padding: 15px 40px;
+    text-decoration: none;
+    border-radius: 50px; /* Более современный вид */
+    font-weight: bold;
+    margin: 10px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
-.primary-cta {
-    background-color: var(--accent-gold);
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
-    color: var(--bg-color);
-    border: none;
+.cta-button.primary {
+    background: var(--accent-color);
+    box-shadow: 0 0 20px rgba(255, 170, 0, 0.7);
+    color: var(--bg-color);
+    font-size: 1.1em;
+    border: 2px solid var(--accent-color);
 }
-.primary-cta:hover {
-    background-color: #ffe066;
-    box-shadow: 0 0 25px var(--accent-gold);
-    transform: translateY(-3px);
+.cta-button.primary:hover {
+    background: #e69500;
+    box-shadow: 0 0 30px var(--accent-color), 0 0 5px var(--text-color);
+    transform: translateY(-3px);
 }
-.secondary-cta {
-    background: transparent;
-    border: 2px solid var(--accent-blue);
-    color: var(--accent-blue);
-    box-shadow: 0 0 10px rgba(0, 191, 255, 0.4);
+.cta-button.secondary {
+    background: transparent;
+    border: 2px solid var(--secondary-color);
+    color: var(--secondary-color);
+    box-shadow: 0 0 10px var(--secondary-color);
 }
-.secondary-cta:hover {
-    background-color: rgba(0, 191, 255, 0.1);
-    border-color: var(--text-color-primary);
+.cta-button.secondary:hover {
+    background-color: rgba(93, 53, 185, 0.2);
+    box-shadow: 0 0 20px var(--secondary-color);
+    color: var(--text-color);
+    transform: translateY(-3px);
 }
 
 /* Секции */
 section {
-    padding: 100px 50px;
-    text-align: center;
-    max-width: 1600px;
-    margin: 0 auto;
+    padding: 100px 50px;
+    text-align: center;
 }
 
-/* Панель Администратора (Стилизована под консоль) */
-#admin-panel {
-    background-color: var(--secondary-bg-color);
-    border: 1px solid var(--accent-gold);
-    padding: 30px;
-    margin: 50px auto;
-    max-width: 800px;
-    display: none;
-    text-align: left;
-}
-#admin-panel input, #admin-panel button {
-    background-color: #08080a;
-    color: var(--accent-blue);
-    border: 1px solid var(--accent-blue);
-    font-family: 'Roboto Mono', monospace;
-    padding: 10px;
-}
-.admin-button {
-    background-color: var(--accent-gold) !important;
-    color: var(--bg-color) !important;
-    border: none !important;
-}
 
-/* Галерея Портфолио (Превью) */
+/* --- ПАНЕЛЬ АДМИНИСТРАТОРА --- */
+.admin-panel-style {
+    background-color: #1f0f4a;
+    border: 2px solid var(--secondary-color);
+    border-radius: 10px;
+    padding: 30px;
+    margin: 50px auto;
+    max-width: 900px;
+    display: none;
+    text-align: left;
+    box-shadow: 0 0 20px rgba(93, 53, 185, 0.5);
+}
+.admin-panel-style hr { border-color: var(--accent-color); margin: 20px 0; }
+.admin-panel-style input, .admin-panel-style button {
+    margin: 10px 0; padding: 12px; width: 100%; box-sizing: border-box;
+    background-color: #0d0115;
+    color: var(--text-color);
+    border: 1px solid var(--secondary-color);
+    border-radius: 5px;
+    font-family: 'Montserrat', sans-serif;
+}
+.admin-panel-style button {
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+.admin-panel-style button:hover {
+    background-color: #e69500;
+    box-shadow: 0 0 10px var(--accent-color);
+}
+.note { color: var(--light-text); font-size: 0.9em; margin-top: 15px; }
+
+
+/* --- ГАЛЕРЕЯ ПОРТФОЛИО (Превью) --- */
 .gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 40px;
-    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 40px;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding-top: 20px;
 }
 .item-container {
-    background-color: var(--secondary-bg-color);
-    border-radius: 4px;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    transition: all 0.3s;
+    background-color: #1a082b;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+    transition: all 0.4s;
+    overflow: hidden;
+    border: 1px solid transparent;
 }
 .item-container:hover {
-    transform: translateY(-8px);
-    border-color: var(--accent-blue);
-    box-shadow: 0 15px 40px rgba(0, 191, 255, 0.3);
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(255, 170, 0, 0.3); /* Ярче свечение при наведении */
+    border-color: var(--accent-color);
 }
 .item {
-    overflow: hidden;
-    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
 }
 .item img {
-    width: 100%;
-    max-height: 400px;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.3s;
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover; /* Изменено на cover для более эффектного превью */
+    display: block;
+    transition: transform 0.4s;
 }
 .item:hover img {
-    transform: scale(1.08);
+    transform: scale(1.05);
 }
 
+/* Стиль для подписи */
 .item-caption {
-    background-color: #1a1a22;
-    color: var(--text-color-primary);
-    font-size: 1.1em;
-    font-weight: 700;
-    padding: 15px 10px;
-    border-top: 2px dashed var(--accent-blue);
-    text-align: left;
+    background-color: #15062a;
+    color: var(--text-color);
+    font-size: 1.3em;
+    font-weight: 700;
+    padding: 15px 10px;
+    text-align: center;
+    line-height: 1.2;
+    border-top: 1px solid var(--secondary-color);
 }
+.item-caption button {
+    margin-left: 15px;
+    padding: 5px 10px;
+    font-size: 0.8em;
+    background-color: #c90000;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.item-caption button:hover { background-color: #ff0000; }
 
-/* Секция Пайплайна */
-#pipeline {
-    background: linear-gradient(180deg, var(--bg-color), #09090c);
+/* --- МОДАЛЬНОЕ ОКНО (ДЕТАЛИ) --- */
+/* Сохранены основные стили, но с новой цветовой схемой */
+.modal {
+    display: none; position: fixed; z-index: 20; padding-top: 50px; left: 0; top: 0; width: 100%; height: 100%; overflow-y: scroll; background-color: rgba(0, 0, 0, 0.97);
 }
-.pipeline-intro {
-    color: var(--accent-gold);
-    font-family: 'Roboto Mono', monospace;
-    font-size: 1em;
-    margin-bottom: 60px;
-}
-.pipeline-steps {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 30px;
-}
-.step {
-    padding: 25px;
-    border: 1px solid var(--accent-blue);
-    border-radius: 4px;
-    background-color: var(--secondary-bg-color);
-    transition: all 0.3s;
-    position: relative;
-    overflow: hidden;
-}
-.step::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background-color: rgba(0, 191, 255, 0.05); /* Легкая синяя подсветка */
-    z-index: 0;
-}
-.step:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 25px rgba(0, 191, 255, 0.5);
-    border-color: var(--accent-gold);
-}
-.step h3 {
-    font-size: 1.2em;
-    color: var(--accent-gold);
-    position: relative; z-index: 1;
-}
-.step-number {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.5em;
-    color: var(--accent-blue);
-    display: block;
-    margin-bottom: 10px;
-}
-.step p {
-    color: var(--text-color-secondary);
-    font-size: 0.9em;
-    font-family: 'Roboto Mono', monospace;
-    position: relative; z-index: 1;
-}
-
-/* МОДАЛЬНЫЕ ОКНА (стиль интерфейса) */
 .modal-content {
-    background-color: var(--secondary-bg-color);
-    border: 3px solid var(--accent-blue);
-    border-radius: 0;
-    box-shadow: 0 0 50px rgba(0, 191, 255, 0.5);
+    margin: 0 auto; width: 90%; max-width: 1400px; text-align: center; 
+    background-color: #15062a; 
+    border-radius: 10px; padding: 40px; 
+    box-shadow: 0 0 50px var(--secondary-color);
 }
+.close {
+    position: absolute; top: 20px; right: 40px; color: #f1f1f1; font-size: 50px; font-weight: bold; cursor: pointer; transition: color 0.3s;
+}
+.close:hover { color: var(--accent-color); }
+
 #modal-title {
-    color: var(--accent-gold);
-    border-bottom: 2px dashed var(--accent-blue);
-    padding-bottom: 10px;
-}
-#modal-images h4, #modal-videos h4 {
-    color: var(--accent-blue);
-    text-shadow: 0 0 10px rgba(0, 191, 255, 0.4);
+    font-size: 3em;
+    color: var(--accent-color);
+    text-shadow: 0 0 15px rgba(255, 170, 0, 0.7);
+    margin-bottom: 50px;
 }
 
-/* Видео и Карусель */
-.arrow:hover { background: var(--accent-gold); color: var(--bg-color); }
+#modal-images h4, #modal-videos h4 {
+    color: var(--text-color);
+    text-shadow: 0 0 10px rgba(255, 170, 0, 0.5);
+    font-size: 2em;
+    border-bottom: 2px dashed var(--secondary-color);
+    padding-bottom: 10px;
+    margin-top: 40px;
+    margin-bottom: 30px;
+}
+
+#image-carousel-container {
+    max-width: 1000px; /* Увеличено для лучшего просмотра */
+}
+/* Стили для стрелок и карусели - без изменений */
+.arrow { background: rgba(0, 0, 0, 0.7); color: white; transition: background-color 0.3s; }
+.arrow:hover { background: var(--accent-color); color: var(--bg-color); }
+
+
+/* Список Видео */
 .video-item {
-    background-color: var(--bg-color);
-    border: 1px solid var(--accent-blue);
+    position: relative;
+    padding: 20px; 
+    background-color: #0d0115; 
+    border-radius: 10px; 
+    border: 1px solid rgba(255, 170, 0, 0.3); /* Рамка с золотым свечением */
+    box-shadow: 0 0 15px rgba(255, 170, 0, 0.1);
 }
 .video-comment {
-    border-left: 3px solid var(--accent-gold);
-}
-.spinner {
-    border-top: 8px solid var(--accent-gold);
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    font-size: 1.1em; color: var(--light-text); 
+    border-left: 5px solid var(--accent-color); /* Золотая полоса */
+    padding-left: 15px; margin-top: 15px; font-style: italic;
 }
 
-/* Секция Заказа */
+/* Лоадер */
+.spinner { border-top: 8px solid var(--accent-color); box-shadow: 0 0 10px var(--accent-color); }
+.video-loader p { color: var(--text-color); text-shadow: 0 0 5px var(--accent-color); }
+
+
+/* --- Секция Заказа и Подвал --- */
 #order-section {
-    background-color: var(--secondary-bg-color);
-    border-top: 5px solid var(--accent-gold);
+    background-color: #0d0115;
+    border-top: 3px solid var(--accent-color);
 }
-.order-subtitle {
-    font-family: 'Roboto Mono', monospace;
-    color: var(--text-color-secondary);
-    font-size: 1.1em;
+.order-links {
+    display: flex; justify-content: center; gap: 60px; margin-top: 40px;
 }
+.order-links a {
+    display: block; padding: 18px 40px; border-radius: 8px; text-decoration: none; font-weight: bold; 
+    color: white; transition: transform 0.2s, box-shadow 0.2s; font-size: 1.2em;
+    text-transform: uppercase;
+}
+.order-links a:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7); }
+.telegram { background-color: #0088cc; box-shadow: 0 0 20px #0088cc; }
+.vk { background-color: #4a76a8; box-shadow: 0 0 20px #4a76a8; }
+.email { background-color: var(--secondary-color); box-shadow: 0 0 20px var(--secondary-color); }
 
-.social-link {
-    font-family: 'Orbitron', sans-serif;
-}
-.email-link { background-color: var(--accent-gold); color: var(--bg-color); }
-.email-link:hover { box-shadow: 0 10px 20px rgba(255, 215, 0, 0.5); background-color: #ffc107; }
-
-/* Подвал */
 footer {
-    border-top: 1px solid var(--accent-blue);
-    font-family: 'Roboto Mono', monospace;
-    color: var(--text-color-secondary);
+    padding: 30px; background-color: #000000; color: var(--light-text);
+    border-top: 1px dashed var(--secondary-color); font-size: 0.9em;
 }
 
-/* МЕДИАЗАПРОСЫ */
-@media (max-width: 1200px) {
-    .pipeline-steps {
-        grid-template-columns: repeat(2, 1fr);
-    }
+/* --- МЕДИАЗАПРОСЫ (АДАПТИВНОСТЬ) --- */
+@media (max-width: 1024px) {
+    #hero h1 { font-size: 2.5em; }
+    .order-links { gap: 30px; }
 }
 @media (max-width: 768px) {
-    h1 { font-size: 2.5em; }
-    #hero { padding: 150px 20px 80px; }
-    .pipeline-steps {
-        grid-template-columns: 1fr;
-    }
-    .hero-content { text-align: center; }
-    .hero-description { max-width: 100%; }
+    /* ... (Стили для мобильных устройств, как в оригинале, но с новыми цветами) ... */
+    header { justify-content: center; }
+    #hero h1 { font-size: 2em; }
+    .cta-button { padding: 12px 25px; font-size: 1em; }
+    .gallery { grid-template-columns: 1fr; gap: 20px; }
+    .order-links { flex-direction: column; gap: 15px; max-width: 300px; margin: 20px auto; }
 }
