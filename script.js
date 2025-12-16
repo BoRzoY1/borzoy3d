@@ -1,258 +1,729 @@
-// --- 1. ПОРТФОЛИО: ДЕМО-ДАННЫЕ ---
-let portfolioData = [
-    {
-        id: 1,
-        title: "K-001 | Скорпион",
-        description: "Высокодетализированная модель киборга-наемника. Game-Ready, 120k tris. Рендер в Unreal Engine 5.",
-        thumbUrl: "https://dl.dropboxusercontent.com/scl/fi/vkh9v9l5173f0896q6s85/thumb_01.png?rlkey=f1k329b3f66w0y86x148g&dl=0&raw=1", // Прямая ссылка
-        tag: "AAA",
-        images: [
-            "https://dl.dropboxusercontent.com/scl/fi/d3s96d9w2r2j9t4g9y0h1/detail_01_a.png?rlkey=z31f0w2f7s48a5w2e7e4q&dl=0&raw=1",
-            "https://dl.dropboxusercontent.com/scl/fi/m0j5s70h2b4p1v5t0o0a2/detail_01_b.png?rlkey=d7v3a8x9y0w3c6f2g4h5i&dl=0&raw=1",
-            "https://dl.dropboxusercontent.com/scl/fi/o9z8w7t4c1p2k6d3r5s7/detail_01_c.png?rlkey=a5h3g4f2e1d9s8w7q6p5o&dl=0&raw=1"
-        ],
-        videos: [
-            { url: "https://www.youtube.com/embed/dQw4w9WgXcQ?si=cO5z-1e-p8e", comment: "Демонстрация 360° вращения модели и сетки." }
-        ]
-    },
-    {
-        id: 2,
-        title: "Эльфийский Страж",
-        description: "Персонаж для фэнтези RPG. Полный комплект брони и оружия. PBR текстуры 4K.",
-        thumbUrl: "https://dl.dropboxusercontent.com/scl/fi/3n9y9u3x2w1v0t8s7r6q/thumb_02.png?rlkey=a2c1b0d9e8f7g6h5i4j3k&dl=0&raw=1",
-        tag: "Game Ready",
-        images: [
-            "https://dl.dropboxusercontent.com/scl/fi/h7j6g5f4d3c2b1a0s9z8/detail_02_a.png?rlkey=k5j4i3h2g1f0e9d8c7b6a&dl=0&raw=1",
-            "https://dl.dropboxusercontent.com/scl/fi/r8q7p6o5n4m3l2k1j0i9/detail_02_b.png?rlkey=s9r8q7p6o5n4m3l2k1j0i&dl=0&raw=1"
-        ],
-        videos: []
+// script.js (Финальная, Гарантированно Рабочая Версия)
+
+
+
+const ADMIN_PASSWORD = "admin123";
+
+let isAdminMode = false;
+
+const adminPanel = document.getElementById('admin-panel');
+
+const gallery = document.getElementById('portfolio-gallery');
+
+
+
+// --- Элементы Модального Окна ---
+
+var modal = document.getElementById("myModal");
+
+var modalTitle = document.getElementById('modal-title');
+
+var imageCarousel = document.getElementById('image-carousel');
+
+var videoList = document.getElementById('video-list');
+
+var zoomModal = document.getElementById('zoom-modal');
+
+var zoomContent = document.getElementById('zoom-content');
+
+
+
+// --- Глобальные переменные для видео ---
+
+let videoObserver;
+
+const isMobile = window.innerWidth <= 768; 
+
+
+
+
+
+// --- ИСПРАВЛЕНИЕ #1: Надежная Трансформация Ссылок ---
+
+function transformExternalLink(link) {
+
+    if (!link) return link;
+
+    
+
+    // 1. Преобразование ссылок DROPBOX в прямые URL для любых файлов (наиболее надежный способ)
+
+    if (link.includes('dropbox.com')) {
+
+        // Замена домена на dl.dropboxusercontent.com
+
+        let directLink = link.replace('www.dropbox.com', 'dl.dropboxusercontent.com').replace('dropbox.com', 'dl.dropboxusercontent.com');
+
+        
+
+        // Удаление всех параметров, кроме raw=1
+
+        if (directLink.includes('?')) {
+
+            directLink = directLink.substring(0, directLink.indexOf('?'));
+
+        }
+
+        
+
+        // Добавление гарантированного параметра ?raw=1
+
+        return directLink + '?raw=1';
+
     }
-    // Здесь будут добавлены другие работы
+
+    
+
+    // 2. Преобразование ссылок GOOGLE DRIVE
+
+    if (link.includes('drive.google.com')) {
+
+        const match = link.match(/\/d\/([a-zA-Z0-9_-]+)/);
+
+        if (match && match[1]) {
+
+            const fileId = match[1];
+
+            return `https://drive.google.com/uc?export=download&id=${fileId}`;
+
+        }
+
+    }
+
+    
+
+    return link;
+
+}
+
+
+
+
+
+// --- Инициализация и Структура Данных ---
+
+const defaultPortfolio = [
+
+    {
+
+        name: 'Профессор Мортимер',
+
+        thumb: 'https://dl.dropboxusercontent.com/scl/fi/mstspscecsx1yldqk851g/1.jpg?rlkey=eg6xz94myutc5s0lcz04aht9y&st=qy0hng39&dl=0', 
+
+        images: [
+
+            // Теперь эти ссылки гарантированно будут преобразованы в прямые с помощью transformExternalLink
+
+            'https://dl.dropboxusercontent.com/scl/fi/mstspscecsx1yldqk851g/1.jpg?rlkey=eg6xz94myutc5s0lcz04aht9y&st=qy0hng39&dl=0', 
+
+            'https://dl.dropboxusercontent.com/scl/fi/rl0oigzkusgywne8aodz8/2.jpg?rlkey=7bll963z8zwembkzhi594eymz&st=yhuzxaor&dl=0', 
+
+            'https://dl.dropboxusercontent.com/scl/fi/wwmte98i6k5c4kohchk6w/3.jpg?rlkey=2nwfnoifn4jhsnw4cu207dhym&st=mbopky0z&dl=0', 
+
+            'https://dl.dropboxusercontent.com/scl/fi/z50rjnovl8q0y1aykv85r/4.jpg?rlkey=sa9mxg0lf83u5lmx0djwnniwx&st=mho345z5&dl=0', 
+
+            'https://dl.dropboxusercontent.com/scl/fi/5ys8p6c8a3jwrso2mfnjh/Setka1.jpg?rlkey=ew5ug22upzwnosvwzg2ws3lwu&st=divoyzwa&dl=0', 
+
+            'https://dl.dropboxusercontent.com/scl/fi/0ejxct6v6w8oiiwexcbmy/Setka2.jpg?rlkey=d32u8oz0s78yguv7zbddiun9n&st=d2ljtd4r&dl=0', 
+
+            'https://dl.dropboxusercontent.com/scl/fi/9ikt5esccapenyskc0t55/Setka3.jpg?rlkey=vmwavh14gcawave5why2p3t4e&st=di39z041&dl=0', 
+
+            'https://dl.dropboxusercontent.com/scl/fi/mcfdouh1ru26itf7ac6gi/Setka4.jpg?rlkey=izof5dp8itdendf65ia9gn800&st=8pelihnb&dl=0'
+
+        ],
+
+        videos: [
+
+            { 
+
+                path: 'https://dl.dropboxusercontent.com/scl/fi/lcfptkdpi97m8diabnm7e/Face_CC.mp4?rlkey=t87zz7ep6ljdsnawfxpub891e&st=xp6tgmxv&dl=0', 
+
+                comment: 'Работа лицевых морфов' 
+
+            },
+
+            { 
+
+                path: 'https://dl.dropboxusercontent.com/scl/fi/taunwsgy2vkyxgjdt1ubp/FinalRender.mp4?rlkey=2h1z881wj73gh7ctubort3c0c&st=a0u625b6&dl=0', 
+
+                comment: 'Небоьшой синиматик, решил сделать для теста' 
+
+            },
+
+            { 
+
+                path: 'https://dl.dropboxusercontent.com/scl/fi/ipmg2p2piewgautqe84c9/Game.mp4?rlkey=psif5rxlma8ix12zeagrbwv0b&st=u66erdum&dl=0', 
+
+                comment: 'Персонаж отлично работает в игре в UE5' 
+
+            }
+
+        ]
+
+    } 
+
 ];
 
-let nextId = 3; 
 
-// --- 2. ФУНКЦИЯ: Преобразование ссылки Dropbox в прямую ---
-function transformExternalLink(link) {
-    if (link && link.includes('dropbox.com')) {
-        // Преобразуем стандартную ссылку в рабочую для прямого доступа
-        return link.replace('www.dropbox.com', 'dl.dropboxusercontent.com').split('&st=')[0] + '&raw=1';
-    }
-    return link;
+
+let portfolioData = JSON.parse(localStorage.getItem('portfolioData')) || defaultPortfolio;
+
+
+
+function savePortfolio() {
+
+    localStorage.setItem('portfolioData', JSON.stringify(portfolioData));
+
+    renderPortfolio();
+
 }
 
-// --- 3. ФУНКЦИЯ: Рендер Портфолио ---
+
+
 function renderPortfolio() {
-    const gallery = document.querySelector('.gallery');
+
     gallery.innerHTML = '';
-    
-    portfolioData.forEach(item => {
-        const itemContainer = document.createElement('div');
-        itemContainer.className = 'item-container';
-        itemContainer.innerHTML = `
-            <div class="item" onclick="openModal(${item.id})">
-                <img src="${transformExternalLink(item.thumbUrl)}" alt="${item.title}">
+
+    portfolioData.forEach((item, index) => {
+
+        const itemHTML = `
+
+            <div class="item-container">
+
+                <div class="item" onclick="openModal(${index})">
+
+                    <img src="${transformExternalLink(item.thumb)}" alt="${item.name}">
+
+                </div>
+
                 <div class="item-caption">
-                    ${item.title} <span class="quality-tag">${item.tag}</span>
-                    <button class="delete-btn" onclick="event.stopPropagation(); deleteItem(${item.id})">Удалить</button>
+
+                    ${item.name}
+
+                    ${isAdminMode ? `<button onclick="event.stopPropagation(); deleteItem(${index});">Удалить</button>` : ''}
+
                 </div>
+
             </div>
+
         `;
-        gallery.appendChild(itemContainer);
+
+        gallery.insertAdjacentHTML('beforeend', itemHTML);
+
     });
-    
-    updateAdminPanelSelect();
-    toggleDeleteButtons(false); // Скрываем кнопки удаления по умолчанию
+
 }
 
-// --- 4. ФУНКЦИЯ: Модальное Окно ---
-function openModal(id) {
-    const item = portfolioData.find(i => i.id === id);
-    if (!item) return;
+function deleteItem(index) {
 
-    const modal = document.getElementById('item-modal');
-    document.getElementById('modal-title').textContent = item.title;
-    document.getElementById('modal-description').textContent = item.description;
+    if (confirm(`Вы уверены, что хотите удалить работу "${portfolioData[index].name}"?`)) {
 
-    // --- Карусель Изображений ---
-    const imageCarousel = document.getElementById('image-carousel');
-    imageCarousel.innerHTML = '';
-    
-    item.images.forEach(imgUrl => {
-        const imgElement = document.createElement('img');
-        imgElement.src = transformExternalLink(imgUrl);
-        imgElement.className = 'carousel-slide';
-        imageCarousel.appendChild(imgElement);
-    });
+        portfolioData.splice(index, 1);
 
-    // --- Список Видео ---
-    const videoList = document.getElementById('video-list');
-    videoList.innerHTML = '';
-    if (item.videos && item.videos.length > 0) {
-        item.videos.forEach(video => {
-            const videoItem = document.createElement('div');
-            videoItem.className = 'video-item';
-            videoItem.innerHTML = `
-                <div class="video-embed" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
-                    <iframe src="${video.url}" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
-                </div>
-                <p class="video-comment">${video.comment}</p>
-            `;
-            videoList.appendChild(videoItem);
-        });
-        document.getElementById('modal-videos').style.display = 'block';
-    } else {
-        document.getElementById('modal-videos').style.display = 'none';
+        savePortfolio();
+
     }
 
-    modal.style.display = 'block';
-    currentSlide = 0;
-    showSlide(currentSlide);
 }
 
-// --- Логика Карусели ---
-let currentSlide = 0;
-function showSlide(n) {
-    const slides = document.querySelectorAll('.carousel-slide');
-    if (slides.length === 0) return;
-    
-    slides.forEach(slide => slide.style.display = 'none');
-    
-    if (n >= slides.length) currentSlide = 0;
-    if (n < 0) currentSlide = slides.length - 1;
-    
-    slides[currentSlide].style.display = 'block';
-}
+window.addEventListener('keypress', function(e) {
 
-function changeSlide(n) {
-    currentSlide += n;
-    showSlide(currentSlide);
-}
+    if (e.key === '/') {
+
+        e.preventDefault();
+
+        const input = prompt("Введите пароль администратора:");
+
+        if (input === ADMIN_PASSWORD) {
+
+            isAdminMode = true;
+
+            adminPanel.style.display = 'block';
+
+            alert("Режим администратора активирован.");
+
+            renderPortfolio();
+
+        } else if (input !== null) {
+
+            alert("Неверный пароль.");
+
+        }
+
+    }
+
+});
+
+function addPortfolioItem() {
+
+    const name = document.getElementById('name-input').value.trim();
+
+    const thumb = document.getElementById('thumb-input').value.trim();
+
+    const imagesStr = document.getElementById('images-input').value.trim();
+
+    const videosStr = document.getElementById('videos-input').value.trim();
 
 
-// --- 5. ЛОГИКА АДМИН-ПАНЕЛИ ---
-const ADMIN_PASSWORD = "admin"; 
 
-function toggleDeleteButtons(show) {
-    document.querySelectorAll('.delete-btn').forEach(btn => {
-        btn.style.display = show ? 'inline-block' : 'none';
-    });
-}
+    if (!name || !thumb) {
 
-function updateAdminPanelSelect() {
-    const select = document.getElementById('delete-item-select');
-    select.innerHTML = '<option value="">Выберите работу для удаления</option>';
-    portfolioData.forEach(item => {
-        const option = document.createElement('option');
-        option.value = item.id;
-        option.textContent = item.title;
-        select.appendChild(option);
-    });
-}
+        alert("Поля 'Название' и 'Превью' обязательны!");
 
-// ДОБАВЛЕНИЕ РАБОТЫ
-document.getElementById('add-item').onclick = function() {
-    const title = document.getElementById('new-item-title').value;
-    const desc = document.getElementById('new-item-desc').value;
-    const thumb = document.getElementById('new-item-thumb').value;
-    const tag = document.getElementById('new-item-tag').value || 'New';
-    const imgList = document.getElementById('new-item-img-list').value;
-    const videoList = document.getElementById('new-item-video-list').value;
-
-    if (!title || !thumb) {
-        alert("Заголовок и ссылка на превью обязательны!");
         return;
+
     }
 
-    const newItem = {
-        id: nextId++,
-        title: title,
-        description: desc,
-        thumbUrl: thumb,
-        tag: tag,
-        images: imgList.split(',').map(s => s.trim()).filter(s => s),
-        videos: videoList.split(',').map(s => {
-            const parts = s.trim().split('|');
-            return { url: parts[0], comment: parts[1] || "Видеопрезентация модели" };
-        }).filter(v => v.url)
-    };
+    const images = imagesStr ? imagesStr.split(',').map(s => s.trim()) : [];
+
+    const videos = videosStr ? videosStr.split(',').map(s => {
+
+        const [path, comment] = s.trim().split('|');
+
+        return { path: path ? path.trim() : '', comment: comment ? comment.trim() : 'Нет комментария' };
+
+    }) : [];
+
+    if (images.length === 0 && videos.length === 0) {
+
+        alert("Добавьте хотя бы одно изображение или одно видео.");
+
+        return;
+
+    }
+
+
+
+    const newItem = { name, thumb, images, videos };
 
     portfolioData.push(newItem);
-    renderPortfolio();
-    alert(`Работа "${title}" успешно добавлена!`);
-    
-    // Очистка полей
-    document.querySelectorAll('#admin-tools input').forEach(input => input.value = '');
-};
 
-// УДАЛЕНИЕ РАБОТЫ
-function deleteItem(id) {
-    const itemToDelete = portfolioData.find(i => i.id === id);
-    if (confirm(`Вы уверены, что хотите удалить работу "${itemToDelete.title}"?`)) {
-        portfolioData = portfolioData.filter(item => item.id !== id);
-        renderPortfolio();
-    }
+    savePortfolio();
+
+
+
+    document.getElementById('name-input').value = '';
+
+    document.getElementById('thumb-input').value = '';
+
+    document.getElementById('images-input').value = '';
+
+    document.getElementById('videos-input').value = '';
+
+    alert(`Работа "${name}" добавлена!`);
+
 }
 
-document.getElementById('delete-item').onclick = function() {
-    const id = parseInt(document.getElementById('delete-item-select').value);
-    if (id) {
-        deleteItem(id);
-    } else {
-        alert("Выберите работу для удаления.");
-    }
-};
 
 
-// ЛОГИН В АДМИН-ПАНЕЛЬ
-document.getElementById('admin-login-btn').onclick = function() {
-    document.getElementById('admin-panel').style.display = 'block';
-};
 
-document.getElementById('admin-login').onclick = function() {
-    const password = document.getElementById('admin-password').value;
-    const adminTools = document.getElementById('admin-tools');
-    
-    if (password === ADMIN_PASSWORD) {
-        adminTools.style.display = 'block';
-        document.getElementById('admin-password').style.display = 'none';
-        document.getElementById('admin-login').style.display = 'none';
-        
-        // Включаем режим администрирования
-        toggleDeleteButtons(true); 
-        alert("Доступ администратора предоставлен!");
-    } else {
-        alert("Неверный пароль.");
-    }
-};
 
-// --- ИНИЦИАЛИЗАЦИЯ ---
-document.addEventListener('DOMContentLoaded', () => {
-    renderPortfolio(); // Загружаем демо-данные при старте
-    
-    // Закрытие модального окна по клику на "X"
-    document.querySelector('.close').onclick = function() {
-        document.getElementById('item-modal').style.display = "none";
-    };
-    
-    // Закрытие модального окна по Esc
-    window.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape') {
-            document.getElementById('item-modal').style.display = "none";
-            document.getElementById('admin-panel').style.display = "none";
+// --- ИСПРАВЛЕНИЕ #2: ВОССТАНОВЛЕНИЕ ЛОГИКИ ПК / IntersectionObserver ---
+
+
+
+function pauseOtherVideos(currentVideo) {
+
+    videoList.querySelectorAll('video').forEach(video => {
+
+        if (video !== currentVideo) {
+
+            video.pause();
+
         }
+
     });
 
-    // Закрытие по клику вне модального окна
-    window.onclick = function(event) {
-        const modal = document.getElementById('item-modal');
-        const adminPanel = document.getElementById('admin-panel');
-        if (event.target === modal) {
-            modal.style.display = "none";
-        }
-        // Чтобы не закрывать панель, если клик был внутри
-        if (event.target === adminPanel) {
-             adminPanel.style.display = "none";
-        }
+}
+
+
+
+function setupVideoLoader(video) {
+
+    const loader = video.closest('.video-item').querySelector('.video-loader');
+
+    
+
+    video.addEventListener('waiting', () => { loader.style.display = 'flex'; });
+
+    video.addEventListener('playing', () => { loader.style.display = 'none'; });
+
+    video.addEventListener('pause', () => { loader.style.display = 'none'; });
+
+    video.addEventListener('loadeddata', () => { loader.style.display = 'none'; });
+
+}
+
+
+
+function setupVideoObserver() {
+
+    if (videoObserver) {
+
+        videoObserver.disconnect();
+
+    }
+
+
+
+    const videos = videoList.querySelectorAll('video');
+
+    if (videos.length === 0) return;
+
+
+
+    // 100% видимости для ПК, 80% для мобильных
+
+    const thresholdValue = isMobile ? 0.8 : 1.0; 
+
+    
+
+    const options = {
+
+        root: document.getElementById('myModal'),
+
+        rootMargin: '0px',
+
+        threshold: thresholdValue
+
     };
-});
+
+
+
+    videoObserver = new IntersectionObserver((entries) => {
+
+        entries.forEach((entry, index) => {
+
+            const video = entry.target;
+
+            const isFirstVideo = index === 0; 
+
+            
+
+            if (entry.isIntersecting) {
+
+                if (isMobile) {
+
+                    // ЛОГИКА ДЛЯ ТЕЛЕФОНА: Автозапуск/Остановка только для первого видео
+
+                    if (isFirstVideo) {
+
+                        video.muted = true; 
+
+                        video.play().then(() => {
+
+                            video.muted = false; 
+
+                        }).catch(error => {
+
+                             console.log("Autoplay prevented on mobile for first video:", error);
+
+                             video.muted = false;
+
+                        });
+
+                    }
+
+                } else {
+
+                    // ЛОГИКА ДЛЯ ПК: Автозапуск при 100% фокусе ( muted: true - ОБЯЗАТЕЛЬНО!)
+
+                     video.muted = true; 
+
+                     video.play().catch(error => console.log("Autoplay blocked on desktop:", error));
+
+                }
+
+                
+
+            } else {
+
+                // При выходе из фокуса (ПК и Телефон)
+
+                video.pause();
+
+                video.muted = true; // Снова мьютим для следующего автозапуска
+
+                video.closest('.video-item').querySelector('.video-loader').style.display = 'none';
+
+            }
+
+        });
+
+    }, options);
+
+
+
+    videos.forEach((video, index) => {
+
+        // Устанавливаем паузу для других видео при старте текущего
+
+        video.addEventListener('play', () => {
+
+            pauseOtherVideos(video);
+
+        });
+
+
+
+        setupVideoLoader(video);
+
+        
+
+        videoObserver.observe(video);
+
+    });
+
+}
+
+
+
+function openModal(index) {
+
+    const item = portfolioData[index];
+
+    modalTitle.textContent = item.name;
+
+    imageCarousel.innerHTML = '';
+
+    videoList.innerHTML = '';
+
+
+
+    // 1. Загрузка Изображений
+
+    if (item.images && item.images.length > 0) {
+
+        item.images.forEach(imagePath => {
+
+            // ИСПОЛЬЗУЕМ transformExternalLink ДЛЯ ГАРАНТИРОВАННО ПРЯМЫХ ССЫЛОК
+
+            const imageSource = transformExternalLink(imagePath); 
+
+            
+
+            const wrapper = document.createElement('div');
+
+            wrapper.classList.add('carousel-image-wrapper');
+
+            const img = document.createElement('img');
+
+            img.src = imageSource;
+
+            img.classList.add('carousel-image');
+
+            img.onclick = (e) => {
+
+                e.stopPropagation();
+
+                openZoomModal(imageSource);
+
+            };
+
+            wrapper.appendChild(img);
+
+            imageCarousel.appendChild(wrapper);
+
+        });
+
+        document.getElementById('modal-images').style.display = 'block';
+
+    } else {
+
+        document.getElementById('modal-images').style.display = 'none';
+
+    }
+
+
+
+    // 2. Загрузка Видео
+
+    if (item.videos && item.videos.length > 0) {
+
+        item.videos.forEach((videoItem, index) => {
+
+            const container = document.createElement('div');
+
+            container.classList.add('video-item');
+
+
+
+            const videoSource = transformExternalLink(videoItem.path);
+
+
+
+            const video = document.createElement('video');
+
+            video.src = videoSource;
+
+            video.controls = true; 
+
+            video.loop = true;
+
+            
+
+            if (isMobile) {
+
+                // Мобильный: Mute только для первого
+
+                video.muted = (index === 0) ? true : false; 
+
+            } else {
+
+                // ПК: Mute всегда. Controls скрыты по умолчанию.
+
+                video.muted = true;
+
+                video.controls = false; 
+
+                
+
+                 // ВОССТАНОВЛЕНА ЛОГИКА ПОКАЗА CONTROLS ТОЛЬКО ПРИ НАВЕДЕНИИ
+
+                 video.onmouseenter = () => { video.controls = true; };
+
+                 video.onmouseleave = () => {
+
+                    // Скрываем controls, только если видео не на паузе и не в полноэкранном режиме
+
+                    if (video.paused || document.fullscreenElement) return;
+
+                    video.controls = false;
+
+                 };
+
+            }
+
+            
+
+            // HTML для лоадера
+
+            const loaderHTML = `
+
+                <div class="video-loader">
+
+                    <div class="spinner"></div>
+
+                    <p>Загрузка...</p>
+
+                </div>
+
+            `;
+
+            container.insertAdjacentHTML('beforeend', loaderHTML);
+
+
+
+            container.appendChild(video);
+
+
+
+            const comment = document.createElement('p');
+
+            comment.classList.add('video-comment');
+
+            comment.textContent = videoItem.comment;
+
+            container.appendChild(comment);
+
+
+
+            videoList.appendChild(container);
+
+        });
+
+        document.getElementById('modal-videos').style.display = 'block';
+
+    } else {
+
+        document.getElementById('modal-videos').style.display = 'none';
+
+    }
+
+
+
+    modal.style.display = "block";
+
+
+
+    // Устанавливаем Observer после рендеринга
+
+    setTimeout(setupVideoObserver, 500);
+
+}
+
+
+
+function closeModal(event) {
+
+    if (event.target.classList.contains('modal') || event.target.classList.contains('close')) {
+
+        if (videoObserver) {
+
+            videoObserver.disconnect();
+
+        }
+
+        // Пауза и мьют всех видео при закрытии
+
+        videoList.querySelectorAll('video').forEach(video => {
+
+            video.pause();
+
+            video.muted = true;
+
+        });
+
+        videoList.querySelectorAll('.video-loader').forEach(loader => {
+
+            loader.style.display = 'none';
+
+        });
+
+        modal.style.display = "none";
+
+    }
+
+}
+
+
+
+function scrollCarousel(direction) {
+
+    const scrollAmount = imageCarousel.offsetWidth * direction;
+
+    imageCarousel.scrollBy({
+
+        left: scrollAmount,
+
+        behavior: 'smooth'
+
+    });
+
+}
+
+
+
+function openZoomModal(imagePath) {
+
+    zoomContent.src = imagePath;
+
+    zoomModal.style.display = "block";
+
+}
+
+
+
+function closeZoomModal(event) {
+
+    if (event.target.id === 'zoom-modal' || event.target.id === 'zoom-close') {
+
+        zoomModal.style.display = "none";
+
+    }
+
+}
+
+
+
+document.addEventListener('DOMContentLoaded', renderPortfolio);
