@@ -3,34 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BoRzoY | AAA-Качество 3D-Персонажи</title>
-    <link rel="stylesheet" href="style.css">
+    <title>High-End 3D Character Artist | Портфолио</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <header>
-        <div class="logo">
-            <span class="accent-text">BoRzoY</span> 3D
-        </div>
+        <div class="logo"><span class="accent-text">REX</span>DESIGN</div>
         <nav>
             <ul>
                 <li><a href="#hero">Главная</a></li>
                 <li><a href="#portfolio">Портфолио</a></li>
-                <li><a href="#order-section">Заказать Проект</a></li>
+                <li><a href="#order-section">Заказать</a></li>
             </ul>
         </nav>
+        <button id="admin-login-btn" style="margin-left: auto; background: none; border: none; color: var(--light-text); cursor: pointer; opacity: 0.5;">
+            <i class="fas fa-user-shield"></i>
+        </button>
     </header>
 
     <section id="hero">
         <div class="hero-content">
-            <h1>
-                Создание <span>Стилизованных</span> 3D-Персонажей 
-                <span class="quality-tag">AAA-Quality</span>
-            </h1>
+            <h1>Создание <span class="accent-text">Фотореалистичных</span> 3D-Персонажей</h1>
             <p class="subtitle">
-                Кинематографический уровень детализации для Игр, Анимации и Медиа. <br>
-                Начните сотрудничество с профессионалом.
+                Level Artist для AAA-проектов, специализация на высокодетализированном 
+                моделировании, скульптинге и текстурировании персонажей.
             </p>
             <div class="cta-group">
                 <a href="#portfolio" class="cta-button primary">Смотреть Работы</a>
@@ -39,47 +40,72 @@
         </div>
     </section>
 
-    <section id="admin-panel" class="admin-panel-style">
-        <h3>🛠️ Панель Администратора: Добавление Работы</h3>
-        <p>Для входа нажмите **"/"** (слэш). **Пароль:** admin123</p>
-        <input type="text" id="name-input" placeholder="Название Персонажа (Отображается на превью)">
-        <input type="text" id="thumb-input" placeholder="Путь к файлу-превью (images/thumb.jpg)">
-        
-        <hr>
-        
-        <h4>Изображения (Через запятую):</h4>
-        <input type="text" id="images-input" placeholder="images/img1.jpg, images/img2.jpg, ...">
-        
-        <h4>Видео (URL Google Drive|Комментарий, через запятую):</h4>
-        <input type="text" id="videos-input" placeholder="https://drive.google.com/file/d/.../view|Видео с анимацией, ...">
-        
-        <button onclick="addPortfolioItem()">Добавить Работу в Портфолио</button>
-        <p class="note">Не забывайте, что сами файлы нужно загрузить на хостинг по указанным путям!</p>
-    </section>
-
     <section id="portfolio">
-        <h2>📂 Портфолио Работ</h2>
-        <div class="gallery" id="portfolio-gallery">
+        <h2>Мои Работы</h2>
+        <div class="gallery">
             </div>
     </section>
 
-    <div id="myModal" class="modal" onclick="closeModal(event)">
-        <span class="close">&times;</span>
+    <section id="order-section">
+        <h2>Готовы начать?</h2>
+        <p class="subtitle" style="max-width: 700px; margin: 0 auto 50px;">
+            Свяжитесь со мной для обсуждения вашего технического задания, сроков и бюджета.
+        </p>
+        <div class="order-links">
+            <a href="#" class="telegram"><i class="fab fa-telegram-plane"></i> Telegram</a>
+            <a href="#" class="vk"><i class="fab fa-vk"></i> ВКонтакте</a>
+            <a href="#" class="email"><i class="fas fa-envelope"></i> Email</a>
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2025 REXDESIGN. Все права защищены. | Профессиональное 3D-моделирование.
+    </footer>
+
+
+    <div id="admin-panel" class="admin-panel-style">
+        <h3>Управление Портфолио</h3>
+        <p class="note">Введите пароль для доступа к инструментам добавления/удаления работ.</p>
+        <input type="password" id="admin-password" placeholder="Введите пароль...">
+        <button id="admin-login">Войти</button>
+        <hr>
+        
+        <div id="admin-tools" style="display:none;">
+            <h4>Добавить новую работу</h4>
+            <input type="text" id="new-item-title" placeholder="Название проекта">
+            <input type="text" id="new-item-desc" placeholder="Краткое описание">
+            <input type="text" id="new-item-thumb" placeholder="Ссылка на превью (JPG/PNG)">
+            <input type="text" id="new-item-tag" placeholder="Тег (например, AAA/Game Ready)">
+            <input type="text" id="new-item-img-list" placeholder="Ссылки на детали (через запятую)">
+            <input type="text" id="new-item-video-list" placeholder="Ссылки на видео (через запятую)">
+            <button id="add-item">Добавить в Портфолио</button>
+            <hr>
+            <h4>Удалить работу</h4>
+            <select id="delete-item-select">
+                <option value="">Выберите работу для удаления</option>
+            </select>
+            <button id="delete-item">Удалить выбранную работу</button>
+        </div>
+    </div>
+    
+    <div id="item-modal" class="modal">
         <div class="modal-content">
-            <h3 id="modal-title"></h3>
+            <span class="close">&times;</span>
+            <h1 id="modal-title"></h1>
+            <p id="modal-description" class="subtitle" style="margin-bottom: 30px;"></p>
             
             <div id="modal-images">
-                <h4>Галерея Изображений</h4>
-                <div id="image-carousel-container">
-                    <button id="prev-arrow" class="arrow" onclick="scrollCarousel(-1)">&#10094;</button>
-                    <div id="image-carousel" class="image-carousel">
+                <h4>Визуализация Модели</h4>
+                <div id="image-carousel-container" style="margin: 0 auto;">
+                    <div id="image-carousel" class="carousel">
                         </div>
-                    <button id="next-arrow" class="arrow" onclick="scrollCarousel(1)">&#10095;</button>
+                    <a class="arrow prev" onclick="changeSlide(-1)">&#10094;</a>
+                    <a class="arrow next" onclick="changeSlide(1)">&#10095;</a>
                 </div>
             </div>
 
-            <div id="modal-videos">
-                <h4>Видеоматериалы</h4>
+            <div id="modal-videos" style="margin-top: 50px;">
+                <h4>Видео/Вращения</h4>
                 <div id="video-list">
                     </div>
             </div>
@@ -87,27 +113,6 @@
         </div>
     </div>
 
-    <div id="zoom-modal" onclick="closeZoomModal(event)">
-        <span id="zoom-close">&times;</span>
-        <img id="zoom-content">
-    </div>
-
-    <section id="order-section">
-        <h2>🤝 Обсудить Проект</h2>
-        <p>Я готов принять ваш вызов. Напишите мне, чтобы обсудить детали, бюджет и сроки вашего <span class="accent-text">AAA-проекта</span>.</p>
-        <div class="order-links">
-            <a href="https://t.me/YaBoRzoY" target="_blank" class="telegram">Telegram (Предпочтительно)</a>
-            <a href="https://vk.ru/skirovofficial" target="_blank" class="vk">VK</a>
-            <a href="Mailto:didasik4@gmail.com" class="email">Gmail</a>
-        </div>
-    </section>
-    
-    <footer id="contact">
-        <p>© 2025 BoRzoY. 3D Character Artist.</p>
-        <p>Powered by Passion and Pixels.</p>
-    </footer>
-
     <script src="script.js"></script>
 </body>
-
 </html>
