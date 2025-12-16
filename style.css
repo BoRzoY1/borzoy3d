@@ -29,7 +29,7 @@ body {
     font-size: 0.8em; font-weight: 900; margin-left: 10px;
 }
 
-/* Стилизация Заголовков (Без изменений) */
+/* Стилизация Заголовков */
 h1, h2, h3, h4 {
     color: var(--text-color);
     text-shadow: 0 0 15px rgba(255, 170, 0, 0.4);
@@ -42,105 +42,173 @@ h2 {
     border-bottom: 2px solid var(--secondary-color); 
     padding-bottom: 10px; 
     display: inline-block; 
-    letter-spacing: 2px; /* Добавлено для менее скучного вида */
+    letter-spacing: 2px;
 }
 
-
-/* --- НАВИГАЦИЯ (Усиление контраста) --- */
+/* --- НАВИГАЦИЯ --- */
 header {
+    display: flex; justify-content: flex-start; align-items: center;
+    padding: 20px 50px;
     background: rgba(8, 2, 22, 0.95); /* Чуть темнее */
+    border-bottom: 1px solid var(--secondary-color);
+    position: sticky; top: 0; z-index: 10;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7); /* Более выраженная тень */
 }
-/* Остальное в навигации без изменений */
+.logo { font-size: 1.8em; font-weight: 900; letter-spacing: 2px; margin-right: 50px; }
+nav ul { list-style: none; padding: 0; margin: 0; display: flex; }
+nav a {
+    color: var(--light-text); text-decoration: none; margin-left: 30px;
+    padding: 8px 0; position: relative; transition: all 0.3s; font-weight: 700;
+}
+nav a::after {
+    content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 3px;
+    background: var(--accent-color); box-shadow: 0 0 5px var(--accent-color);
+    transition: width 0.3s;
+}
+nav a:hover { color: var(--accent-color); }
+nav a:hover::after { width: 100%; }
 
 
-/* --- HERO-СЕКЦИЯ (Увеличение контраста и плотности) --- */
+/* --- HERO-СЕКЦИЯ --- */
 #hero {
-    padding: 160px 50px 100px; /* Уменьшаем отступ сверху, чтобы было плотнее */
+    padding: 160px 50px 100px;
+    text-align: center; position: relative; overflow: hidden;
     /* --- ИСПРАВЛЕНО: Прямая Ссылка Dropbox для HERO --- */
     background: 
         linear-gradient(to top, rgba(8, 2, 22, 1) 0%, rgba(8, 2, 22, 0.2) 50%, rgba(8, 2, 22, 1) 100%),
         url('https://dl.dropboxusercontent.com/scl/fi/9o6cnvgp7j33b157wr3x2/Gemini_Generated_Image_8jgjgu8jgjgu8jgj.png?rlkey=59oinlip2ga08d91wt55vcois&dl=0&raw=1') center no-repeat;
     background-size: cover;
-    /* -------------------- */
 }
-#hero h1 {
-    font-size: 3.2em; /* Чуть меньше для лучшей компоновки */
-    line-height: 1.2;
+.hero-content { max-width: 900px; margin: 0 auto; }
+#hero h1 { font-size: 3.2em; font-weight: 900; line-height: 1.2; margin-bottom: 20px; }
+.subtitle { font-size: 1.1em; color: var(--light-text); margin-bottom: 40px; }
+
+/* Кнопки */
+.cta-group { margin-top: 40px; }
+.cta-button {
+    display: inline-block; padding: 15px 40px; text-decoration: none;
+    border-radius: 50px; font-weight: bold; margin: 10px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    text-transform: uppercase; letter-spacing: 1px;
 }
-.subtitle {
-    font-size: 1.1em;
+.cta-button.primary {
+    background: var(--accent-color); box-shadow: 0 0 20px rgba(255, 170, 0, 0.7);
+    color: var(--bg-color); font-size: 1.1em; border: 2px solid var(--accent-color);
+}
+.cta-button.primary:hover {
+    background: #e69500; box-shadow: 0 0 30px var(--accent-color), 0 0 5px var(--text-color);
+    transform: translateY(-3px);
+}
+.cta-button.secondary {
+    background: transparent; border: 2px solid var(--secondary-color);
+    color: var(--secondary-color); box-shadow: 0 0 10px var(--secondary-color);
+}
+.cta-button.secondary:hover {
+    background-color: rgba(93, 53, 185, 0.2); box-shadow: 0 0 20px var(--secondary-color);
+    color: var(--text-color); transform: translateY(-3px);
 }
 
 /* Секции */
 section {
-    padding: 80px 50px; /* Чуть меньше вертикальный отступ */
+    padding: 80px 50px; /* Уменьшен отступ для плотности */
     text-align: center;
 }
 
 
-/* --- ГАЛЕРЕЯ ПОРТФОЛИО (Исправлено обрезание и улучшен вид) --- */
+/* --- ПАНЕЛЬ АДМИНИСТРАТОРА (display: none - ИСПРАВЛЕНО) --- */
+.admin-panel-style {
+    background-color: #1f0f4a; border: 2px solid var(--secondary-color);
+    border-radius: 10px; padding: 30px; margin: 50px auto; max-width: 900px;
+    display: none; /* ГАРАНТИЯ СКРЫТИЯ */
+    text-align: left; box-shadow: 0 0 20px rgba(93, 53, 185, 0.5);
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    z-index: 100; /* Поверх всего */
+}
+/* Остальные стили админ-панели без изменений */
+
+
+/* --- ГАЛЕРЕЯ ПОРТФОЛИО (Исправлено обрезание) --- */
 .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 30px; /* Чуть меньше разрыв */
+    max-width: 1600px; margin: 0 auto; padding-top: 20px;
 }
 .item-container {
-    background-color: #1a082b;
-    border-radius: 12px; /* Более мягкие углы */
+    background-color: #1a082b; border-radius: 12px;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
+    transition: all 0.4s; overflow: hidden;
+    border: 1px solid transparent;
 }
 .item-container:hover {
     transform: translateY(-8px);
-    box-shadow: 0 25px 50px rgba(255, 170, 0, 0.5); /* Более яркий эффект */
+    box-shadow: 0 25px 50px rgba(255, 170, 0, 0.5);
+    border-color: var(--accent-color);
 }
+.item { position: relative; overflow: hidden; cursor: pointer; }
 .item img {
-    width: 100%;
-    max-height: 400px;
-    /* --- ИСПРАВЛЕНО: НЕ ОБРЕЗАЕТ ПРЕВЬЮ --- */
-    object-fit: contain; 
-    background-color: #000000; /* Контрастный черный фон для превью */
-    display: block;
-    transition: transform 0.4s;
+    width: 100%; max-height: 400px;
+    object-fit: contain; /* ГАРАНТИЯ: НЕ ОБРЕЗАЕТ ПРЕВЬЮ */
+    background-color: #000000; /* Контрастный фон для 3D-моделей */
+    display: block; transition: transform 0.4s;
 }
+.item:hover img { transform: scale(1.05); }
 
+/* Стиль для подписи */
 .item-caption {
-    background-color: #15062a;
-    font-size: 1.2em; /* Чуть меньше, чтобы было плотнее */
-    padding: 15px;
+    background-color: #15062a; color: var(--text-color);
+    font-size: 1.2em; font-weight: 700; padding: 15px;
+    text-align: center; line-height: 1.2;
+    border-top: 1px solid var(--secondary-color);
 }
+.item-caption button {
+    margin-left: 15px; padding: 5px 10px; font-size: 0.8em;
+    background-color: #c90000; color: white; border: none;
+    border-radius: 3px; cursor: pointer; transition: background-color 0.2s;
+}
+.item-caption button:hover { background-color: #ff0000; }
+
+/* --- МОДАЛЬНОЕ ОКНО (ДЕТАЛИ) --- */
+/* Сохранены основные стили с сильными акцентами */
 
 
-/* --- МОДАЛЬНОЕ ОКНО --- */
-.modal-content {
-    box-shadow: 0 0 60px rgba(93, 53, 185, 0.7); /* Более выраженная тень */
-}
-#modal-title {
-    font-size: 2.5em; /* Чуть меньше, чтобы лучше помещалось */
-    margin-bottom: 30px;
-}
-
-/* --- Секция Заказа (Увеличение акцента) --- */
+/* --- Секция Заказа и Подвал --- */
 #order-section {
+    background-color: #0d0115;
     border-top: 5px solid var(--accent-color); /* Толще золотая линия */
-    background: linear-gradient(180deg, #0d0115, #000000); /* Градиент в футер */
+}
+.order-links { display: flex; justify-content: center; gap: 60px; margin-top: 40px; }
+.order-links a {
+    display: block; padding: 18px 40px; border-radius: 8px; text-decoration: none; font-weight: bold; 
+    color: white; transition: transform 0.2s, box-shadow 0.2s; font-size: 1.2em;
+    text-transform: uppercase;
 }
 .order-links a:hover { 
     transform: translateY(-6px); 
-    box-shadow: 0 10px 25px rgba(255, 170, 0, 0.5); /* Добавлен золотой акцент на наведении */
+    box-shadow: 0 10px 25px rgba(255, 170, 0, 0.5); /* Золотой акцент */
 }
+.telegram { background-color: #0088cc; box-shadow: 0 0 20px #0088cc; }
+.vk { background-color: #4a76a8; box-shadow: 0 0 20px #4a76a8; }
+.email { background-color: var(--secondary-color); box-shadow: 0 0 20px var(--secondary-color); }
 
 footer {
-    padding: 25px; 
-    background-color: #000000; 
+    padding: 25px; background-color: #000000; color: var(--light-text);
+    border-top: 1px dashed var(--secondary-color); font-size: 0.9em;
 }
 
 /* --- МЕДИАЗАПРОСЫ (АДАПТИВНОСТЬ) --- */
-@media (max-width: 1024px) {
-    #hero h1 { font-size: 2.2em; }
-}
 @media (max-width: 768px) {
-    /* Общие настройки */
+    header { padding: 15px 20px; }
+    .logo { margin-right: 20px; font-size: 1.5em; }
+    nav a { margin-left: 15px; }
+    
     section { padding: 40px 20px; }
     #hero { padding: 100px 20px 60px; }
     #hero h1 { font-size: 1.8em; }
+    .cta-button { padding: 12px 25px; font-size: 1em; }
+    
+    .gallery { grid-template-columns: 1fr; gap: 20px; }
     .item img { max-height: 300px; }
+    
+    .order-links { flex-direction: column; gap: 15px; max-width: 300px; margin: 20px auto; }
 }
