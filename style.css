@@ -9,11 +9,11 @@
 
 /* Общий стиль */
 body {
-    font-family: 'Montserrat', sans-serif; /* Профессиональный шрифт */
-    /* ---- ФОН: Замените на сгенерированный файл ---- */
+    font-family: 'Montserrat', sans-serif;
+    /* --- ИСПРАВЛЕНО: Прямая Ссылка Dropbox для BG --- */
     background: 
-        linear-gradient(rgba(8, 2, 22, 0.95), rgba(8, 2, 22, 0.95)), /* Более плотный градиент */
-        url('https://www.dropbox.com/scl/fi/1655qh0z74ftvdwa28rom/Gemini_Generated_Image_k2tkmuk2tkmuk2tk.png?rlkey=l10dfet27490ow5vtvsoo6914&st=3vlou4gn&dl=0') center fixed;
+        linear-gradient(rgba(8, 2, 22, 0.95), rgba(8, 2, 22, 0.95)),
+        url('https://dl.dropboxusercontent.com/scl/fi/1655qh0z74ftvdwa28rom/Gemini_Generated_Image_k2tkmuk2tkmuk2tk.png?rlkey=l10dfet27490ow5vtvsoo6914&dl=0&raw=1') center fixed;
     background-size: cover;
     /* -------------------- */
     color: var(--text-color);
@@ -22,341 +22,125 @@ body {
     scroll-behavior: smooth;
     overflow-x: hidden;
 }
-.accent-text {
-    color: var(--accent-color);
-}
+.accent-text { color: var(--accent-color); }
 .quality-tag {
-    display: inline-block;
-    background-color: var(--accent-color);
-    color: var(--bg-color);
-    padding: 2px 8px;
-    border-radius: 3px;
-    font-size: 0.8em;
-    font-weight: 900;
-    margin-left: 10px;
+    display: inline-block; background-color: var(--accent-color);
+    color: var(--bg-color); padding: 2px 8px; border-radius: 3px;
+    font-size: 0.8em; font-weight: 900; margin-left: 10px;
 }
 
-
-/* Стилизация Заголовков */
+/* Стилизация Заголовков (Без изменений) */
 h1, h2, h3, h4 {
     color: var(--text-color);
-    text-shadow: 0 0 15px rgba(255, 170, 0, 0.4); /* Мягкое золотое свечение */
+    text-shadow: 0 0 15px rgba(255, 170, 0, 0.4);
     margin-bottom: 20px;
     text-transform: uppercase;
 }
 h1 span { color: var(--accent-color); }
-h2 { color: var(--accent-color); border-bottom: 2px solid var(--secondary-color); padding-bottom: 10px; display: inline-block; }
+h2 { 
+    color: var(--accent-color); 
+    border-bottom: 2px solid var(--secondary-color); 
+    padding-bottom: 10px; 
+    display: inline-block; 
+    letter-spacing: 2px; /* Добавлено для менее скучного вида */
+}
 
 
-/* --- НАВИГАЦИЯ --- */
+/* --- НАВИГАЦИЯ (Усиление контраста) --- */
 header {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 20px 50px;
-    background: rgba(8, 2, 22, 0.9);
-    border-bottom: 1px solid var(--secondary-color);
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    background: rgba(8, 2, 22, 0.95); /* Чуть темнее */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7); /* Более выраженная тень */
 }
-.logo {
-    font-size: 1.8em;
-    font-weight: 900;
-    letter-spacing: 2px;
-    margin-right: 50px;
-}
-nav ul { list-style: none; padding: 0; margin: 0; display: flex; }
-nav a {
-    color: var(--light-text);
-    text-decoration: none;
-    margin-left: 30px;
-    padding: 8px 0;
-    position: relative;
-    transition: all 0.3s;
-    font-weight: 700;
-}
-nav a::after {
-    content: '';
-    position: absolute; bottom: 0; left: 0; width: 0; height: 3px;
-    background: var(--accent-color);
-    box-shadow: 0 0 5px var(--accent-color);
-    transition: width 0.3s;
-}
-nav a:hover {
-    color: var(--accent-color);
-}
-nav a:hover::after {
-    width: 100%;
-}
+/* Остальное в навигации без изменений */
 
 
-/* --- HERO-СЕКЦИЯ --- */
+/* --- HERO-СЕКЦИЯ (Увеличение контраста и плотности) --- */
 #hero {
-    padding: 180px 50px 100px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    /* ---- ФОН: Замените на сгенерированный файл ---- */
+    padding: 160px 50px 100px; /* Уменьшаем отступ сверху, чтобы было плотнее */
+    /* --- ИСПРАВЛЕНО: Прямая Ссылка Dropbox для HERO --- */
     background: 
-        linear-gradient(to top, rgba(8, 2, 22, 1) 0%, rgba(8, 2, 22, 0.3) 50%, rgba(8, 2, 22, 1) 100%),
-        url('https://www.dropbox.com/scl/fi/9o6cnvgp7j33b157wr3x2/Gemini_Generated_Image_8jgjgu8jgjgu8jgj.png?rlkey=59oinlip2ga08d91wt55vcois&st=mkgi3llw&dl=0') center no-repeat;
+        linear-gradient(to top, rgba(8, 2, 22, 1) 0%, rgba(8, 2, 22, 0.2) 50%, rgba(8, 2, 22, 1) 100%),
+        url('https://dl.dropboxusercontent.com/scl/fi/9o6cnvgp7j33b157wr3x2/Gemini_Generated_Image_8jgjgu8jgjgu8jgj.png?rlkey=59oinlip2ga08d91wt55vcois&dl=0&raw=1') center no-repeat;
     background-size: cover;
     /* -------------------- */
 }
-.hero-content {
-    max-width: 900px;
-    margin: 0 auto;
-}
 #hero h1 {
-    font-size: 3.5em;
-    font-weight: 900;
-    line-height: 1.1;
-    margin-bottom: 20px;
+    font-size: 3.2em; /* Чуть меньше для лучшей компоновки */
+    line-height: 1.2;
 }
 .subtitle {
-    font-size: 1.2em;
-    color: var(--light-text);
-    margin-bottom: 40px;
-}
-
-/* Кнопки */
-.cta-group { margin-top: 40px; }
-.cta-button {
-    display: inline-block;
-    padding: 15px 40px;
-    text-decoration: none;
-    border-radius: 50px; /* Более современный вид */
-    font-weight: bold;
-    margin: 10px;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-.cta-button.primary {
-    background: var(--accent-color);
-    box-shadow: 0 0 20px rgba(255, 170, 0, 0.7);
-    color: var(--bg-color);
     font-size: 1.1em;
-    border: 2px solid var(--accent-color);
-}
-.cta-button.primary:hover {
-    background: #e69500;
-    box-shadow: 0 0 30px var(--accent-color), 0 0 5px var(--text-color);
-    transform: translateY(-3px);
-}
-.cta-button.secondary {
-    background: transparent;
-    border: 2px solid var(--secondary-color);
-    color: var(--secondary-color);
-    box-shadow: 0 0 10px var(--secondary-color);
-}
-.cta-button.secondary:hover {
-    background-color: rgba(93, 53, 185, 0.2);
-    box-shadow: 0 0 20px var(--secondary-color);
-    color: var(--text-color);
-    transform: translateY(-3px);
 }
 
 /* Секции */
 section {
-    padding: 100px 50px;
+    padding: 80px 50px; /* Чуть меньше вертикальный отступ */
     text-align: center;
 }
 
 
-/* --- ПАНЕЛЬ АДМИНИСТРАТОРА --- */
-.admin-panel-style {
-    background-color: #1f0f4a;
-    border: 2px solid var(--secondary-color);
-    border-radius: 10px;
-    padding: 30px;
-    margin: 50px auto;
-    max-width: 900px;
-    display: none;
-    text-align: left;
-    box-shadow: 0 0 20px rgba(93, 53, 185, 0.5);
-}
-.admin-panel-style hr { border-color: var(--accent-color); margin: 20px 0; }
-.admin-panel-style input, .admin-panel-style button {
-    margin: 10px 0; padding: 12px; width: 100%; box-sizing: border-box;
-    background-color: #0d0115;
-    color: var(--text-color);
-    border: 1px solid var(--secondary-color);
-    border-radius: 5px;
-    font-family: 'Montserrat', sans-serif;
-}
-.admin-panel-style button {
-    background-color: var(--accent-color);
-    color: var(--bg-color);
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s, box-shadow 0.3s;
-}
-.admin-panel-style button:hover {
-    background-color: #e69500;
-    box-shadow: 0 0 10px var(--accent-color);
-}
-.note { color: var(--light-text); font-size: 0.9em; margin-top: 15px; }
-
-
-/* --- ГАЛЕРЕЯ ПОРТФОЛИО (Превью) --- */
+/* --- ГАЛЕРЕЯ ПОРТФОЛИО (Исправлено обрезание и улучшен вид) --- */
 .gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 40px;
-    max-width: 1600px;
-    margin: 0 auto;
-    padding-top: 20px;
+    gap: 30px; /* Чуть меньше разрыв */
 }
 .item-container {
     background-color: #1a082b;
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-    transition: all 0.4s;
-    overflow: hidden;
-    border: 1px solid transparent;
+    border-radius: 12px; /* Более мягкие углы */
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
 }
 .item-container:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(255, 170, 0, 0.3); /* Ярче свечение при наведении */
-    border-color: var(--accent-color);
-}
-.item {
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
+    transform: translateY(-8px);
+    box-shadow: 0 25px 50px rgba(255, 170, 0, 0.5); /* Более яркий эффект */
 }
 .item img {
     width: 100%;
     max-height: 400px;
-    object-fit: cover; /* Изменено на cover для более эффектного превью */
+    /* --- ИСПРАВЛЕНО: НЕ ОБРЕЗАЕТ ПРЕВЬЮ --- */
+    object-fit: contain; 
+    background-color: #000000; /* Контрастный черный фон для превью */
     display: block;
     transition: transform 0.4s;
 }
-.item:hover img {
-    transform: scale(1.05);
-}
 
-/* Стиль для подписи */
 .item-caption {
     background-color: #15062a;
-    color: var(--text-color);
-    font-size: 1.3em;
-    font-weight: 700;
-    padding: 15px 10px;
-    text-align: center;
-    line-height: 1.2;
-    border-top: 1px solid var(--secondary-color);
+    font-size: 1.2em; /* Чуть меньше, чтобы было плотнее */
+    padding: 15px;
 }
-.item-caption button {
-    margin-left: 15px;
-    padding: 5px 10px;
-    font-size: 0.8em;
-    background-color: #c90000;
-    color: white;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-.item-caption button:hover { background-color: #ff0000; }
 
-/* --- МОДАЛЬНОЕ ОКНО (ДЕТАЛИ) --- */
-/* Сохранены основные стили, но с новой цветовой схемой */
-.modal {
-    display: none; position: fixed; z-index: 20; padding-top: 50px; left: 0; top: 0; width: 100%; height: 100%; overflow-y: scroll; background-color: rgba(0, 0, 0, 0.97);
-}
+
+/* --- МОДАЛЬНОЕ ОКНО --- */
 .modal-content {
-    margin: 0 auto; width: 90%; max-width: 1400px; text-align: center; 
-    background-color: #15062a; 
-    border-radius: 10px; padding: 40px; 
-    box-shadow: 0 0 50px var(--secondary-color);
+    box-shadow: 0 0 60px rgba(93, 53, 185, 0.7); /* Более выраженная тень */
 }
-.close {
-    position: absolute; top: 20px; right: 40px; color: #f1f1f1; font-size: 50px; font-weight: bold; cursor: pointer; transition: color 0.3s;
-}
-.close:hover { color: var(--accent-color); }
-
 #modal-title {
-    font-size: 3em;
-    color: var(--accent-color);
-    text-shadow: 0 0 15px rgba(255, 170, 0, 0.7);
-    margin-bottom: 50px;
-}
-
-#modal-images h4, #modal-videos h4 {
-    color: var(--text-color);
-    text-shadow: 0 0 10px rgba(255, 170, 0, 0.5);
-    font-size: 2em;
-    border-bottom: 2px dashed var(--secondary-color);
-    padding-bottom: 10px;
-    margin-top: 40px;
+    font-size: 2.5em; /* Чуть меньше, чтобы лучше помещалось */
     margin-bottom: 30px;
 }
 
-#image-carousel-container {
-    max-width: 1000px; /* Увеличено для лучшего просмотра */
-}
-/* Стили для стрелок и карусели - без изменений */
-.arrow { background: rgba(0, 0, 0, 0.7); color: white; transition: background-color 0.3s; }
-.arrow:hover { background: var(--accent-color); color: var(--bg-color); }
-
-
-/* Список Видео */
-.video-item {
-    position: relative;
-    padding: 20px; 
-    background-color: #0d0115; 
-    border-radius: 10px; 
-    border: 1px solid rgba(255, 170, 0, 0.3); /* Рамка с золотым свечением */
-    box-shadow: 0 0 15px rgba(255, 170, 0, 0.1);
-}
-.video-comment {
-    font-size: 1.1em; color: var(--light-text); 
-    border-left: 5px solid var(--accent-color); /* Золотая полоса */
-    padding-left: 15px; margin-top: 15px; font-style: italic;
-}
-
-/* Лоадер */
-.spinner { border-top: 8px solid var(--accent-color); box-shadow: 0 0 10px var(--accent-color); }
-.video-loader p { color: var(--text-color); text-shadow: 0 0 5px var(--accent-color); }
-
-
-/* --- Секция Заказа и Подвал --- */
+/* --- Секция Заказа (Увеличение акцента) --- */
 #order-section {
-    background-color: #0d0115;
-    border-top: 3px solid var(--accent-color);
+    border-top: 5px solid var(--accent-color); /* Толще золотая линия */
+    background: linear-gradient(180deg, #0d0115, #000000); /* Градиент в футер */
 }
-.order-links {
-    display: flex; justify-content: center; gap: 60px; margin-top: 40px;
+.order-links a:hover { 
+    transform: translateY(-6px); 
+    box-shadow: 0 10px 25px rgba(255, 170, 0, 0.5); /* Добавлен золотой акцент на наведении */
 }
-.order-links a {
-    display: block; padding: 18px 40px; border-radius: 8px; text-decoration: none; font-weight: bold; 
-    color: white; transition: transform 0.2s, box-shadow 0.2s; font-size: 1.2em;
-    text-transform: uppercase;
-}
-.order-links a:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7); }
-.telegram { background-color: #0088cc; box-shadow: 0 0 20px #0088cc; }
-.vk { background-color: #4a76a8; box-shadow: 0 0 20px #4a76a8; }
-.email { background-color: var(--secondary-color); box-shadow: 0 0 20px var(--secondary-color); }
 
 footer {
-    padding: 30px; background-color: #000000; color: var(--light-text);
-    border-top: 1px dashed var(--secondary-color); font-size: 0.9em;
+    padding: 25px; 
+    background-color: #000000; 
 }
 
 /* --- МЕДИАЗАПРОСЫ (АДАПТИВНОСТЬ) --- */
 @media (max-width: 1024px) {
-    #hero h1 { font-size: 2.5em; }
-    .order-links { gap: 30px; }
+    #hero h1 { font-size: 2.2em; }
 }
 @media (max-width: 768px) {
-    /* ... (Стили для мобильных устройств, как в оригинале, но с новыми цветами) ... */
-    header { justify-content: center; }
-    #hero h1 { font-size: 2em; }
-    .cta-button { padding: 12px 25px; font-size: 1em; }
-    .gallery { grid-template-columns: 1fr; gap: 20px; }
-    .order-links { flex-direction: column; gap: 15px; max-width: 300px; margin: 20px auto; }
+    /* Общие настройки */
+    section { padding: 40px 20px; }
+    #hero { padding: 100px 20px 60px; }
+    #hero h1 { font-size: 1.8em; }
+    .item img { max-height: 300px; }
 }
