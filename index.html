@@ -1,131 +1,113 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AAA-Quality 3D Character Artist | BoRzoY</title>
-        <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BoRzoY | AAA-Качество 3D-Персонажи</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <header>
-        <div class="logo">
-            <span>BoRzoY</span><span class="logo-subtitle">// CHARACTER DESIGN</span>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="#hero" class="nav-link">Главная</a></li>
-                <li><a href="#portfolio" class="nav-link">Портфолио</a></li>
-                <li><a href="#pipeline" class="nav-link">Пайплайн</a></li>
-                <li><a href="#order-section" class="nav-link cta-nav-link">Заказать</a></li>
-            </ul>
-        </nav>
-    </header>
+    <header>
+        <div class="logo">
+            <span class="accent-text">BoRzoY</span> 3D
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#hero">Главная</a></li>
+                <li><a href="#portfolio">Портфолио</a></li>
+                <li><a href="#order-section">Заказать Проект</a></li>
+            </ul>
+        </nav>
+    </header>
 
-        <section id="hero">
-        <div class="hero-bg-overlay"></div>
-        <div class="hero-content">
-            <p class="hero-tag">// $AAA-QUALITY-CHARACTERS</p>
-            <h1>3D <span>Персонажи</span></h1>
-            <h1>Для Нового Поколения Игр</h1>
-            <p class="hero-description">От концепта до интеграции в Unreal Engine / Unity. Детализация, оптимизация, реалистичные текстуры.</p>
-            <div class="hero-cta-group">
-                <a href="#portfolio" class="cta-button primary-cta">Смотреть Портфолио</a>
-                <a href="#order-section" class="cta-button secondary-cta">Начать Проект</a>
-            </div>
-        </div>
-    </section>
+    <section id="hero">
+        <div class="hero-content">
+            <h1>
+                Создание <span>Стилизованных</span> 3D-Персонажей 
+                <span class="quality-tag">AAA-Quality</span>
+            </h1>
+            <p class="subtitle">
+                Кинематографический уровень детализации для Игр, Анимации и Медиа. <br>
+                Начните сотрудничество с профессионалом.
+            </p>
+            <div class="cta-group">
+                <a href="#portfolio" class="cta-button primary">Смотреть Работы</a>
+                <a href="#order-section" class="cta-button secondary">Обсудить Проект</a>
+            </div>
+        </div>
+    </section>
 
-    <section id="admin-panel">
-        <h3>Панель Администратора: Добавление Работы</h3>
-        <p class="admin-note">Для входа нажмите **"/"** (слэш) на клавиатуре. **Пароль:** admin123 (Измените его в script.js)</p>
-        <input type="text" id="name-input" placeholder="Название Персонажа (Отображается на превью)">
-        <input type="text" id="thumb-input" placeholder="Путь к файлу-превью (images/thumb.jpg)">
-        
-        <hr class="admin-divider">
-        
-        <h4>Изображения (Через запятую):</h4>
-        <input type="text" id="images-input" placeholder="images/img1.jpg, images/img2.jpg, ...">
-        
-        <h4>Видео (URL Google Drive|Комментарий, через запятую):</h4>
-        <input type="text" id="videos-input" placeholder="https://drive.google.com/file/d/.../view|Видео с анимацией, ...">
-        
-        <button onclick="addPortfolioItem()" class="admin-button">Добавить Работу в Портфолио</button>
-        <p class="admin-warning">Не забывайте, что сами файлы нужно загрузить на хостинг по указанным путям!</p>
-    </section>
+    <section id="admin-panel" class="admin-panel-style">
+        <h3>🛠️ Панель Администратора: Добавление Работы</h3>
+        <p>Для входа нажмите **"/"** (слэш). **Пароль:** admin123</p>
+        <input type="text" id="name-input" placeholder="Название Персонажа (Отображается на превью)">
+        <input type="text" id="thumb-input" placeholder="Путь к файлу-превью (images/thumb.jpg)">
+        
+        <hr>
+        
+        <h4>Изображения (Через запятую):</h4>
+        <input type="text" id="images-input" placeholder="images/img1.jpg, images/img2.jpg, ...">
+        
+        <h4>Видео (URL Google Drive|Комментарий, через запятую):</h4>
+        <input type="text" id="videos-input" placeholder="https://drive.google.com/file/d/.../view|Видео с анимацией, ...">
+        
+        <button onclick="addPortfolioItem()">Добавить Работу в Портфолио</button>
+        <p class="note">Не забывайте, что сами файлы нужно загрузить на хостинг по указанным путям!</p>
+    </section>
 
-    <section id="portfolio">
-        <h2><span class="section-tag">01 //</span> КЛЮЧЕВЫЕ РАБОТЫ</h2>
-        <div class="gallery" id="portfolio-gallery">
-                    </div>
-    </section>
-    
-        <section id="pipeline">
-        <h2><span class="section-tag">02 //</span> ИНДУСТРИАЛЬНЫЙ ПАЙПЛАЙН</h2>
-        <p class="pipeline-intro">Гарантия качества через стандарты ведущих студий (ZBrush, Maya, Substance, UE).</p>
-        <div class="pipeline-steps">
-            <div class="step step-concept">
-                <h3><span class="step-number">01</span> Концепт & Скульпт</h3>
-                <p>ZBrush High-Poly детализация, идеальная анатомия и форма.</p>
-            </div>
-            <div class="step step-retopo">
-                <h3><span class="step-number">02</span> Ретопология & UV</h3>
-                <p>Clean Low-Poly сетка, оптимизация для игровых движков, UDIM.</p>
-            </div>
-            <div class="step step-texture">
-                <h3><span class="step-number">03</span> Текстуры & Шейдинг</h3>
-                <p>PBR в Substance Painter, реалистичное рассеивание (SSS), карты LOD.</p>
-            </div>
-            <div class="step step-engine">
-                <h3><span class="step-number">04</span> Интеграция & Релиз</h3>
-                <p>Настройка материалов и риггинга в Unreal Engine / Unity.</p>
-            </div>
-        </div>
-    </section>
-    
-        <div id="myModal" class="modal" onclick="closeModal(event)">
-        <span class="close">&times;</span>
-        <div class="modal-content">
-            <h3 id="modal-title"></h3>
-            
-            <div id="modal-images">
-                <h4>Галерея Изображений</h4>
-                <div id="image-carousel-container">
-                    <button id="prev-arrow" class="arrow" onclick="scrollCarousel(-1)">&#10094;</button>
-                    <div id="image-carousel" class="image-carousel">
-                        </div>
-                    <button id="next-arrow" class="arrow" onclick="scrollCarousel(1)">&#10095;</button>
-            </div>
-            </div>
+    <section id="portfolio">
+        <h2>📂 Портфолио Работ</h2>
+        <div class="gallery" id="portfolio-gallery">
+            </div>
+    </section>
 
-            <div id="modal-videos">
-                <h4>Видеоматериалы</h4>
-                <div id="video-list">
-                    </div>
-            </div>
-        </div>
-    </div>
+    <div id="myModal" class="modal" onclick="closeModal(event)">
+        <span class="close">&times;</span>
+        <div class="modal-content">
+            <h3 id="modal-title"></h3>
+            
+            <div id="modal-images">
+                <h4>Галерея Изображений</h4>
+                <div id="image-carousel-container">
+                    <button id="prev-arrow" class="arrow" onclick="scrollCarousel(-1)">&#10094;</button>
+                    <div id="image-carousel" class="image-carousel">
+                        </div>
+                    <button id="next-arrow" class="arrow" onclick="scrollCarousel(1)">&#10095;</button>
+                </div>
+            </div>
 
-    <div id="zoom-modal" onclick="closeZoomModal(event)">
-        <span id="zoom-close">&times;</span>
-        <img id="zoom-content">
-    </div>
+            <div id="modal-videos">
+                <h4>Видеоматериалы</h4>
+                <div id="video-list">
+                    </div>
+            </div>
+            
+        </div>
+    </div>
 
-    <section id="order-section">
-        <h2><span class="section-tag">03 //</span> СВЯЗАТЬСЯ & ЗАКАЗАТЬ</h2>
-        <p class="order-subtitle">Готов к работе над вашим следующим AAA-проектом. Обсудим ТЗ и сроки.</p>
-        <div class="order-links">
-            <a href="https://t.me/YaBoRzoY" target="_blank" class="social-link telegram-link">Telegram</a>
-            <a href="https://vk.ru/skirovofficial" target="_blank" class="social-link vk-link">VK</a>
-            <a href="Mailto:didasik4@gmail.com" class="social-link email-link">Gmail</a>
-        </div>
-    </section>
-    
-    <footer id="contact">
-        <p>© 2025 BoRzoY. ALL ASSETS RENDERED. Professional 3D Character Artist.</p>
-    </footer>
+    <div id="zoom-modal" onclick="closeZoomModal(event)">
+        <span id="zoom-close">&times;</span>
+        <img id="zoom-content">
+    </div>
 
-    <script src="script.js"></script>
+    <section id="order-section">
+        <h2>🤝 Обсудить Проект</h2>
+        <p>Я готов принять ваш вызов. Напишите мне, чтобы обсудить детали, бюджет и сроки вашего <span class="accent-text">AAA-проекта</span>.</p>
+        <div class="order-links">
+            <a href="https://t.me/YaBoRzoY" target="_blank" class="telegram">Telegram (Предпочтительно)</a>
+            <a href="https://vk.ru/skirovofficial" target="_blank" class="vk">VK</a>
+            <a href="Mailto:didasik4@gmail.com" class="email">Gmail</a>
+        </div>
+    </section>
+    
+    <footer id="contact">
+        <p>© 2025 BoRzoY. 3D Character Artist.</p>
+        <p>Powered by Passion and Pixels.</p>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
+
 </html>
